@@ -1,4 +1,4 @@
-/*
+/**
 These values can be used for convenience when filling out the attributes field of a Student, but you
 can theoretically use any values as long as there is consistency and clear documentation about what
 each value means. You may also add more values into this file if it is a commonly used attribute.

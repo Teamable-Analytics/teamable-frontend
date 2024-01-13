@@ -5,4 +5,3 @@ export enum Relationship {
     DEFAULT = 0,
     ENEMY = 1.1,
 }
-
