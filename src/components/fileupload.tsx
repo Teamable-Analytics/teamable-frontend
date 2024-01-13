@@ -1,38 +1,58 @@
 'use client'
-import React, {ChangeEvent, useState} from 'react'
+import React, { ChangeEvent, useState} from 'react'
 
 export default function FileUpload() {
     const [fileContent, setFileContent] = useState<String>('')
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    // calls parseCSV function whenever the file input element is changed, passes whatever file is selected as argument.
         const file = event.target.files?.[0]
+        let jsonCSV = ""
         if(file) {
-            parseCSV(file)
+            parseCSV(file).then(jsonString => {
+                console.log(jsonString)
+            }).catch(error => {
+                console.error("Error parsing CSV:", error)
+            })
         }
+        console.log(jsonCSV)
     }
-    let final_vals:String[][] = []
 
-    const parseCSV = (file: File) => {
-    // using React FileReader, trying to parse CSV on client side.. without using any other APIs.
-    // once parsed into a JSON file, we can update this as a global state, using React Context, so that it can be used across multiple components.
-        const reader = new FileReader()
-        reader.onload = (e: ProgressEvent<FileReader>) => {
-            const content = e.target?.result
-            if (typeof content === 'string') {
-                // split file into arrays using RegEx expression, splits on each new line(i.e row) in CSV file.
-                const values = content.split(/[\n]+/)
+    const parseCSV = (file: File): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            let allColumns: { [key: string]: string[] } = {}
 
-                final_vals = []
-                values.forEach(val => {
-                    // split on ; as this is used to seperate each field in the CSV provided. Should also add the option of splitting on a comma.
-                    final_vals.push(val.split(';'))
-                })
-                console.log(final_vals)
+            reader.onload = (e: ProgressEvent<FileReader>) => {
+                const content = e.target?.result
+                if (typeof content === "string") {
+                    let rows: string[] = content.split(/\r?\n/)
+
+                    if (rows.length > 0) {
+                        let headerFields = rows[0].split(";")
+                        headerFields.forEach(key => {
+                            allColumns[key] = []
+                        })
+                        rows.slice(1).forEach((row) => {
+                            let fieldPerRow = row.split(";")
+                            fieldPerRow.forEach((field, index) => {
+                                let keyOfField = headerFields[index]
+                                allColumns[keyOfField].push(field)
+                            })
+                        })
+                        // Resolve the promise with the JSON string
+                        resolve(JSON.stringify(allColumns))
+                    } else {
+                        // Resolve with an empty object if no rows
+                        resolve("{}")
+                    }
+                } else {
+                    reject("File content is not a string")
+                }
             }
-        }
-        reader.readAsText(file)
+            reader.readAsText(file)
+        })
     }
+
     return (
         <div className="container mt-10">
             <form>
