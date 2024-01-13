@@ -1,18 +1,4 @@
-export type Student = {
-    id: number
-    name?: string
-}
-
-export type Team = {
-    id: number
-    name?: string
-    students: Student[]
-}
-
-export type TeamSet = {
-    id: number
-    teams: Team[]
-}
+import {TeamSet} from "@/types/TeamSet"
 
 /**
  * Export a TeamSet to a CSV format compatible with Canvas LMS.
@@ -23,9 +9,9 @@ export type TeamSet = {
  */
 export function exportTeamSetToCanvas(teamSet: TeamSet): string {
     let exportedCSV = teamSet.teams.map(team => {
-        const teamName = team.name || `Group ${team.id}`;
-        return team.students.map(student => `${student.id},${teamName}`).join("\n");
-    }).join("\n");
+        const teamName = team.name || `Group ${team.id}`
+        return team.students.map(student => `${student.id},${teamName}`).join("\n")
+    }).join("\n")
 
-    return "canvas_user_id,group_name\n" + exportedCSV;
+    return "canvas_user_id,group_name\n" + exportedCSV
 }
