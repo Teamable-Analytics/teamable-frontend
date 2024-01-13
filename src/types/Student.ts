@@ -1,4 +1,4 @@
-import {Relationship} from "@/lib/models/Relationship"
+import {Relationship} from "@/types/Relationship"
 
 export type AttributeMap = {
     [attribute: number]: number[]

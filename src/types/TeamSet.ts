@@ -1,4 +1,4 @@
-import {Team} from "@/lib/models/Team"
+import {Team} from "@/types/Team"
 
 export type TeamSet = {
     id: number

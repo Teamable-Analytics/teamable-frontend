@@ -1,5 +1,5 @@
-import {Student} from "@/lib/models/Student"
-import {ProjectRequirement} from "@/lib/models/Projects"
+import {Student} from "@/types/Student"
+import {ProjectRequirement} from "@/types/Projects"
 
 export type Team = {
     id: number
