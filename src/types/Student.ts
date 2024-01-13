@@ -1,13 +1,9 @@
 import {Relationship} from "@/types/Relationship"
 
-export type AttributeMap = {
-    [attribute: number]: number[]
-}
-
 export type Student = {
     id: number
     name?: string
-    attributes?: AttributeMap
+    attributes?: Record<number, number[]>
     relationships?: {
         [studentId: number]: Relationship
     }
