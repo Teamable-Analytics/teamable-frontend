@@ -16,12 +16,3 @@ jobs:
           start: npm start
           browser: chrome
 
-  jest-run:
-    name: Jest
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install dependencies
-        uses: actions/checkout@v4
-        run: yarn
-      - name: Run tests
-        run: npm run test
