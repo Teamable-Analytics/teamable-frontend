@@ -3,6 +3,7 @@ name: Test
 on: push
 jobs:
   cypress-run:
+    name: Cypress
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,10 +17,11 @@ jobs:
           browser: chrome
 
   jest-run:
+    name: Jest
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
         run: yarn
-      - name: Jest run
-      - run: npm test
+      - name: Run tests
+        run: npm run test
