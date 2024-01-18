@@ -10,8 +10,15 @@ jobs:
       - name: Install dependencies
         run: yarn
       - uses: cypress-io/github-action@v6
-        name: Cypress run
+        name: Cypress E2E run
         with:
+          build: npm run build
+          start: npm start
+          browser: chrome
+      - uses: cypress-io/github-action@v6
+        name: Cypress component run
+        with:
+          component: true
           build: npm run build
           start: npm start
           browser: chrome
