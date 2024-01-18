@@ -6,11 +6,11 @@ jobs:
     name: Cypress
     runs-on: ubuntu-latest
     steps:
-      - name: Install dependencies
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        name: Install dependencies
         run: yarn
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
+      - uses: cypress-io/github-action@v6
+        name: Cypress run
         with:
           build: npm run build
           start: npm start
