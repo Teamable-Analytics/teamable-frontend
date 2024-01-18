@@ -2,21 +2,28 @@ name: Test
 
 on: push
 jobs:
-  cypress-run:
-    name: Cypress
+  cypress-e2e-run:
+    name: Cypress E2E
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
         run: yarn
       - uses: cypress-io/github-action@v6
-        name: Cypress E2E run
+        name: Cypress run
         with:
           build: npm run build
           start: npm start
           browser: chrome
+  cypress-component-run:
+    name: Cypress component
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: yarn
       - uses: cypress-io/github-action@v6
-        name: Cypress component run
+        name: Cypress run
         with:
           component: true
           build: npm run build
