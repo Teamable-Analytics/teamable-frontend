@@ -1,5 +1,7 @@
 'use client'
 import React, { ChangeEvent, useState} from 'react'
+import {Input} from "@/components/ui/input"
+import {Label} from "@/components/ui/label"
 
 export default function FileUpload() {
     const [fileContent, setFileContent] = useState<String>('')
@@ -14,7 +16,6 @@ export default function FileUpload() {
                 console.error("Error parsing CSV:", error)
             })
         }
-        console.log(jsonCSV)
     }
 
     const parseCSV = (file: File): Promise<string> => {
@@ -56,18 +57,11 @@ export default function FileUpload() {
     return (
         <div className="container mt-10">
             <form>
-                <div className="fileUpload">
-                    <label htmlFor="classUpload" className="text-xl"> Upload Student Data (CSV) </label>
-                    <input id="classUpload" type="file" className="block w-full text-sm text-slate-500
-                      file:mr-4 file:py-2 file:px-4
-                      file:rounded file:border-0
-                      file:text-sm file:font-semibold
-                      file:bg-sky-50
-                      file:text-sky-800
-                      file:hover:bg-sky-100
-                      mt-10 mb-5"
-                    accept=".csv"
-                    onChange={handleFileChange}/>
+                <div className="flex">
+                    <Label htmlFor="classUpload" className="text-xl"> Upload Student Data (CSV)</Label>
+                    <Input id="classUpload" type="file"
+                        accept=".csv"
+                        onChange={handleFileChange}/>
                 </div>
             </form>
         </div>
