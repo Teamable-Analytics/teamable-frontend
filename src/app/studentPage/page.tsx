@@ -1,7 +1,7 @@
 import React from 'react'
 import FileUpload from '../../components/fileupload'
 
-export default function ImportData() {
+export default function StudentPage() {
     return (
         <FileUpload/>
     )
