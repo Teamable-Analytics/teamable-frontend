@@ -6,6 +6,8 @@ export const parseCSV = (file: File): Promise<string> => {
         const reader = new FileReader()
         reader.onload = (e: ProgressEvent<FileReader>) => {
             const content = e.target?.result
+            // right now it just sets the course to have ID of one so I can test
+            // I don't know how we will find and determine courseId.
             let importedStudents: CourseStudents = {courseID: 1, students: []}
 
             if (typeof content === "string") {
