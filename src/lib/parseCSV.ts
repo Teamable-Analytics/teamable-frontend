@@ -9,9 +9,12 @@ export const parseCSV = (file: File): Promise<string> => {
             let importedStudents: CourseStudents = {courseID: 1, students: []}
 
             if (typeof content === "string") {
+                // regEx to split CSV file for rows
                 let rows: string[] = content.split(/\r?\n/)
 
                 if (rows.length > 0) {
+                    // first row in table is header (hopefully), split and grab the names for each one.
+                    // using each header as the key for the object.
                     let headerFields = rows[0].split(";")
                     rows.slice(1).forEach((row) => {
                         let fieldPerRow = row.split(";")
@@ -23,9 +26,10 @@ export const parseCSV = (file: File): Promise<string> => {
                                 student.name = field
                             } else if (keyOfField === "ID") {
                                 student.id = parseInt(field, 10)
+                            }else if (keyOfField === "Section") {
+                                student.section = field
                             }
                         })
-
                         if (student.name && student.id) {
                             importedStudents.students.push(student)
                         }
