@@ -2,8 +2,7 @@
 
 import {type ColumnDef} from "@tanstack/table-core"
 import {Checkbox} from "@/components/ui/checkbox"
-import {ArrowUpDown} from "lucide-react"
-import {Button} from "@/components/ui/button"
+import {DataTableColumnHeader} from "@/components/ui/table-column-header"
 
 export type ProjectSet = {
     id: number
@@ -34,30 +33,14 @@ export const columns: ColumnDef<ProjectSet>[] = [
     },
     {
         accessorKey: "name",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Project Set Name
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
-                </Button>
-            )
-        },
+        header: ({column}) => (
+            <DataTableColumnHeader column={column} title={"Project Set Name"} />
+        ),
     },
     {
         accessorKey: "numProjects",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Number of Projects
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
-                </Button>
-            )
-        },
+        header: ({column}) => (
+            <DataTableColumnHeader column={column} title={"Number of Projects"} />
+        ),
     },
 ]
