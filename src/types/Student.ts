@@ -2,8 +2,7 @@ import {Relationship} from "@/types/Relationship"
 
 export type Student = {
     id: number
-    fname?: string
-    lname?: string
+    name: string,
     attributes?: Record<number, number[]>
     relationships?: Record<number, Relationship>
     projectPreferences?: number[]

@@ -14,6 +14,7 @@ export default function StudentPage() {
         if (file) {
             parsedCSV = await parseCSV(file)
             setStudentsParse(parsedCSV)
+            console.log(parsedCSV)
         }
     }
     return (

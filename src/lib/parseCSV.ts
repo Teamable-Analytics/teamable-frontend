@@ -20,13 +20,12 @@ export const parseCSV = (file: File): Promise<Student[]> => {
                     let headerFields = rows[0].split(";")
                     rows.slice(1).forEach((row) => {
                         let fieldPerRow = row.split(";")
-                        let student: Student = { fname: undefined, lname: undefined, section: undefined, id: NaN}
+                        let student: Student = {name: '', section: undefined, id: NaN}
 
                         fieldPerRow.forEach((field, index) => {
                             let keyOfField = headerFields[index]
                             if (keyOfField === "Student") {
-                                student.lname = field.split(',')[0]
-                                student.fname = field.split(',')[1]
+                                student.name = field
                             } else if (keyOfField === "ID") {
                                 student.id = parseInt(field, 10)
                             }else if (keyOfField === "Section") {
@@ -34,7 +33,7 @@ export const parseCSV = (file: File): Promise<Student[]> => {
                                 student.section = field
                             }
                         })
-                        if (student.fname && student.id) {
+                        if (student.name && student.id) {
                             importedStudents.push(student)
                         }
                     })
