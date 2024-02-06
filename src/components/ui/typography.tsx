@@ -3,6 +3,8 @@
  *
  * TODO: Remove this file once the component is released in the official library
  */
+"use client"
+
 import * as React from "react"
 import {VariantProps, cva} from "class-variance-authority"
 

@@ -2,8 +2,8 @@
 
 import * as React from "react"
 import {Typography} from "@/components/ui/typography"
-import {columns, type ProjectSet} from "@/app/projects/columns"
-import {DataTable} from "@/app/projects/data-table"
+import {columns, type ProjectSet} from "@/app/project-sets/columns"
+import {DataTable} from "@/app/project-sets/data-table"
 
 async function getData(): Promise<ProjectSet[]> {
     // Fetch data from your API here.
