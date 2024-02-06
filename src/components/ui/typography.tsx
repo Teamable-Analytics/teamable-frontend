@@ -1,5 +1,7 @@
 /**
  * This file is manually created. The code is originally from https://github.com/shadcn-ui/ui/pull/363
+ *
+ * TODO: Remove this file once the component is released in the official library
  */
 import * as React from "react"
 import { VariantProps, cva } from "class-variance-authority"
