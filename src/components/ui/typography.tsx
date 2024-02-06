@@ -4,9 +4,9 @@
  * TODO: Remove this file once the component is released in the official library
  */
 import * as React from "react"
-import { VariantProps, cva } from "class-variance-authority"
+import {VariantProps, cva} from "class-variance-authority"
 
-import { cn } from "@/lib/utils"
+import {cn} from "@/lib/utils"
 
 const typographyVariants = cva("text-foreground", {
     variants: {
@@ -36,7 +36,7 @@ type TypographyProps<T extends Element> = { element: T }
     & VariantProps<typeof typographyVariants>
     & React.HTMLAttributes<HTMLElement>
 
-const Typography = <T extends Element>({className, element, as, ...props}: TypographyProps<T>) => {
+const Typography = React.forwardRef<VariantProps<typeof typographyVariants> & React.HTMLAttributes<HTMLElement>, TypographyProps<Element>>(({className, element, as, ...props}, ref) => {
     const Component = element
 
     const componentProps = {
@@ -45,6 +45,8 @@ const Typography = <T extends Element>({className, element, as, ...props}: Typog
     }
 
     return React.createElement(Component, componentProps)
-}
+})
 
-export default React.forwardRef(Typography)
+Typography.displayName = "Typography"
+
+export {Typography}
