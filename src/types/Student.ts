@@ -8,5 +8,5 @@ export type Student = {
     projectPreferences?: number[]
     team?: number
     // not sure if section is an attribute for student type
-    section?: string
+    sections?: string[]
 }

@@ -1,27 +1,59 @@
 "use client"
 
-import { Student } from "@/types/Student"
-import { ColumnDef } from "@tanstack/react-table"
-import { Badge } from "@/components/ui/badge"
+import {Student} from "@/types/Student"
+import {ColumnDef} from "@tanstack/react-table"
+import {Badge} from "@/components/ui/badge"
+import {DataTableColumnHeader} from "@/components/ui/table-column-header"
+import {Checkbox} from "@/components/ui/checkbox"
+
 export const columns: ColumnDef<Student>[] = [
     {
+        id: "select",
+        header: ({table}) => (
+            <Checkbox
+                checked={
+                    table.getIsAllPageRowsSelected() ||
+                    (table.getIsSomePageRowsSelected() && "indeterminate")
+                }
+                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                aria-label="Select all"
+            />
+        ),
+        cell: ({row}) => (
+            <Checkbox
+                checked={row.getIsSelected()}
+                onCheckedChange={(value) => row.toggleSelected(!!value)}
+                aria-label="Select row"
+            />
+        ),
+    },
+    {
         accessorKey: "id",
-        header: () => <div className="text-left"> Student ID</div>,
-        cell: ({ row }) => {
+        header: ({column}) => (
+            <DataTableColumnHeader column={column} title="Student ID"/>
+        ),
+        cell: ({row}) => {
             return <div className="text-left font-medium">{row.getValue("id")}</div>
         },
     },
     {
         accessorKey: "name",
-        header: () => <div className="text-left">Student Name</div>,
-        cell: ({ row }) => {
-            const name = row.getValue("name") as String
-            const [lastName, firstName] = name.split(",")
-            const formattedName = `${firstName} ${lastName}`
-            const section = (row.original as Student).section
-            return <div className="flex flex-row justify-between">
-                <div className="text-left font-medium">{formattedName}</div>
-                <Badge variant="outline">{section}</Badge>
+        header: ({column}) => (
+            <DataTableColumnHeader column={column} title="Student Name"/>
+        ),
+    },
+    {
+        accessorKey: "sections",
+        header: () => <div>Sections</div>,
+        cell: ({row}) => {
+            const sections = row.getValue("sections") as string[]
+            const sectionBadges = sections?.map((section) => (
+                <Badge key={section} variant="secondary">
+                    {section}
+                </Badge>
+            ))
+            return <div className="flex flex-row gap-1">
+                {sectionBadges}
             </div>
         },
     },

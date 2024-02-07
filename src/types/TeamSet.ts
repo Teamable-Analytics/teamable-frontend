@@ -2,6 +2,6 @@ import {Team} from "@/types/Team"
 
 export type TeamSet = {
     id: number
-    name?: string
+    name: string
     teams: Team[]
 }
