@@ -8,7 +8,7 @@ import {VariantProps, cva} from "class-variance-authority"
 
 import {cn} from "@/lib/utils"
 
-const typographyVariants = cva("text-foreground", {
+const textVariants = cva("text-foreground", {
     variants: {
         as: {
             h1: "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
@@ -32,21 +32,21 @@ const typographyVariants = cva("text-foreground", {
 
 type Element = keyof React.JSX.IntrinsicElements
 
-type TypographyProps<T extends Element> = { element: T }
-    & VariantProps<typeof typographyVariants>
+type TextProps<T extends Element> = { element: T }
+    & VariantProps<typeof textVariants>
     & React.HTMLAttributes<HTMLElement>
 
-const Typography = React.forwardRef<VariantProps<typeof typographyVariants> & React.HTMLAttributes<HTMLElement>, TypographyProps<Element>>(({className, element, as, ...props}, ref) => {
+const Text = React.forwardRef<VariantProps<typeof textVariants> & React.HTMLAttributes<HTMLElement>, TextProps<Element>>(({className, element, as, ...props}, ref) => {
     const Component = element
 
     const componentProps = {
-        className: cn(typographyVariants({as, className})),
+        className: cn(textVariants({as, className})),
         ...props,
     }
 
     return React.createElement(Component, componentProps)
 })
 
-Typography.displayName = "Typography"
+Text.displayName = "Text"
 
-export {Typography}
+export {Text}
