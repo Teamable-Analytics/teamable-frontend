@@ -51,9 +51,13 @@ function getStudentData() {
             sections: ["Lecture", "LAB " + labSectionNumber],
         }
     })
-
     return students
 }
+function getAllSections() {
+    // TO DO: change this to fetch data from the backend
+    const sections = ["Lecture", "LAB 1", "LAB 2", "LAB 3", "LAB 4", "LAB 5", "LAB 6", "LAB 7", "LAB 8", "LAB 9", "LAB 10"]
+}
+
 
 function getTeamSets() {
     // TODO: Change this to fetch data from the backend

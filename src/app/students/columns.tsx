@@ -5,6 +5,8 @@ import {ColumnDef} from "@tanstack/react-table"
 import {Badge} from "@/components/ui/badge"
 import {DataTableColumnHeader} from "@/components/ui/table-column-header"
 import {Checkbox} from "@/components/ui/checkbox"
+import { SectionsComboBox } from "./sections-combo-box"
+import { Combo } from "next/font/google"
 
 export const columns: ColumnDef<Student>[] = [
     {
@@ -44,7 +46,7 @@ export const columns: ColumnDef<Student>[] = [
     },
     {
         accessorKey: "sections",
-        header: () => <div>Sections</div>,
+        header: SectionsComboBox,
         cell: ({row}) => {
             const sections = row.getValue("sections") as string[]
             const sectionBadges = sections?.map((section) => (
