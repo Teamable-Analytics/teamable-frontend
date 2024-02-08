@@ -30,7 +30,7 @@ export const columns: ColumnDef<Student>[] = [
     {
         accessorKey: "id",
         header: ({column}) => (
-            <DataTableColumnHeader column={column} title="Student ID"/>
+            <DataTableColumnHeader column={column} title="Student ID" hasDropDownMenu={false}/>
         ),
         cell: ({row}) => {
             return <div className="text-left font-medium">{row.getValue("id")}</div>
@@ -39,7 +39,7 @@ export const columns: ColumnDef<Student>[] = [
     {
         accessorKey: "name",
         header: ({column}) => (
-            <DataTableColumnHeader column={column} title="Student Name"/>
+            <DataTableColumnHeader column={column} title="Student Name" hasDropDownMenu={false}/>
         ),
     },
     {
