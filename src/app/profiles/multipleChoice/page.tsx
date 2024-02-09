@@ -27,7 +27,7 @@ const  Home = () => {
     const [questionName, setQuestionName] = useState('')
     const [questionText, setQuestionText] = useState('What is your favorite color?')
     const [answers, setAnswers] = useState<Answer[]>([{name: '', order: 0, label: '', value: 0}])
-    const [, forceUpdate] = useReducer(x => x + 1, 0);
+    const [, forceUpdate] = useReducer(x => x + 1, 0)
 
     return (
         <>
@@ -47,57 +47,59 @@ const  Home = () => {
                         <Card>
                             <br></br>
                             <CardContent>
-                            <div>
+                                <div>
                                 Name
-                                <Input type="text" placeholder="" onChange={(e) => {
-                                    setQuestionName(e.target.value)
-                                }}/>
-                            </div>
-                            
-                            <div>
+                                    <Input type="text" placeholder="" onChange={(e) => {
+                                        setQuestionName(e.target.value)
+                                    }}/>
+                                </div>
+
+                                <div>
                                 Question Text
-                                <Input type="text" placeholder="" value={questionText} onChange={(e) => {
-                                    setQuestionText(e.target.value)
-                                }}/>
-                            </div>
-                            
+                                    <Input type="text" placeholder="" value={questionText} onChange={(e) => {
+                                        setQuestionText(e.target.value)
+                                    }}/>
+                                </div>
+
                             Answer Group Name
-                            <br></br>
-                            <Input type="text" placeholder="" onChange={(e) => {
+                                <br></br>
+                                <Input type="text" placeholder="" onChange={(e) => {
                                 }} />
-                            {answers.map((answer, index) => {
-                                return (
-                                    <div key={index} className="grid grid-cols-3">
-                                        <div className="col-span-1">
+                                {answers.map((answer, index) => {
+                                    return (
+                                        <div key={index} className="grid grid-cols-3">
+                                            <div className="col-span-1">
                                             Order
-                                            <Input type="number" placeholder="" min='1' defaultValue={index + 1} onChange={(e) => {
-                                                answers[index].order = parseInt(e.target.value)
-                                                forceUpdate()
-                                            }} />
-                                        </div>
-                                        <div className="col-span-1">
+                                                <Input type="number" placeholder="" min="1" defaultValue={index + 1} onChange={(e) => {
+                                                    answers[index].order = parseInt(e.target.value)
+                                                    forceUpdate()
+                                                }} />
+                                            </div>
+                                            <div className="col-span-1">
                                             Answer Label
-                                            <Input type="text" placeholder="" onChange={(e) => {
-                                                answers[index].label = e.target.value
-                                                forceUpdate()
-                                            }} />
-                                        </div>
-                                        <div className="col-span-1">
+                                                <Input type="text" placeholder="" onChange={(e) => {
+                                                    answers[index].label = e.target.value
+                                                    forceUpdate()
+                                                }} />
+                                            </div>
+                                            <div className="col-span-1">
                                             Answer Value
-                                            <Input type="number" placeholder="" onChange={(e) => {
-                                            }} />
+                                                <Input type="number" placeholder="" onChange={(e) => {
+                                                }} />
+                                            </div>
                                         </div>
-                                    </div>
-                                )
-                            })}
+                                    )
+                                })}
                             </CardContent>
                             <CardFooter className="flex justify-between">
-                                <Button onClick={() => {setAnswers([...answers, {name: '', order: answers.length + 1, label: '', value: 0}]); forceUpdate()}}>Add Answer</Button>
+                                <Button onClick={() => {
+                                    setAnswers([...answers, {name: '', order: answers.length + 1, label: '', value: 0}]); forceUpdate()
+                                }}>Add Answer</Button>
                             </CardFooter>
                         </Card>
                     </div>
-                    
-                    
+
+
                     {/* VIEWER */}
                     <div>
                         <Card>
@@ -118,11 +120,11 @@ const  Home = () => {
                             </RadioGroup>
                         </Card>
                     </div>
-                    
+
                 </div>
             </div>
         </>
-      )
+    )
 }
 
 export default Home
