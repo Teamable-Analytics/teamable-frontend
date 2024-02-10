@@ -23,7 +23,9 @@ export function Demo() {
             options={fakeSections}
             selected={selected}
             onChange={setSelected}
+            placeholder="Sections"
             className="w-auto"
+            inHeader
         />
     )
 }

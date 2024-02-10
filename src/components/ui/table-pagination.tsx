@@ -16,6 +16,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { Text } from "./text"
 
 interface DataTablePaginationProps<TData> {
     table: Table<TData>
@@ -30,7 +31,7 @@ export function DataTablePagination<TData>({table}: DataTablePaginationProps<TDa
             </div>
             <div className="flex items-center space-x-6 lg:space-x-8">
                 <div className="flex items-center space-x-2">
-                    <p className="text-sm font-medium">Rows per page</p>
+                    <Text element="p" as="mutedText">Row per page</Text>
                     <Select
                         value={`${table.getState().pagination.pageSize}`}
                         onValueChange={(value) => {
@@ -49,10 +50,10 @@ export function DataTablePagination<TData>({table}: DataTablePaginationProps<TDa
                         </SelectContent>
                     </Select>
                 </div>
-                <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+                <Text element="p" as="mutedText">
                     Page {table.getState().pagination.pageIndex + 1} of{" "}
                     {table.getPageCount()}
-                </div>
+                </Text>
                 <div className="flex items-center space-x-2">
                     <Button
                         variant="outline"

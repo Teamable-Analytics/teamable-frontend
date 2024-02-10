@@ -5,7 +5,6 @@ import {ColumnDef} from "@tanstack/react-table"
 import {Badge} from "@/components/ui/badge"
 import {DataTableColumnHeader} from "@/components/ui/table-column-header"
 import {Checkbox} from "@/components/ui/checkbox"
-import { SectionsComboBox } from "./sections-combo-box"
 import {Demo} from "./multiselect-demo"
 
 export const columns: ColumnDef<Student>[] = [
@@ -30,19 +29,19 @@ export const columns: ColumnDef<Student>[] = [
         ),
     },
     {
-        accessorKey: "id",
-        header: ({column}) => (
-            <DataTableColumnHeader column={column} title="Student ID" hasDropDownMenu={false}/>
-        ),
-        cell: ({row}) => {
-            return <div className="text-left font-medium">{row.getValue("id")}</div>
-        },
-    },
-    {
         accessorKey: "name",
         header: ({column}) => (
             <DataTableColumnHeader column={column} title="Student Name" hasDropDownMenu={false}/>
         ),
+    },
+    {
+        accessorKey: "id",
+        header: ({column}) => (
+            <DataTableColumnHeader column={column} title="Student ID" hasDropDownMenu={false} className = "flex-0"/>
+        ),
+        cell: ({row}) => {
+            return <div className="text-left font-medium">{row.getValue("id")}</div>
+        },
     },
     {
         accessorKey: "sections",
@@ -50,7 +49,7 @@ export const columns: ColumnDef<Student>[] = [
         cell: ({row}) => {
             const sections = row.getValue("sections") as string[]
             const sectionBadges = sections?.map((section) => (
-                <Badge key={section} variant="secondary">
+                <Badge key={section} variant="outline" className="text-xs text-muted-foreground">
                     {section}
                 </Badge>
             ))

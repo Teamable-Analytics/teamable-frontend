@@ -48,7 +48,7 @@ function getStudentData() {
             relationships: {},
             projectPreferences: [],
             team: 1,
-            sections: ["Lecture", "LAB " + labSectionNumber],
+            sections: ["Lecture", "Lab " + labSectionNumber],
         }
     })
     return students

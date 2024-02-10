@@ -20,18 +20,20 @@ import { Badge } from "@/components/ui/badge"
 
 
 export type OptionType = {
-    label: string;
-    value: string;
+    label: string
+    value: string
 }
 
 interface MultiSelectProps {
-    options: OptionType[];
-    selected: string[];
-    onChange: React.Dispatch<React.SetStateAction<string[]>>;
-    className?: string;
+    options: OptionType[]
+    selected: string[]
+    onChange: React.Dispatch<React.SetStateAction<string[]>>
+    className?: string
+    placeholder?: string
+    inHeader?: boolean
 }
 
-function MultiSelect({ options, selected, onChange, className, ...props }: MultiSelectProps) {
+function MultiSelect({ options, selected, onChange, className, inHeader = false, placeholder = 'Select..', ...props }: MultiSelectProps) {
 
     const [open, setOpen] = React.useState(false)
 
@@ -47,17 +49,17 @@ function MultiSelect({ options, selected, onChange, className, ...props }: Multi
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className={`w-auto justify-between ${cn({ 'h-full': selected.length > 1, 'h-10': selected.length <= 1 })}`}
+                    className={`w-auto justify-between ${inHeader ? "h-[30px]" : "w-auto"}`}
                     onClick={() => setOpen(!open)}
                 >
-                    {selected.length === 0 ? "Sections" :
+                    {selected.length === 0 ? placeholder :
                         <div className="flex gap-1 flex-wrap">
                             {selected.length <= 3 ?
                                 selected.map((item) => (
                                     <Badge
-                                        variant="secondary"
+                                        variant="outline"
                                         key={item}
-                                        className="mr-1 mb-1"
+                                        className="mr-1 text-xs-muted-foreground"
                                         onClick={(e) => {
                                             e.stopPropagation() // Prevents popover from closing
                                             handleUnselect(item)
@@ -89,9 +91,9 @@ function MultiSelect({ options, selected, onChange, className, ...props }: Multi
                                 <>
                                     {selected.slice(0, 3).map((item) => (
                                         <Badge
-                                            variant="secondary"
+                                            variant="outline"
                                             key={item}
-                                            className="mr-1 mb-1"
+                                            className="mr-1 text-xs-muted-foreground"
                                             onClick={(e) => {
                                                 e.stopPropagation() // Prevents popover from closing
                                                 handleUnselect(item)
@@ -119,7 +121,7 @@ function MultiSelect({ options, selected, onChange, className, ...props }: Multi
                                             </button>
                                         </Badge>
                                     ))}
-                                    <Badge variant="secondary" className="mr-1 mb-1">{selected.length - 3} more</Badge>
+                                    <Badge variant="outline" className="mr-1 text-xs-muted-foreground">{selected.length - 3} more</Badge>
                                 </>
                             }
                         </div>
