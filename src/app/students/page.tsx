@@ -3,7 +3,6 @@ import React, {useState, ChangeEvent, useEffect} from 'react'
 import FileUpload from '../../components/fileupload'
 import {parseCSV} from '@/lib/parseCSV'
 import {DataTable} from './data-table'
-import {columns} from './columns'
 import {Student} from '@/types/Student'
 import {Text} from "@/components/ui/text"
 import {Button} from "@/components/ui/button"
@@ -20,6 +19,7 @@ import {DialogBody} from "next/dist/client/components/react-dev-overlay/internal
 import {Input} from "@/components/ui/input"
 import {TeamSet} from "@/types/TeamSet"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
+import { MultiSelectSections } from './multiselect-demo'
 
 
 /**
@@ -53,10 +53,6 @@ function getStudentData() {
     })
     return students
 }
-function getAllSections() {
-    // TO DO: change this to fetch data from the backend
-    const sections = ["Lecture", "LAB 1", "LAB 2", "LAB 3", "LAB 4", "LAB 5", "LAB 6", "LAB 7", "LAB 8", "LAB 9", "LAB 10"]
-}
 
 
 function getTeamSets() {
@@ -80,6 +76,7 @@ export default function StudentsPage() {
 
     const [csvStudentsParse, setStudentsParse] = useState<Student[]>([])
     const [displayStudents, setDisplayStudents] = useState<Student[]>([])
+    const [currentSections, setSections] = useState<{ label: string, value: string }[]>([])
 
     useEffect(() => {
         const teamSets = getTeamSets()
@@ -94,6 +91,36 @@ export default function StudentsPage() {
             setDisplayStudents(students)
         }
     }, [displayTeamSet])
+    // temporary solution: useEffect to update the displayStudents when the csvStudentsParse changes
+    useEffect(() => {
+        if (csvStudentsParse.length > 0) {
+            if(displayStudents.length > 0) {
+                setDisplayStudents([])
+            }
+            setDisplayStudents(csvStudentsParse)
+        }
+    }, [csvStudentsParse, displayStudents])
+    // Listen for changes to displayStudents
+
+    // get set of sections from the students in the displayStudents
+    useEffect(() => {
+        async function getAllSections() {
+            const sections = new Set<string>()
+            displayStudents.forEach((student) => {
+                student.sections?.forEach((section) => {
+                    sections.add(section)
+                })
+            })
+            // convert sections into options object: {label: string, value: string} where both label and value are the section
+            const sectionsOptions = Array.from(sections).map((section) => ({label: section, value: section}))
+            return sectionsOptions
+        }
+        async function updateSections() {
+            const newSections = await getAllSections()// This now correctly uses the updated displayStudents
+            setSections(newSections)
+        }
+        updateSections()
+    }, [displayStudents])
 
     return (
         <div className="container mx-auto py-10">
@@ -111,8 +138,8 @@ export default function StudentsPage() {
                 </Select>
             </div>
             <DataTable
-                columns={columns}
                 data={displayStudents}
+                sections={currentSections}
                 topRightComponent={
                     <Dialog>
                         <DialogTrigger asChild>
@@ -120,7 +147,7 @@ export default function StudentsPage() {
                         </DialogTrigger>
                         <DialogContent>
                             <DialogHeader>
-                                <DialogTitle>Upload Students CSV</DialogTitle>
+                                <DialogTitle>Upload Students [CSV]</DialogTitle>
                             </DialogHeader>
                             <DialogBody>
                                 <div className="grid gap-4 py-4">
@@ -132,7 +159,7 @@ export default function StudentsPage() {
                                     <Button variant="secondary" onClick={handleCancel}>Cancel</Button>
                                 </DialogClose>
                                 <DialogClose asChild>
-                                    <Button onClick={handleSave}>Save</Button>
+                                    <Button onClick={handleSave}>Upload</Button>
                                 </DialogClose>
                             </DialogFooter>
                         </DialogContent>
@@ -141,15 +168,15 @@ export default function StudentsPage() {
             />
         </div>
     )
-
     async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
         const file = event.target.files?.[0]
         let parsedCSV = []
+        let newSections = []
         if (file) {
             parsedCSV = await parseCSV(file)
             setStudentsParse(parsedCSV)
-            console.log(parsedCSV)
         }
+        console.log(csvStudentsParse)
     }
 
     function handleCancel() {
@@ -158,6 +185,10 @@ export default function StudentsPage() {
 
     function handleSave() {
         // TODO: Send a request to backend with the studentParsed
+
+        // set the displayStudents to the new students
+        setDisplayStudents(csvStudentsParse)
+
     }
 
     function handleSelectTeamSet(teamSetIdString: string) {

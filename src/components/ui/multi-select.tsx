@@ -49,7 +49,7 @@ function MultiSelect({ options, selected, onChange, className, inTableHeader = f
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className={`w-auto justify-between ${inTableHeader ? "h-[30px]" : "h-full"}`}
+                    className={`w-auto justify-between ${inTableHeader ? "h-[30px] basis-0" : "h-full"}`}
                     onClick={() => setOpen(!open)}
                 >
                     {selected.length === 0 ? placeholder :

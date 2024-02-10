@@ -33,7 +33,7 @@ export function DataTableColumnHeader<TData, TValue>({column, title, className, 
     }
 
     return (
-        <div className={cn("flex items-center space-x-2", className)}>
+        <div>
             {hasDropDownMenu ? (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>

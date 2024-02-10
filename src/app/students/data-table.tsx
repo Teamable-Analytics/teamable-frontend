@@ -8,6 +8,9 @@ import {
     useReactTable,
 } from "@tanstack/react-table"
 
+import { } from '@tanstack/react-table'
+
+
 import {
     Table,
     TableBody,
@@ -18,26 +21,28 @@ import {
 } from "@/components/ui/table"
 import {DataTablePagination} from "@/components/ui/table-pagination"
 import { SearchBar } from "@/components/search-bar"
+import { generateColumns } from "./columns"
 import React from "react"
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
+interface DataTableProps<TData> {
+  sections: { label: string, value: string}[]
   data: TData[]
   topRightComponent?: React.ReactNode
 }
 
-export function DataTable<TData, TValue>({
-    columns,
+export function DataTable<TData>({
+    sections,
     data,
     topRightComponent,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [rowSelection, setRowSelection] = React.useState({})
 
+    const columns = React.useMemo(() => generateColumns(sections), [sections])
     const table = useReactTable({
         data,
-        columns,
+        columns: columns as ColumnDef<TData>[],
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         onSortingChange: setSorting,
@@ -58,11 +63,12 @@ export function DataTable<TData, TValue>({
         <>
             <div className="flex items-center justify-between">
                 <div className="flex items-center py-4 w-[25vw]">
+                    {/* make the search bar work on multiple columns of table: firstName, lastName, id */}
                     <SearchBar
-                        placeholder="Search Project Set"
-                        value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+                        placeholder="Search Last Names"
+                        value={(table.getColumn("lastName")?.getFilterValue() as string) ?? ""}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            table.getColumn("name")?.setFilterValue(event.target.value)
+                            table.getColumn("lastName")?.setFilterValue(event.target.value)
                         }}
                         ref={searchBarRef}
                     />

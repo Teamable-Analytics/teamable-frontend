@@ -1,5 +1,6 @@
 import { Student } from '@/types/Student'
 import { CourseStudents } from '@/types/CourseStudents'
+import StudentsPage from '@/app/students/page'
 
 export const parseCSV = (file: File): Promise<Student[]> => {
     return new Promise((resolve, reject) => {
@@ -20,7 +21,7 @@ export const parseCSV = (file: File): Promise<Student[]> => {
                     let headerFields = rows[0].split(";")
                     rows.slice(1).forEach((row) => {
                         let fieldPerRow = row.split(";")
-                        let student: Student = {name: '', section: undefined, id: NaN}
+                        let student: Student = {name: '', sections: undefined, id: NaN}
 
                         fieldPerRow.forEach((field, index) => {
                             let keyOfField = headerFields[index]
@@ -30,7 +31,10 @@ export const parseCSV = (file: File): Promise<Student[]> => {
                                 student.id = parseInt(field, 10)
                             }else if (keyOfField === "Section") {
                                 // this is a stop gap
-                                student.section = field
+                                if(!student.sections) {
+                                    student.sections = []
+                                }
+                                student.sections.push(field)
                             }
                         })
                         if (student.name && student.id) {
