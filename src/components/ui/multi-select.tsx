@@ -30,10 +30,10 @@ interface MultiSelectProps {
     onChange: React.Dispatch<React.SetStateAction<string[]>>
     className?: string
     placeholder?: string
-    inHeader?: boolean
+    inTableHeader?: boolean
 }
 
-function MultiSelect({ options, selected, onChange, className, inHeader = false, placeholder = 'Select..', ...props }: MultiSelectProps) {
+function MultiSelect({ options, selected, onChange, className, inTableHeader = false, placeholder = 'Select..', ...props }: MultiSelectProps) {
 
     const [open, setOpen] = React.useState(false)
 
@@ -49,7 +49,7 @@ function MultiSelect({ options, selected, onChange, className, inHeader = false,
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className={`w-auto justify-between ${inHeader ? "h-[30px]" : "w-auto"}`}
+                    className={`w-auto justify-between ${inTableHeader ? "h-[30px]" : "h-full"}`}
                     onClick={() => setOpen(!open)}
                 >
                     {selected.length === 0 ? placeholder :

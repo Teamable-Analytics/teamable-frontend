@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useState } from 'react'
 import { MultiSelect } from "@/components/ui/multi-select"
+import { DataTableColumnHeader } from '@/components/ui/table-column-header'
 
 export function Demo() {
     const [selected, setSelected] = useState<string[]>([])
@@ -25,7 +26,7 @@ export function Demo() {
             onChange={setSelected}
             placeholder="Sections"
             className="w-auto"
-            inHeader
+            inTableHeader
         />
     )
 }
