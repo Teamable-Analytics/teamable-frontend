@@ -6,7 +6,7 @@ import {Badge} from "@/components/ui/badge"
 import {DataTableColumnHeader} from "@/components/ui/table-column-header"
 import {Checkbox} from "@/components/ui/checkbox"
 import { SectionsComboBox } from "./sections-combo-box"
-import { Combo } from "next/font/google"
+import {Demo} from "./multiselect-demo"
 
 export const columns: ColumnDef<Student>[] = [
     {
@@ -46,7 +46,7 @@ export const columns: ColumnDef<Student>[] = [
     },
     {
         accessorKey: "sections",
-        header: SectionsComboBox,
+        header: Demo,
         cell: ({row}) => {
             const sections = row.getValue("sections") as string[]
             const sectionBadges = sections?.map((section) => (
