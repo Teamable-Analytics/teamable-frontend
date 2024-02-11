@@ -1,8 +1,8 @@
-
 import * as React from 'react'
 import { cn } from "@/lib/utils"
-
-import { Check, X, ChevronsUpDown } from "lucide-react"
+import {Text} from "@/components/ui/text"
+import { Check, X } from "lucide-react"
+import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
 import {
     Command,
@@ -16,46 +16,47 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { Badge } from "@/components/ui/badge"
-import { getDisplayName } from 'next/dist/shared/lib/utils'
-
 
 export type OptionType = {
-    label: string
-    value: string
-}
+    label: string;
+    value: string;
+};
 
 interface MultiSelectProps {
-    options: OptionType[]
-    selected: string[]
-    optionName?: string
-    onChange: React.Dispatch<React.SetStateAction<string[]>>
-    className?: string
-    placeholder?: string
-    inTableHeader?: boolean
+    options: OptionType[];
+    selected: string[];
+    optionName?: string;
+    onChange: React.Dispatch<React.SetStateAction<string[]>>;
+    className?: string;
+    placeholder?: string;
+    inTableHeader?: boolean;
 }
 
-function MultiSelect({ options, selected, onChange, className, inTableHeader = false, placeholder = 'Select..', optionName = 'section(s)',  ...props }: MultiSelectProps) {
-
+function MultiSelect({ options, selected, onChange, className, inTableHeader = false, placeholder = 'Select..', optionName = 'section(s)', ...props }: MultiSelectProps) {
     const [open, setOpen] = React.useState(false)
 
-    const handleUnselect = (item: string) => {
-        onChange(selected.filter((i) => i !== item))
-    }
-    const handleSelect = (optionValue: string) => {
+    const handleSelectToggle = (optionValue: string) => {
         onChange(selected.includes(optionValue)
             ? selected.filter((item) => item !== optionValue)
             : [...selected, optionValue])
-        setOpen(true)
     }
-    const createOptionsText =  () => {
+
+    const createOptionsText = () => {
         if (selected.length === 0) {
             return placeholder
         }
         return `${selected.length} ${optionName} selected`
     }
-    // todo: refactor condition expressions as separate functions
-    // todo: remove the badges cap, make it dynamic based on width
+
+    // Sort options to show selected items on top
+    const sortedOptions = [...options].sort((a, b) => {
+        let aSelected = selected.includes(a.value) ? -1 : 1
+        let bSelected = selected.includes(b.value) ? -1 : 1
+        return aSelected - bSelected
+    })
+    const selectedOptions = options.filter(option => selected.includes(option.value))
+    const unselectedOptions = options.filter(option => !selected.includes(option.value))
+
     return (
         <Popover open={open} onOpenChange={setOpen} {...props}>
             <PopoverTrigger asChild>
@@ -75,17 +76,27 @@ function MultiSelect({ options, selected, onChange, className, inTableHeader = f
                     <CommandInput placeholder="Search ..." />
                     <CommandEmpty>No item found.</CommandEmpty>
                     <CommandGroup className="max-h-40 overflow-auto">
-                        {options.map((option) => (
+                        {selectedOptions.map((option) => (
                             <CommandItem
                                 key={option.value}
-                                onSelect={() => handleSelect(option.value)}
+                                onSelect={() => handleSelectToggle(option.value)}
                             >
                                 <Check
                                     className={cn("mr-2 h-4 w-4",
-                                        selected.includes(option.value) ?
-                                            "opacity-100" : "opacity-0")}
+                                        selected.includes(option.value) ? "opacity-100" : "opacity-0")}
                                 />
                                 {option.label}
+                            </CommandItem>
+                        ))}
+                        {unselectedOptions.length > 0 && selectedOptions.length > 0 && (
+                            <Separator className="my-1"/>
+                        )}
+                        {unselectedOptions.map((option) => (
+                            <CommandItem
+                                key={option.value}
+                                onSelect={() => handleSelectToggle(option.value)}
+                            >
+                                <span className="ml-6">{option.label}</span>
                             </CommandItem>
                         ))}
                     </CommandGroup>
