@@ -3,7 +3,7 @@
 import * as React from "react"
 import {Typography} from "@/components/ui/typography"
 import {columns, type ProjectSet} from "@/app/project-sets/columns"
-import {DataTable} from "@/app/project-sets/data-table"
+import { DataTable } from "@/components/ui/data-table"
 
 async function getData(): Promise<ProjectSet[]> {
     // Fetch data from your API here.
@@ -36,7 +36,13 @@ function ProjectsPage() {
                 Project Sets
             </Typography>
             <div>
-                <DataTable columns={columns} data={projectSets}/>
+                <DataTable
+                    columns={columns}
+                    data={projectSets}
+                    searchBarOptions={{
+                        placeholder: "Search Project Set",
+                        searchColumn: "name",
+                    }}/>
             </div>
         </div>
     )

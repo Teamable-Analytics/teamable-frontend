@@ -5,7 +5,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons"
 
-interface SearchProps extends InputProps {}
+export interface SearchProps extends InputProps {}
 
 const SearchBar = React.forwardRef<HTMLInputElement, SearchProps>(({className, type, ...props}, ref) => {
     return (
