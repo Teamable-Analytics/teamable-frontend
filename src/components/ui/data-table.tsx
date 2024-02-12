@@ -7,9 +7,10 @@ import {
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
-    getSortedRowModel,
+    getSortedRowModel, RowModel,
     SortingState,
     useReactTable,
+    type Table as TableType,
 } from "@tanstack/react-table"
 
 import {
@@ -30,12 +31,14 @@ interface DataTableProps<TData> {
     data: TData[]
     searchBarOptions: DataTableSearchBarProps
     // Items controlling the action in the table (located in the top right corner of the table)
-    actionItems?: React.ReactNode
+    actionItems?: (table: TableType<TData>) => React.ReactNode
+    // Buttons group for bulk actions
+    bulkActionItems?: (selectedRowModels: RowModel<TData>) => React.ReactNode
     // Function Controlling the action when a row is clicked
     rowAction?: (e: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => void
 }
 
-function DataTable<TData>({columns, data, searchBarOptions, actionItems, rowAction}: DataTableProps<TData>) {
+function DataTable<TData>({columns, data, searchBarOptions, bulkActionItems, actionItems, rowAction}: DataTableProps<TData>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [rowSelection, setRowSelection] = React.useState({})
@@ -73,7 +76,10 @@ function DataTable<TData>({columns, data, searchBarOptions, actionItems, rowActi
                         ref={searchBarRef}
                     />
                 </div>
-                {actionItems}
+                <div className="space-x-2">
+                    {!!bulkActionItems && bulkActionItems(table.getRowModel())}
+                    {!!actionItems && !!table && actionItems(table)}
+                </div>
             </div>
             <div className="rounded-md border mb-5">
                 <Table>
