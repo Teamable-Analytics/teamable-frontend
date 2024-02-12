@@ -143,7 +143,7 @@ export default function StudentsPage() {
                 searchBarOptions={{ placeholder: "Search Last Names", searchColumn: "lastName" }}
                 actionItems={
                     () => {
-                        return<>
+                        return<div className="flex items-center gap-2">
                             <MultiSelectSections sections={currentSections}/>
                             <Dialog>
                                 <DialogTrigger asChild>
@@ -168,7 +168,7 @@ export default function StudentsPage() {
                                     </DialogFooter>
                                 </DialogContent>
                             </Dialog>
-                        </>
+                        </div>
 
                     }
                 }
@@ -178,7 +178,6 @@ export default function StudentsPage() {
     async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
         const file = event.target.files?.[0]
         let parsedCSV = []
-        let newSections = []
         if (file) {
             parsedCSV = await parseCSV(file)
             setStudentsParse(parsedCSV)
@@ -195,7 +194,6 @@ export default function StudentsPage() {
 
         // set the displayStudents to the new students
         setDisplayStudents(csvStudentsParse)
-
     }
 
     function handleSelectTeamSet(teamSetIdString: string) {
