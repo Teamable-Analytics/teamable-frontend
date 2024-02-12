@@ -1,4 +1,4 @@
 export type DataTableSearchBarProps = {
-    searchColumn: string;
     placeholder: string;
+    searchColumn: string;
 }
