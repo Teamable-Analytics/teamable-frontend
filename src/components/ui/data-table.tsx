@@ -27,11 +27,13 @@ import React from "react"
 interface DataTableProps<TData> {
     columns: ColumnDef<TData>[]
     data: TData[]
-    // This component control the action in the table (lay in the top right corner of the table)
+    // Items controlling the action in the table (located in the top right corner of the table)
     actionItems?: React.ReactNode
+    // Function Controlling the action when a row is clicked
+    rowAction?: (e: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => void
 }
 
-function DataTable<TData>({columns, data, actionItems}: DataTableProps<TData>) {
+function DataTable<TData>({columns, data, actionItems, rowAction}: DataTableProps<TData>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [rowSelection, setRowSelection] = React.useState({})
@@ -95,6 +97,7 @@ function DataTable<TData>({columns, data, actionItems}: DataTableProps<TData>) {
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
+                                    onClick={rowAction}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
