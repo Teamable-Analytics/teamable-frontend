@@ -20,7 +20,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table'
-import {DataTablePagination} from "@/components/ui/table-pagination"
+import {DataTablePagination} from "@/components/ui/data-table-pagination"
 import {SearchBar} from "@/components/search-bar"
 import React from "react"
 
