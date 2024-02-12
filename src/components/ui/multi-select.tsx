@@ -47,13 +47,6 @@ function MultiSelect({ options, selected, onChange, className, inTableHeader = f
         }
         return `${selected.length} ${optionName} selected`
     }
-
-    // Sort options to show selected items on top
-    const sortedOptions = [...options].sort((a, b) => {
-        let aSelected = selected.includes(a.value) ? -1 : 1
-        let bSelected = selected.includes(b.value) ? -1 : 1
-        return aSelected - bSelected
-    })
     const selectedOptions = options.filter(option => selected.includes(option.value))
     const unselectedOptions = options.filter(option => !selected.includes(option.value))
 
@@ -64,7 +57,7 @@ function MultiSelect({ options, selected, onChange, className, inTableHeader = f
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className={`w-auto justify-between ${inTableHeader ? "h-[30px] basis-0" : "h-full"}`}
+                    className={`w-auto justify-between`}
                     onClick={() => setOpen(!open)}
                 >
                     {createOptionsText()}

@@ -5,7 +5,6 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
 import { DataTableColumnHeader } from "@/components/ui/table-column-header"
 import { Checkbox } from "@/components/ui/checkbox"
-import { MultiSelectSections } from "./multiselect-demo"
 
 export const generateColumns = (sections: { label: string; value: string }[] = []) => {
     const columns: ColumnDef<Student>[] = [
@@ -48,7 +47,7 @@ export const generateColumns = (sections: { label: string; value: string }[] = [
         },
         {
             accessorKey: "sections",
-            header: () => <MultiSelectSections sections={sections}/>,
+            header: ({column}) => <DataTableColumnHeader column={column} title="Sections" hasDropDownMenu={false}/>,
             cell: ({ row }) => {
                 const sections = row.getValue("sections") as string[]
                 const sectionBadges = sections?.map((section) => (

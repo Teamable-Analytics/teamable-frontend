@@ -18,8 +18,8 @@ export function MultiSelectSections({sections = fakeSections}: MultiSelectSectio
             selected={selected}
             onChange={setSelected}
             placeholder="Sections"
-            className="w-auto"
-            inTableHeader
+            className="w-auto my-0"
+            inTableHeader = {false}
         />
     )
 }

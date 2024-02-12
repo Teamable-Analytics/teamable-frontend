@@ -2,7 +2,7 @@
 import React, {useState, ChangeEvent, useEffect} from 'react'
 import FileUpload from '../../components/fileupload'
 import {parseCSV} from '@/lib/parseCSV'
-import {DataTable} from './data-table'
+import {DataTable} from '@/components/ui/data-table'
 import {Student} from '@/types/Student'
 import {Text} from "@/components/ui/text"
 import {Button} from "@/components/ui/button"
@@ -19,8 +19,8 @@ import {DialogBody} from "next/dist/client/components/react-dev-overlay/internal
 import {Input} from "@/components/ui/input"
 import {TeamSet} from "@/types/TeamSet"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
-import { MultiSelectSections } from './multiselect-demo'
-
+import { MultiSelectSections } from "./multiselect-demo"
+import { generateColumns } from './columns'
 
 /**
  * export type Student = {
@@ -139,31 +139,38 @@ export default function StudentsPage() {
             </div>
             <DataTable
                 data={displayStudents}
-                sections={currentSections}
-                topRightComponent={
-                    <Dialog>
-                        <DialogTrigger asChild>
-                            <Button>Upload</Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Upload Students [CSV]</DialogTitle>
-                            </DialogHeader>
-                            <DialogBody>
-                                <div className="grid gap-4 py-4">
-                                    <Input type="file" onChange={handleFileChange} accept=".csv"/>
-                                </div>
-                            </DialogBody>
-                            <DialogFooter>
-                                <DialogClose asChild>
-                                    <Button variant="secondary" onClick={handleCancel}>Cancel</Button>
-                                </DialogClose>
-                                <DialogClose asChild>
-                                    <Button onClick={handleSave}>Upload</Button>
-                                </DialogClose>
-                            </DialogFooter>
-                        </DialogContent>
-                    </Dialog>
+                columns={generateColumns(currentSections)}
+                searchBarOptions={{ placeholder: "Search Last Names", searchColumn: "lastName" }}
+                actionItems={
+                    () => {
+                        return<>
+                            <MultiSelectSections sections={currentSections}/>
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <Button>Upload</Button>
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>Upload Students [CSV]</DialogTitle>
+                                    </DialogHeader>
+                                    <DialogBody>
+                                        <div className="grid gap-4 py-4">
+                                            <Input type="file" onChange={handleFileChange} accept=".csv"/>
+                                        </div>
+                                    </DialogBody>
+                                    <DialogFooter>
+                                        <DialogClose asChild>
+                                            <Button variant="secondary" onClick={handleCancel}>Cancel</Button>
+                                        </DialogClose>
+                                        <DialogClose asChild>
+                                            <Button onClick={handleSave}>Upload</Button>
+                                        </DialogClose>
+                                    </DialogFooter>
+                                </DialogContent>
+                            </Dialog>
+                        </>
+
+                    }
                 }
             />
         </div>
