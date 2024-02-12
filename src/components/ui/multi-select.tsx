@@ -24,19 +24,17 @@ export type OptionType = {
 
 interface MultiSelectProps {
     options: OptionType[];
-    selected: string[];
     optionName?: string;
-    onChange: React.Dispatch<React.SetStateAction<string[]>>;
     className?: string;
     placeholder?: string;
     inTableHeader?: boolean;
 }
 
-function MultiSelect({ options, selected, onChange, className, inTableHeader = false, placeholder = 'Select..', optionName = 'section(s)', ...props }: MultiSelectProps) {
+function MultiSelect({ options, className, inTableHeader = false, placeholder = 'Select..', optionName = 'section(s)', ...props }: MultiSelectProps) {
     const [open, setOpen] = React.useState(false)
-
+    const [selected, setSelected] = React.useState<string[]>([])
     const handleSelectToggle = (optionValue: string) => {
-        onChange(selected.includes(optionValue)
+        setSelected(selected.includes(optionValue)
             ? selected.filter((item) => item !== optionValue)
             : [...selected, optionValue])
     }

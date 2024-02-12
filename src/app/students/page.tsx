@@ -19,7 +19,7 @@ import {DialogBody} from "next/dist/client/components/react-dev-overlay/internal
 import {Input} from "@/components/ui/input"
 import {TeamSet} from "@/types/TeamSet"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
-import { MultiSelectSections } from "./multiselect-demo"
+import { MultiSelect } from "@/components/ui/multi-select"
 import { generateColumns } from './columns'
 
 /**
@@ -144,7 +144,12 @@ export default function StudentsPage() {
                 actionItems={
                     () => {
                         return<div className="flex items-center gap-2">
-                            <MultiSelectSections sections={currentSections}/>
+                            <MultiSelect
+                                options={currentSections}
+                                placeholder="Sections"
+                                className="w-auto my-0"
+                                inTableHeader = {false}
+                            />
                             <Dialog>
                                 <DialogTrigger asChild>
                                     <Button>Upload</Button>
