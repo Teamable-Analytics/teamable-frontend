@@ -76,18 +76,18 @@ const  Home = () => {
             transform,
             transition,
         } = useSortable({id: answer.id})
-    
+
         const style = {
             transition,
             transform: CSS.Transform.toString(transform),
         }
-    
+
         return (
             <div key={index} style={style} {...attributes}>
                 <br></br>
                 <Label>Answer {index + 1}</Label>
                 <div className="grid grid-cols-8 gap-3">
-                    { answers.length > 1 ? 
+                    { answers.length > 1 ?
                         <>
                             <div className="col-span-5">
                                 <Input type="text" placeholder="" value={answer.label} onChange={(e) => {
@@ -95,10 +95,14 @@ const  Home = () => {
                                     forceUpdate()
                                 }} />
                             </div>
-                            <Button className="col-span-2" onClick={() => {setAnswers(answers.filter(el => {return el.id !== answer.id}))}}>Delete</Button>
+                            <Button className="col-span-2" onClick={() => {
+                                setAnswers(answers.filter(el => {
+                                    return el.id !== answer.id
+                                }))
+                            }}>Delete</Button>
                             <Button className="col-span-1" ref={setNodeRef} {...listeners}>Drag</Button>
-                        </> 
-                        : 
+                        </>
+                        :
                         <>
                             <div className="col-span-8">
                                 <Input type="text" placeholder="" value={answer.label} onChange={(e) => {
@@ -106,7 +110,7 @@ const  Home = () => {
                                     forceUpdate()
                                 }} />
                             </div>
-                        </> 
+                        </>
                     }
                 </div>
             </div>
@@ -147,7 +151,7 @@ const  Home = () => {
                                 <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
                                     <SortableContext items={answers} strategy={verticalListSortingStrategy}>
                                         {answers.map((answer, index) => (
-                                                <SortableInput key={answer.id} answer={answer} index={index} />
+                                            <SortableInput key={answer.id} answer={answer} index={index} />
                                         ))}
                                     </SortableContext>
                                 </DndContext>
@@ -178,7 +182,7 @@ const  Home = () => {
                             </DndContext>
                         </RadioGroup>
                     </Card>
-                    
+
                 </div>
             </div>
         </>
