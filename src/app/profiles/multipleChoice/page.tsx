@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import {
     Card,
     CardContent,
+    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
@@ -14,29 +15,112 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useReducer, useState } from "react"
 import Navbar from "@/components/ui/navbar"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
+import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from "@dnd-kit/sortable"
+import { DndContext, closestCenter } from '@dnd-kit/core'
+import { CSS } from '@dnd-kit/utilities'
 
 interface Answer {
-    name: string
-    order: number
+    id: number
     label: string
-    value: number
+}
+
+const SortableItem = ({answer}: {answer: Answer}) => {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+    } = useSortable({id: answer.id})
+
+    const style = {
+        transition,
+        transform: CSS.Transform.toString(transform),
+    }
+
+    return (
+        <CardContent ref={setNodeRef} style={style} {...attributes} {...listeners} >
+            <div className="flex items-center space-x-2">
+                <RadioGroupItem value={'' + answer.id} id={'' + answer.id} />
+                <Label htmlFor={'' + answer.id}>{answer.label}</Label>
+            </div>
+        </CardContent>
+    )
 }
 
 const  Home = () => {
-
     const [questionName, setQuestionName] = useState('')
     const [questionText, setQuestionText] = useState('What is your favorite color?')
-    const [answers, setAnswers] = useState<Answer[]>([{name: '', order: 0, label: '', value: 0}])
+    const [answers, setAnswers] = useState<Answer[]>([{id: 1, label: ''}])
     const [, forceUpdate] = useReducer(x => x + 1, 0)
+
+    const onDragEnd = (event: any) => {
+        const {active, over} = event
+
+        if (active.id === over.id) {
+            return
+        }
+
+        setAnswers((answers) => {
+            const oldIndex = answers.findIndex((answer) => answer.id === active.id)
+            const newIndex = answers.findIndex((answer) => answer.id === over.id)
+            return arrayMove(answers, oldIndex, newIndex)
+        })
+    }
+
+    const SortableInput = ({answer, index}: {answer: Answer, index: number}) => {
+        const {
+            attributes,
+            listeners,
+            setNodeRef,
+            transform,
+            transition,
+        } = useSortable({id: answer.id})
+    
+        const style = {
+            transition,
+            transform: CSS.Transform.toString(transform),
+        }
+    
+        return (
+            <div key={index} style={style} {...attributes}>
+                <br></br>
+                <Label>Answer {index + 1}</Label>
+                <div className="grid grid-cols-8 gap-3">
+                    { answers.length > 1 ? 
+                        <>
+                            <div className="col-span-5">
+                                <Input type="text" placeholder="" value={answer.label} onChange={(e) => {
+                                    answer.label = e.target.value
+                                    forceUpdate()
+                                }} />
+                            </div>
+                            <Button className="col-span-2" onClick={() => {setAnswers(answers.filter(el => {return el.id !== answer.id}))}}>Delete</Button>
+                            <Button className="col-span-1" ref={setNodeRef} {...listeners}>Drag</Button>
+                        </> 
+                        : 
+                        <>
+                            <div className="col-span-8">
+                                <Input type="text" placeholder="" value={answer.label} onChange={(e) => {
+                                    answer.label = e.target.value
+                                    forceUpdate()
+                                }} />
+                            </div>
+                        </> 
+                    }
+                </div>
+            </div>
+        )
+    }
 
     return (
         <>
             <Navbar></Navbar>
 
-            <Breadcrumbs></Breadcrumbs>
+            <Breadcrumbs pages={["Home", "Page", "Profiles", "Multiple Choice"]}></Breadcrumbs>
 
             <div className="container py-5">
-                <span className="text-2xl font-bold">Profiles</span>
+                <span className="text-4xl font-bold">Profiles</span>
             </div>
 
             <div className="container mx-auto">
@@ -48,79 +132,53 @@ const  Home = () => {
                             <br></br>
                             <CardContent>
                                 <div>
-                                Name
+                                    <Label>Name</Label>
                                     <Input type="text" placeholder="" onChange={(e) => {
                                         setQuestionName(e.target.value)
                                     }}/>
                                 </div>
-
+                                <br></br>
                                 <div>
-                                Question Text
+                                    <Label>Question Text</Label>
                                     <Input type="text" placeholder="" value={questionText} onChange={(e) => {
                                         setQuestionText(e.target.value)
                                     }}/>
                                 </div>
-
-                            Answer Group Name
-                                <br></br>
-                                <Input type="text" placeholder="" onChange={(e) => {
-                                }} />
-                                {answers.map((answer, index) => {
-                                    return (
-                                        <div key={index} className="grid grid-cols-3">
-                                            <div className="col-span-1">
-                                            Order
-                                                <Input type="number" placeholder="" min="1" defaultValue={index + 1} onChange={(e) => {
-                                                    answers[index].order = parseInt(e.target.value)
-                                                    forceUpdate()
-                                                }} />
-                                            </div>
-                                            <div className="col-span-1">
-                                            Answer Label
-                                                <Input type="text" placeholder="" onChange={(e) => {
-                                                    answers[index].label = e.target.value
-                                                    forceUpdate()
-                                                }} />
-                                            </div>
-                                            <div className="col-span-1">
-                                            Answer Value
-                                                <Input type="number" placeholder="" onChange={(e) => {
-                                                }} />
-                                            </div>
-                                        </div>
-                                    )
-                                })}
+                                <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+                                    <SortableContext items={answers} strategy={verticalListSortingStrategy}>
+                                        {answers.map((answer, index) => (
+                                                <SortableInput key={answer.id} answer={answer} index={index} />
+                                        ))}
+                                    </SortableContext>
+                                </DndContext>
                             </CardContent>
                             <CardFooter className="flex justify-between">
                                 <Button onClick={() => {
-                                    setAnswers([...answers, {name: '', order: answers.length + 1, label: '', value: 0}]); forceUpdate()
+                                    setAnswers([...answers, {id: answers.length + 1, label: ''}]); forceUpdate()
                                 }}>Add Answer</Button>
+                                <Button onClick={() => {
+                                }}>Save Question</Button>
                             </CardFooter>
                         </Card>
                     </div>
 
-
                     {/* VIEWER */}
-                    <div>
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>{questionText}</CardTitle>
-                            </CardHeader>
-                            <RadioGroup>
-                                {answers.slice(0).sort((a, b) => a.order > b.order ? 1 : -1).map((answer, index) => {
-                                    return (
-                                        <CardContent key={index}>
-                                            <div className="flex items-center space-x-2">
-                                                <RadioGroupItem value={'' + index} id={'' + index} />
-                                                <Label htmlFor={'' + index}>{answer.label}</Label>
-                                            </div>
-                                        </CardContent>
-                                    )
-                                })}
-                            </RadioGroup>
-                        </Card>
-                    </div>
-
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>{questionText}</CardTitle>
+                            <CardDescription>The order of answers can be changed by drag and dropping</CardDescription>
+                        </CardHeader>
+                        <RadioGroup>
+                            <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+                                <SortableContext items={answers} strategy={verticalListSortingStrategy}>
+                                    {answers.map((answer) => (
+                                        <SortableItem key={answer.id} answer={answer} />
+                                    ))}
+                                </SortableContext>
+                            </DndContext>
+                        </RadioGroup>
+                    </Card>
+                    
                 </div>
             </div>
         </>
