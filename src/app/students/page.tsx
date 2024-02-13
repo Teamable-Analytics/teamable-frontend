@@ -70,9 +70,6 @@ function getTeamSets() {
     return teamSets
 }
 
-// function to filter displayStudents based on the selected sections
-
-
 export default function StudentsPage() {
     const [allTeamSets, setAllTeamSets] = useState<TeamSet[]>([])
     const [displayTeamSet, setDisplayTeamSet] = useState<TeamSet>()
@@ -80,8 +77,6 @@ export default function StudentsPage() {
     const [csvStudentsParse, setStudentsParse] = useState<Student[]>([])
     const [displayStudents, setDisplayStudents] = useState<Student[]>([])
     const [currentSections, setSections] = useState<{ label: string, value: string }[]>([])
-    const [selectedSections, setSelectedSections] = useState<string[]>([])
-
 
 
     useEffect(() => {
@@ -97,10 +92,11 @@ export default function StudentsPage() {
             setDisplayStudents(students)
         }
     }, [displayTeamSet])
-    // temporary solution: useEffect to update the displayStudents when the csvStudentsParse change
-    // get set of sections from the students in the displayStudents
+
+
+    // filtering all done below
+    // get set of sections whenever csvStudentsParse changes
     useEffect(() => {
-        // Directly use `csvStudentsParse` for generating section options
         const sections = new Set<string>()
         csvStudentsParse.forEach((student) => {
             student.sections?.forEach((section) => {
@@ -111,9 +107,10 @@ export default function StudentsPage() {
         setSections(sectionsOptions)
     }, [csvStudentsParse])
 
+    // when sectionChanges (by clicking on the multi-select), filter the students
+    // this function is passed into MultiSelect
     const onSectionChange = useCallback((selected: string[]) => {
-        setSelectedSections(selected)
-        // Trigger filtering from the base list whenever selection changes
+        // filter the csvStudentsParse by the selected sections
         const filtered = filterStudentsBySections(selected, csvStudentsParse)
         setDisplayStudents(filtered)
     }, [csvStudentsParse])
