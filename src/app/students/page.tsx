@@ -1,5 +1,5 @@
 'use client'
-import React, {useState, ChangeEvent, useEffect} from 'react'
+import React, {useState, ChangeEvent, useEffect, useCallback} from 'react'
 import FileUpload from '../../components/fileupload'
 import {parseCSV} from '@/lib/parseCSV'
 import {DataTable} from '@/components/ui/data-table'
@@ -70,6 +70,9 @@ function getTeamSets() {
     return teamSets
 }
 
+// function to filter displayStudents based on the selected sections
+
+
 export default function StudentsPage() {
     const [allTeamSets, setAllTeamSets] = useState<TeamSet[]>([])
     const [displayTeamSet, setDisplayTeamSet] = useState<TeamSet>()
@@ -77,6 +80,9 @@ export default function StudentsPage() {
     const [csvStudentsParse, setStudentsParse] = useState<Student[]>([])
     const [displayStudents, setDisplayStudents] = useState<Student[]>([])
     const [currentSections, setSections] = useState<{ label: string, value: string }[]>([])
+    const [selectedSections, setSelectedSections] = useState<string[]>([])
+
+
 
     useEffect(() => {
         const teamSets = getTeamSets()
@@ -91,36 +97,34 @@ export default function StudentsPage() {
             setDisplayStudents(students)
         }
     }, [displayTeamSet])
-    // temporary solution: useEffect to update the displayStudents when the csvStudentsParse changes
-    useEffect(() => {
-        if (csvStudentsParse.length > 0) {
-            if(displayStudents.length > 0) {
-                setDisplayStudents([])
-            }
-            setDisplayStudents(csvStudentsParse)
-        }
-    }, [csvStudentsParse, displayStudents])
-    // Listen for changes to displayStudents
-
+    // temporary solution: useEffect to update the displayStudents when the csvStudentsParse change
     // get set of sections from the students in the displayStudents
     useEffect(() => {
-        async function getAllSections() {
-            const sections = new Set<string>()
-            displayStudents.forEach((student) => {
-                student.sections?.forEach((section) => {
-                    sections.add(section)
-                })
+        // Directly use `csvStudentsParse` for generating section options
+        const sections = new Set<string>()
+        csvStudentsParse.forEach((student) => {
+            student.sections?.forEach((section) => {
+                sections.add(section)
             })
-            // convert sections into options object: {label: string, value: string} where both label and value are the section
-            const sectionsOptions = Array.from(sections).map((section) => ({label: section, value: section}))
-            return sectionsOptions
+        })
+        const sectionsOptions = Array.from(sections).map((section) => ({ label: section, value: section }))
+        setSections(sectionsOptions)
+    }, [csvStudentsParse])
+
+    const onSectionChange = useCallback((selected: string[]) => {
+        setSelectedSections(selected)
+        // Trigger filtering from the base list whenever selection changes
+        const filtered = filterStudentsBySections(selected, csvStudentsParse)
+        setDisplayStudents(filtered)
+    }, [csvStudentsParse])
+
+    const filterStudentsBySections = (sections: string[], students: Student[]) => {
+        if (sections.length === 0) {
+            return [...students] // Return a copy of the original list if no sections are selected
         }
-        async function updateSections() {
-            const newSections = await getAllSections()// This now correctly uses the updated displayStudents
-            setSections(newSections)
-        }
-        updateSections()
-    }, [displayStudents])
+        return students.filter(student =>
+            student.sections?.some(section => sections.includes(section)))
+    }
 
     return (
         <div className="container mx-auto py-10">
@@ -139,7 +143,7 @@ export default function StudentsPage() {
             </div>
             <DataTable
                 data={displayStudents}
-                columns={generateColumns(currentSections)}
+                columns={generateColumns()}
                 searchBarOptions={{ placeholder: "Search Last Names", searchColumn: "lastName" }}
                 actionItems={
                     () => {
@@ -149,6 +153,7 @@ export default function StudentsPage() {
                                 placeholder="Sections"
                                 className="w-auto my-0"
                                 inTableHeader = {false}
+                                onSelectionChange={onSectionChange}
                             />
                             <Dialog>
                                 <DialogTrigger asChild>

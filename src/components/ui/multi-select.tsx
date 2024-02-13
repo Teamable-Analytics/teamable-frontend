@@ -28,15 +28,19 @@ interface MultiSelectProps {
     className?: string;
     placeholder?: string;
     inTableHeader?: boolean;
+    onSelectionChange?: (selected: string[]) => void;
 }
 
-function MultiSelect({ options, className, inTableHeader = false, placeholder = 'Select..', optionName = 'section(s)', ...props }: MultiSelectProps) {
+function MultiSelect({ options, className, inTableHeader = false, placeholder = 'Select..', optionName = 'section(s)', onSelectionChange, ...props }: MultiSelectProps) {
     const [open, setOpen] = React.useState(false)
     const [selected, setSelected] = React.useState<string[]>([])
     const handleSelectToggle = (optionValue: string) => {
-        setSelected(selected.includes(optionValue)
+        const newSelected = selected.includes(optionValue)
             ? selected.filter((item) => item !== optionValue)
-            : [...selected, optionValue])
+            : [...selected, optionValue]
+
+        setSelected(newSelected)
+        onSelectionChange?.(newSelected)
     }
 
     const createOptionsText = () => {

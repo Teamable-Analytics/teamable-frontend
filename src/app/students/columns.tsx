@@ -6,28 +6,8 @@ import { Badge } from "@/components/ui/badge"
 import { DataTableColumnHeader } from "@/components/ui/table-column-header"
 import { Checkbox } from "@/components/ui/checkbox"
 
-export const generateColumns = (sections: { label: string; value: string }[] = []) => {
+export const generateColumns = () => {
     const columns: ColumnDef<Student>[] = [
-        {
-            id: "select",
-            header: ({ table }) => (
-                <Checkbox
-                    checked={
-                        table.getIsAllPageRowsSelected() ||
-                        (table.getIsSomePageRowsSelected() && "indeterminate")
-                    }
-                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                    aria-label="Select all"
-                />
-            ),
-            cell: ({ row }) => (
-                <Checkbox
-                    checked={row.getIsSelected()}
-                    onCheckedChange={(value) => row.toggleSelected(!!value)}
-                    aria-label="Select row"
-                />
-            ),
-        },
         {
             id: "firstName",
             header: ({ column }) => <DataTableColumnHeader column={column} title="First Name" hasDropDownMenu={false}/>,
