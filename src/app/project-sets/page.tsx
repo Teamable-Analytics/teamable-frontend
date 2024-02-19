@@ -1,9 +1,7 @@
-'use client'
-
-import * as React from "react"
+import React from "react"
 import {columns, type ProjectSet} from "@/app/project-sets/columns"
-import { DataTable } from "@/components/ui/data-table"
-import {Text} from "@/components/ui/text"
+import {DataTable} from "@/components/ui/data-table"
+import PageView from "@/components/views/Page"
 
 async function getData(): Promise<ProjectSet[]> {
     // Fetch data from your API here.
@@ -19,32 +17,26 @@ async function getData(): Promise<ProjectSet[]> {
     })
 }
 
-function ProjectsPage() {
-    const [projectSets, setProjectSets] = React.useState<ProjectSet[]>([])
-
-    React.useEffect(() => {
-        const fetchData = async () => {
-            const data = await getData()
-            setProjectSets(data)
-        }
-        fetchData().catch(console.error)
-    }, [])
-
+async function ProjectsPage() {
     return (
-        <div className="container mx-auto py-10">
-            <Text as="h1" element="h1">
-                Project Sets
-            </Text>
-            <div>
+        <PageView
+            title="Project Sets"
+            breadcrumbs={[
+                {title: 'Home', href: '/'},
+                {title: 'Project Sets', href: '/project-sets'},
+            ]}
+        >
+            <>
                 <DataTable
                     columns={columns}
-                    data={projectSets}
+                    data={await getData()}
                     searchBarOptions={{
                         placeholder: "Search Project Set",
                         searchColumn: "name",
-                    }}/>
-            </div>
-        </div>
+                    }}
+                />
+            </>
+        </PageView>
     )
 }
 
