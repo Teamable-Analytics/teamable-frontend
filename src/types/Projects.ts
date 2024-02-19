@@ -19,8 +19,13 @@ export enum RequirementOperator {
  */
 export type Project = {
     id: number
-    name?: string
+    name: string
     // Specifies the number of teams that can work on this project
     numberOfTeams: number
     requirements?: ProjectRequirement[]
+}
+
+export type ProjectSet = {
+    id: number
+    name: string
 }

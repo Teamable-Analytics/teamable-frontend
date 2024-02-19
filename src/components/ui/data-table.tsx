@@ -29,16 +29,19 @@ import {DataTableSearchBarProps} from "@/types/components/search-bar"
 interface DataTableProps<TData> {
     columns: ColumnDef<TData>[]
     data: TData[]
-    searchBarOptions: DataTableSearchBarProps
+    // If search bar option is undefined, search bar will be not visible
+    searchBarOptions?: DataTableSearchBarProps
     // Items controlling the action in the table (located in the top right corner of the table)
     actionItems?: (table: TableType<TData>) => React.ReactNode
     // Buttons group for bulk actions
     bulkActionItems?: (selectedRowModels: RowModel<TData>) => React.ReactNode
     // Function Controlling the action when a row is clicked
     rowAction?: (e: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => void
+    // Toggle pagination
+    isPaginated?: boolean
 }
 
-function DataTable<TData>({columns, data, searchBarOptions, bulkActionItems, actionItems, rowAction}: DataTableProps<TData>) {
+function DataTable<TData>({columns, data, searchBarOptions, bulkActionItems, actionItems, rowAction, isPaginated}: DataTableProps<TData>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [rowSelection, setRowSelection] = React.useState({})
@@ -47,7 +50,7 @@ function DataTable<TData>({columns, data, searchBarOptions, bulkActionItems, act
         data,
         columns: columns as ColumnDef<TData>[],
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
+        getPaginationRowModel: isPaginated ? getPaginationRowModel() : undefined,
         onSortingChange: setSorting,
         onRowSelectionChange: setRowSelection,
         onColumnFiltersChange: setColumnFilters,
@@ -67,14 +70,15 @@ function DataTable<TData>({columns, data, searchBarOptions, bulkActionItems, act
             <div className="flex items-center justify-between">
                 <div className="flex items-center py-4 w-[25vw]">
                     {/* make the search bar work on multiple columns of table: firstName, lastName, id */}
-                    <SearchBar
-                        placeholder={searchBarOptions.placeholder}
-                        value={(table.getColumn(searchBarOptions.searchColumn)?.getFilterValue() as string) ?? ""}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            table.getColumn(searchBarOptions.searchColumn)?.setFilterValue(event.target.value)
-                        }}
-                        ref={searchBarRef}
-                    />
+                    {searchBarOptions &&
+                        <SearchBar
+                            placeholder={searchBarOptions.placeholder}
+                            value={(table.getColumn(searchBarOptions.searchColumn)?.getFilterValue() as string) ?? ""}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                table.getColumn(searchBarOptions.searchColumn)?.setFilterValue(event.target.value)
+                            }}
+                            ref={searchBarRef}
+                        />}
                 </div>
                 <div className="space-x-2">
                     {!!bulkActionItems && bulkActionItems(table.getRowModel())}
@@ -124,11 +128,11 @@ function DataTable<TData>({columns, data, searchBarOptions, bulkActionItems, act
                     </TableBody>
                 </Table>
             </div>
-            <div className="mt-2">
+            {isPaginated && <div className="mt-2">
                 <DataTablePagination table={table}/>
-            </div>
+            </div>}
         </>
     )
 }
 
-export { DataTable }
+export {DataTable}
