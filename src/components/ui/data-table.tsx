@@ -76,7 +76,7 @@ function DataTable<TData>({columns, data, searchBarOptions, bulkActionItems, act
                         ref={searchBarRef}
                     />
                 </div>
-                <div className="space-x-2">
+                <div className="space-x-2 flex-1">
                     {!!bulkActionItems && bulkActionItems(table.getRowModel())}
 
                     {!!actionItems && !!table && actionItems(table)}

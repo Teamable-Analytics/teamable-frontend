@@ -144,7 +144,7 @@ export default function StudentsPage() {
                 searchBarOptions={{ placeholder: "Search Last Names", searchColumn: "lastName" }}
                 actionItems={
                     () => {
-                        return<div className="flex items-center gap-2">
+                        return<div className="flex justify-between">
                             <MultiSelect
                                 options={currentSections}
                                 placeholder="Sections"
