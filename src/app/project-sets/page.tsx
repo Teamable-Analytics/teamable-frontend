@@ -1,9 +1,9 @@
 'use client'
 
 import * as React from "react"
-import {Typography} from "@/components/ui/typography"
 import {columns, type ProjectSet} from "@/app/project-sets/columns"
 import { DataTable } from "@/components/ui/data-table"
+import {Text} from "@/components/ui/text"
 
 async function getData(): Promise<ProjectSet[]> {
     // Fetch data from your API here.
@@ -32,9 +32,9 @@ function ProjectsPage() {
 
     return (
         <div className="container mx-auto py-10">
-            <Typography as="h1" element="h1" className="">
+            <Text as="h1" element="h1">
                 Project Sets
-            </Typography>
+            </Text>
             <div>
                 <DataTable
                     columns={columns}
