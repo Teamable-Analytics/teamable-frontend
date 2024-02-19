@@ -1,4 +1,4 @@
-import {Relationship} from "@/types/Relationship"
+import {Relationship} from "@/_temp_types/relationship"
 
 export type Student = {
     id: number

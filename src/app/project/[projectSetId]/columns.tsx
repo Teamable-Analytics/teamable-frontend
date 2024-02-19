@@ -1,5 +1,5 @@
 import {type ColumnDef} from "@tanstack/react-table"
-import {type Project, ProjectRequirement} from "@/types/Projects"
+import {type ProjectRequirement} from "@/_temp_types/projects"
 import {DataTableColumnHeader} from "@/components/ui/data-table-column-header"
 
 

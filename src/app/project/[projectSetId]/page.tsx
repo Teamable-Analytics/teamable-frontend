@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import {Text} from "@/components/ui/text"
-import {type Project, ProjectSet, RequirementOperator} from "@/types/Projects"
+import {type Project, ProjectRequirement, ProjectSet, RequirementOperator} from "@/_temp_types/projects"
 import {Button} from "@/components/ui/button"
 import {DataTable} from "@/components/ui/data-table"
 import {columns} from "./columns"
@@ -137,7 +137,10 @@ function ProjectPage({params}: ProjectPageParams) {
                                 <Button size="sm">Add requirements</Button>
                             </div>
                             <div>
-                                <DataTable columns={columns} data={currentProject?.requirements ?? []}/>
+                                <DataTable<ProjectRequirement>
+                                    columns={columns}
+                                    data={currentProject?.requirements ?? []}
+                                />
                             </div>
                         </div>
                     </> : <div>Loading...</div>}
