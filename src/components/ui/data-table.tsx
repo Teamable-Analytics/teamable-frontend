@@ -26,7 +26,7 @@ import {SearchBar} from "@/components/search-bar"
 import React from "react"
 import {DataTableSearchBarProps} from "@/types/components/search-bar"
 
-interface DataTableProps<TData> {
+type DataTableProps<TData, > = {
     columns: ColumnDef<TData>[]
     data: TData[]
     searchBarOptions: DataTableSearchBarProps
@@ -38,12 +38,12 @@ interface DataTableProps<TData> {
     rowAction?: (e: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => void
 }
 
-function DataTable<TData>({columns, data, searchBarOptions, bulkActionItems, actionItems, rowAction}: DataTableProps<TData>) {
+const DataTable = <TData, >({columns, data, searchBarOptions, bulkActionItems, actionItems, rowAction}: DataTableProps<TData>) => {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [rowSelection, setRowSelection] = React.useState({})
 
-    const table = useReactTable({
+    const table = useReactTable<TData>({
         data,
         columns: columns as ColumnDef<TData>[],
         getCoreRowModel: getCoreRowModel(),
@@ -60,8 +60,6 @@ function DataTable<TData>({columns, data, searchBarOptions, bulkActionItems, act
         },
     })
 
-    const searchBarRef = React.useRef<HTMLInputElement>(null)
-
     return (
         <>
             <div className="flex items-center justify-between">
@@ -73,7 +71,6 @@ function DataTable<TData>({columns, data, searchBarOptions, bulkActionItems, act
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                             table.getColumn(searchBarOptions.searchColumn)?.setFilterValue(event.target.value)
                         }}
-                        ref={searchBarRef}
                     />
                 </div>
                 <div className="space-x-2">
@@ -125,7 +122,7 @@ function DataTable<TData>({columns, data, searchBarOptions, bulkActionItems, act
                 </Table>
             </div>
             <div className="mt-2">
-                <DataTablePagination table={table}/>
+                <DataTablePagination table={table as TableType<TData>}/>
             </div>
         </>
     )
