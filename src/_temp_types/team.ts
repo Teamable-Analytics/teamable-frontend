@@ -1,5 +1,5 @@
-import {Student} from "@/types/Student"
-import {ProjectRequirement} from "@/types/Projects"
+import {Student} from "@/_temp_types/student"
+import {ProjectRequirement} from "@/_temp_types/projects"
 
 export type Team = {
     id: number
