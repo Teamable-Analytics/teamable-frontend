@@ -20,7 +20,7 @@ import {Input} from "@/components/ui/input"
 import {TeamSet} from "@/types/TeamSet"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import { MultiSelect } from "@/components/ui/multi-select"
-import { generateColumns } from './columns'
+import {columns} from './columns'
 
 /**
  * export type Student = {
@@ -140,7 +140,7 @@ export default function StudentsPage() {
             </div>
             <DataTable
                 data={displayStudents}
-                columns={generateColumns()}
+                columns={columns}
                 searchBarOptions={{ placeholder: "Search Last Names", searchColumn: "lastName" }}
                 actionItems={
                     () => {
