@@ -2,7 +2,7 @@
 
 import {type ColumnDef} from "@tanstack/table-core"
 import {Checkbox} from "@/components/ui/checkbox"
-import {DataTableColumnHeader} from "@/components/ui/table-column-header"
+import {DataTableColumnHeader} from "@/components/ui/data-table-column-header"
 
 export type ProjectSet = {
     id: number
