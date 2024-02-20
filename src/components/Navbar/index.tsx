@@ -7,7 +7,6 @@ import {
     NavigationMenuList,
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-import Link from "next/link"
 import Logo from "@/components/Logo"
 
 const Navbar = () => {
