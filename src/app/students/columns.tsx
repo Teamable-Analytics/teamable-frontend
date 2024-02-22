@@ -1,6 +1,6 @@
 "use client"
 
-import { Student } from "@/types/Student"
+import { Student } from "@/_temp_types/student"
 import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
 import { DataTableColumnHeader } from "@/components/ui/table-column-header"

@@ -3,7 +3,7 @@ import React, {useState, ChangeEvent, useEffect, useCallback} from 'react'
 import FileUpload from '../../components/fileupload'
 import {parseCSV} from '@/lib/parseCSV'
 import {DataTable} from '@/components/ui/data-table'
-import {Student} from '@/types/Student'
+import {Student} from '@/_temp_types/student'
 import {Text} from "@/components/ui/text"
 import {Button} from "@/components/ui/button"
 import {
@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dialog"
 import {DialogBody} from "next/dist/client/components/react-dev-overlay/internal/components/Dialog"
 import {Input} from "@/components/ui/input"
-import {TeamSet} from "@/types/TeamSet"
+import {TeamSet} from "@/_temp_types/teamSet"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import { MultiSelect } from "@/components/ui/multi-select"
 import {columns} from './columns'
