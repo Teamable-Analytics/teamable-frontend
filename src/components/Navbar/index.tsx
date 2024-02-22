@@ -16,32 +16,24 @@ const Navbar = () => {
             <Logo />
             <NavigationMenuList className="flex justify-between">
                 <NavigationMenuItem>
-                    <Link href="/students" passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Students
-                        </NavigationMenuLink>
-                    </Link>
+                    <NavigationMenuLink href="/students" className={navigationMenuTriggerStyle()}>
+                        Students
+                    </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <Link href="/profiles" passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Profiles
-                        </NavigationMenuLink>
-                    </Link>
+                    <NavigationMenuLink href="/profiles" className={navigationMenuTriggerStyle()}>
+                        Profiles
+                    </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <Link href="/projects" passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Projects
-                        </NavigationMenuLink>
-                    </Link>
+                    <NavigationMenuLink href="/projects" className={navigationMenuTriggerStyle()}>
+                        Projects
+                    </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <Link href="/teams" passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Manage Teams
-                        </NavigationMenuLink>
-                    </Link>
+                    <NavigationMenuLink href="/teams" className={navigationMenuTriggerStyle()}>
+                        Manage Teams
+                    </NavigationMenuLink>
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>
