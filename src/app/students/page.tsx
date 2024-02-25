@@ -1,6 +1,7 @@
 'use client'
 import React, {useState, ChangeEvent, useEffect, useCallback} from 'react'
 import FileUpload from '../../components/fileupload'
+import PageView from '@/app/students/views/page'
 import {parseCSV} from '@/lib/parseCSV'
 import {DataTable} from '@/components/ui/data-table'
 import {Student} from '@/_temp_types/student'
@@ -122,22 +123,22 @@ export default function StudentsPage() {
         return students.filter(student =>
             student.sections?.some(section => sections.includes(section)))
     }
-
+    const TeamSelect = () => {
+        return(
+            <Select onValueChange={handleSelectTeamSet}>
+                <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Select team set" />
+                </SelectTrigger>
+                {<SelectContent>
+                    {allTeamSets.map((teamSet) => (
+                        <SelectItem value={"" + teamSet.id} key={teamSet.id}>{teamSet.name}</SelectItem>
+                    ))}
+                </SelectContent>}
+            </Select>
+        )
+    }
     return (
-        <div className="container mx-auto py-10">
-            <div className="flex justify-between items-center">
-                <Text element="h1" as="h1">Students</Text>
-                <Select onValueChange={handleSelectTeamSet}>
-                    <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Select team set" />
-                    </SelectTrigger>
-                    {<SelectContent>
-                        {allTeamSets.map((teamSet) => (
-                            <SelectItem value={"" + teamSet.id} key={teamSet.id}>{teamSet.name}</SelectItem>
-                        ))}
-                    </SelectContent>}
-                </Select>
-            </div>
+        <PageView title="Students" rightSide={<TeamSelect/>}>
             <DataTable
                 data={displayStudents}
                 columns={columns}
@@ -180,7 +181,7 @@ export default function StudentsPage() {
                     }
                 }
             />
-        </div>
+        </PageView>
     )
     async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
         const file = event.target.files?.[0]
