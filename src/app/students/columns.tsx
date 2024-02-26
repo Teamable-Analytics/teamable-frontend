@@ -1,9 +1,11 @@
 "use client"
 
 import { Student } from "@/_temp_types/student"
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef, Row } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
 import { DataTableColumnHeader } from "@/components/ui/table-column-header"
+
+type SectionFilterValue = string[]; // Define the type for the filter value
 
 export const columns: ColumnDef<Student>[] = [
     {
@@ -29,13 +31,19 @@ export const columns: ColumnDef<Student>[] = [
         cell: ({ row }) => {
             const sections = row.getValue("sections") as string[]
             const sectionBadges = sections?.map((section) => (
-                <Badge key={section} variant="outline" className="text-s text-muted-foreground">
+                <Badge key={section} variant="secondary" className="rounded-sm px-1 font-normal">
                     {section}
                 </Badge>
             ))
-            return <div className="flex flex-row gap-1">
+            return <div className="flex flex-row gap-2">
                 {sectionBadges}
             </div>
+        },
+        filterFn: (row, id, filterValues: SectionFilterValue) => {
+            // Get the row's sections as an array
+            const rowSections = row.getValue(id) as string[]
+            // Check if any of the filterValues is included in the row's sections
+            return filterValues.every(filterValue => rowSections.includes(filterValue))
         },
     },
 ]

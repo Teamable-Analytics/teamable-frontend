@@ -21,7 +21,7 @@ export const parseCSV = (file: File): Promise<Student[]> => {
                     let headerFields = rows[0].split(";")
                     rows.slice(1).forEach((row) => {
                         let fieldPerRow = row.split(";")
-                        let student: Student = {name: '', sections: undefined, id: NaN}
+                        let student: Student = {name: '', sections: [], id: NaN}
 
                         fieldPerRow.forEach((field, index) => {
                             let keyOfField = headerFields[index]
@@ -34,7 +34,14 @@ export const parseCSV = (file: File): Promise<Student[]> => {
                                 if(!student.sections) {
                                     student.sections = []
                                 }
-                                student.sections.push(field)
+                                // replace the string ", and" or the string " and " with a comma in field
+                                field = field.replace(/, and| and /g, ",")
+                                // split the string by comma
+                                let sectionArray = field.split(",")
+                                // remove any leading or trailing whitespace
+                                sectionArray = sectionArray.map((section) => section.trim())
+                                // add the sections to the student
+                                student.sections = sectionArray
                             }
                         })
                         if (student.name && student.id) {
