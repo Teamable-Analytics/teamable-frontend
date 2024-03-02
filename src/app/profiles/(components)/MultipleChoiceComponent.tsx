@@ -14,7 +14,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from "@dnd-kit/sortable"
 import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
-import { Formik, Form, FieldArray, useFormikContext, Field } from 'formik'
+import { Formik, Form, useFormikContext } from 'formik'
 import Trash from '../../../../public/trash-icon.svg'
 import Drag from '../../../../public/drag-icon.svg'
 import { Input } from "@/components/ui/input"
@@ -52,7 +52,7 @@ const SortableInput = ({index}: {index: number}) => {
             <div className="grid grid-cols-10 gap-3">
                 { values.answers.length > 1 ?
                     <>
-                        <Input className="col-span-8" name={`answers.${index}.label`} type="text" value={values.answers[index].label} onChange={handleChange} />
+                        <Input className="col-span-8" name={`answers.${index}.label`} type="text"  onChange={handleChange} />
                         <Button type="button" className="col-span-1" onClick={() => (setFieldValue('answers', values.answers.filter((_, i: number) => i !== index)))}>
                             <Trash />
                         </Button>
@@ -61,7 +61,7 @@ const SortableInput = ({index}: {index: number}) => {
                         </button>
                     </>
                     :
-                    <Input className="col-span-10" name={`answers.${index}.label`} type="text" value={values.answers[index].label} onChange={handleChange} />
+                    <Input className="col-span-10" name={`answers.${index}.label`} type="text" onChange={handleChange} />
                 }
 
             </div>
@@ -99,8 +99,8 @@ const MultipleChoiceEditor = () => {
                     <Input name="question" type="text" onChange={handleChange} placeholder="Question Text" defaultValue={INITIAL_QUESTION} />
                     <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
                         <SortableContext items={values.answers} strategy={verticalListSortingStrategy}>
-                            {values.answers.map((_, index) => (
-                                <SortableInput key={index} index={index} />
+                            {values.answers.map((answer, index) => (
+                                <SortableInput key={answer.id} index={index} />
                             ))}
                         </SortableContext>
                     </DndContext>
