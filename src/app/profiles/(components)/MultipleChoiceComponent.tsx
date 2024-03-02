@@ -38,7 +38,7 @@ const SortableInput = ({index}: {index: number}) => {
         question: string;
         answers: Answer[];
     }>()
-    
+
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({id: values.answers[index].id})
     const style = {
         transition,
@@ -63,7 +63,7 @@ const SortableInput = ({index}: {index: number}) => {
                     :
                     <Input className="col-span-10" name={`answers.${index}.label`} type="text" value={values.answers[index].label} onChange={handleChange} />
                 }
-                
+
             </div>
         </div>
     )
@@ -74,7 +74,7 @@ const MultipleChoiceEditor = () => {
         question: string;
         answers: Answer[];
     }>()
-    
+
     const onDragEnd = (event: DragEndEvent) => {
         const {active, over} = event
         if (over && active.id === over.id) {
@@ -97,16 +97,18 @@ const MultipleChoiceEditor = () => {
                 <CardContent>
                     <Label>Question Text</Label>
                     <Input name="question" type="text" onChange={handleChange} placeholder="Question Text" defaultValue={INITIAL_QUESTION} />
-                        <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-                            <SortableContext items={values.answers} strategy={verticalListSortingStrategy}>
-                                {values.answers.map((_, index) => (
-                                    <SortableInput key={index} index={index} />
-                                ))}
-                            </SortableContext>
-                        </DndContext>
+                    <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+                        <SortableContext items={values.answers} strategy={verticalListSortingStrategy}>
+                            {values.answers.map((_, index) => (
+                                <SortableInput key={index} index={index} />
+                            ))}
+                        </SortableContext>
+                    </DndContext>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                    <Button type="button" onClick={() => {setFieldValue(`answers.${values.answers.length}`, {id: Math.max(...values.answers.map(answer => answer.id)) + 1, label: ''})}}>Add Answer</Button>
+                    <Button type="button" onClick={() => {
+                        setFieldValue(`answers.${values.answers.length}`, {id: Math.max(...values.answers.map(answer => answer.id)) + 1, label: ''})
+                    }}>Add Answer</Button>
                     <Button type="submit">Save Question</Button>
                 </CardFooter>
             </Form>
