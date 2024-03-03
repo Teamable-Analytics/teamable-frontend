@@ -1,7 +1,7 @@
 import { Student } from "@/_temp_types/student"
 
 export type CourseStudents = {
-    courseID: number,
-    courseName?: string,
+    id: number
+    name?: string
     students: Student[]
 }

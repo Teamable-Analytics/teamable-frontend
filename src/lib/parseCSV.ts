@@ -1,5 +1,4 @@
 import { Student } from '@/_temp_types/student'
-import { CourseStudents } from '@/_temp_types/CourseStudents'
 import StudentsPage from '@/app/students/page'
 
 export const parseCSV = (file: File): Promise<Student[]> => {

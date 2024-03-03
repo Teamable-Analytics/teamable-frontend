@@ -5,7 +5,7 @@ import { ColumnDef, Row } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
 import { DataTableColumnHeader } from "@/components/ui/table-column-header"
 
-type SectionFilterValue = string[]; // Define the type for the filter value
+type SectionFilterValue = string[];
 
 export const columns: ColumnDef<Student>[] = [
     {
@@ -42,8 +42,7 @@ export const columns: ColumnDef<Student>[] = [
         filterFn: (row, id, filterValues: SectionFilterValue) => {
             // Get the row's sections as an array
             const rowSections = row.getValue(id) as string[]
-            // Check if any of the filterValues is included in the row's sections
-            return filterValues.every(filterValue => rowSections.includes(filterValue))
+            return filterValues.some(filterValue => rowSections.includes(filterValue))
         },
     },
 ]

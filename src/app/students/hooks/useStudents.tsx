@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback, createContext, useContext, ChangeEvent, PropsWithChildren } from 'react'
+import { useState, useEffect, useCallback, createContext, useContext, ChangeEvent, PropsWithChildren, useMemo } from 'react'
 import { parseCSV } from '@/lib/parseCSV'
 import { Student } from '@/_temp_types/student'
 
-interface SectionOption {
+type SectionOption  = {
   label: string;
   value: string;
 }
@@ -22,7 +22,7 @@ export const useStudentsProvider = (): StudentsContextType => {
     const [displayStudents, setDisplayStudents] = useState<Student[]>([])
     const [currentSections, setSections] = useState<SectionOption[]>([])
 
-    useEffect(() => {
+    useMemo(() => {
         const sections = new Set<string>()
         csvStudentsParse.forEach(student => {
             student.sections?.forEach(section => {

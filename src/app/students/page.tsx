@@ -1,16 +1,12 @@
-// App.js or a parent component
 'use client'
 import React from 'react'
-import { StudentsProvider } from './hooks/useStudents' // adjust the import path as necessary
-import StudentsPage from '@/app/students/views/studentsPage' // adjust the import path as necessary
-import { TeamSetsProvider } from './hooks/useTeamSets'
+import { StudentsProvider } from './hooks/useStudents'
+import StudentsPage from '@/app/students/views/studentsPage'
 
 export default function page() {
     return (
         <StudentsProvider>
-            <TeamSetsProvider>
-                <StudentsPage />
-            </TeamSetsProvider>
+            <StudentsPage />
         </StudentsProvider>
     )
 }
