@@ -16,12 +16,12 @@ export const UploadDialog = () => {
                     variant = "default"
                     size="sm"
                     className="hidden h-8 lg:flex">
-                    <PlusIcon className="mr-2 h-4 w-4"/> Upload
+                    <PlusIcon className="mr-2 h-4 w-4"/> Students
                 </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Upload Students [CSV]</DialogTitle>
+                    <DialogTitle>Insert more students [CSV]</DialogTitle>
                 </DialogHeader>
                 <DialogBody>
                     <div className="grid gap-4 py-4">
