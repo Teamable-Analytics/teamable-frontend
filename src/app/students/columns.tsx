@@ -28,17 +28,15 @@ export const columns: ColumnDef<Student>[] = [
     {
         accessorKey: "sections",
         header: ({column}) => <DataTableColumnHeader column={column} title="Sections" hasDropDownMenu={false}/>,
-        cell: ({ row }) => {
-            const sections = row.getValue("sections") as string[]
-            const sectionBadges = sections?.map((section) => (
-                <Badge key={section} variant="secondary" className="rounded-sm px-1 font-normal">
-                    {section}
-                </Badge>
-            ))
-            return <div className="flex flex-row gap-2">
-                {sectionBadges}
+        cell: ({ row }) => (
+            <div className="flex flex-row gap-2">
+                {(row.getValue("sections") as string[])?.map((section) => (
+                    <Badge key={section} variant="secondary" className="rounded-sm px-1 font-normal">
+                        {section}
+                    </Badge>
+                ))}
             </div>
-        },
+        ),
         filterFn: (row, id, filterValues: SectionFilterValue) => {
             const rowSections = row.getValue(id) as string[]
             return filterValues.some(filterValue => rowSections.includes(filterValue))

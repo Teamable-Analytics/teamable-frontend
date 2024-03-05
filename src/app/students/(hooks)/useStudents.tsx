@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, createContext, useContext, ChangeEvent, PropsWithChildren, useMemo } from 'react'
-import { parseCSV } from '@/lib/parseCSV'
+import { parseCSV } from '@/lib/canvas/parseCSV'
 import { Student } from '@/_temp_types/student'
 
 type SectionOption  = {

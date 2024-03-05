@@ -6,17 +6,11 @@ export const parseCSV = (file: File): Promise<Student[]> => {
         const reader = new FileReader()
         reader.onload = (e: ProgressEvent<FileReader>) => {
             const content = e.target?.result
-            // right now it just sets the course to have ID of one so I can test
-            // I don't know how we will find and determine courseId.
             let importedStudents: Student[] = []
-
             if (typeof content === "string") {
-                // regEx to split CSV file for rows
                 let rows: string[] = content.split(/\r?\n/)
 
                 if (rows.length > 0) {
-                    // first row in table is header (hopefully), split and grab the names for each one.
-                    // using each header as the key for the object.
                     let headerFields = rows[0].split(";")
                     rows.slice(1).forEach((row) => {
                         let fieldPerRow = row.split(";")
@@ -29,17 +23,12 @@ export const parseCSV = (file: File): Promise<Student[]> => {
                             } else if (keyOfField === "ID") {
                                 student.id = parseInt(field, 10)
                             }else if (keyOfField === "Section") {
-                                // this is a stop gap
                                 if(!student.sections) {
                                     student.sections = []
                                 }
-                                // replace the string ", and" or the string " and " with a comma in field
                                 field = field.replace(/, and| and /g, ",")
-                                // split the string by comma
                                 let sectionArray = field.split(",")
-                                // remove any leading or trailing whitespace
                                 sectionArray = sectionArray.map((section) => section.trim())
-                                // add the sections to the student
                                 student.sections = sectionArray
                             }
                         })
