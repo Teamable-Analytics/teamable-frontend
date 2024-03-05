@@ -5,13 +5,13 @@ import { Table } from "@tanstack/react-table"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { DataTableViewOptions } from "@/app/students/components/data-table-view-options"
-import { UploadDialog } from "@/app/students/components/data-table-upload-dialog"
+import { DataTableViewOptions } from "@/app/students/(components)/data-table-view-options"
+import { UploadDialog } from "@/app/students/(components)/data-table-upload-dialog"
 
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
-import { useStudents } from "../hooks/useStudents"
+import { useStudents } from "@/app/students/(hooks)/useStudents"
 
-interface DataTableToolbarProps<TData> {
+type DataTableToolbarProps<TData> = {
   table: Table<TData>
 }
 

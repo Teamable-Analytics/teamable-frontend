@@ -7,7 +7,7 @@ type SectionOption  = {
   value: string;
 }
 
-interface StudentsContextType {
+type StudentsContextType = {
   displayStudents: Student[];
   currentSections: SectionOption[];
   handleFileChange: (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
@@ -45,7 +45,6 @@ export const useStudentsProvider = (): StudentsContextType => {
     const handleCancel = () => setStudentsParse([])
 
     const handleSave = () => {
-        // Implement save functionality
         setDisplayStudents(csvStudentsParse)
     }
 

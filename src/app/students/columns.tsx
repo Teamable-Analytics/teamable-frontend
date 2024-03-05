@@ -11,7 +11,7 @@ export const columns: ColumnDef<Student>[] = [
     {
         id: "firstName",
         header: ({ column }) => <DataTableColumnHeader column={column} title="First Name" hasDropDownMenu={false}/>,
-        accessorFn: (row) => row.name.split(',')[1], // Assuming the first part is the first name
+        accessorFn: (row) => row.name.split(',')[1],
         cell: ({ getValue }) => <div className="text-left font-sm">{String(getValue())}</div>,
     },
     {
@@ -40,7 +40,6 @@ export const columns: ColumnDef<Student>[] = [
             </div>
         },
         filterFn: (row, id, filterValues: SectionFilterValue) => {
-            // Get the row's sections as an array
             const rowSections = row.getValue(id) as string[]
             return filterValues.some(filterValue => rowSections.includes(filterValue))
         },

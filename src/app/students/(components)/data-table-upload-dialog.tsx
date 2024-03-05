@@ -4,9 +4,8 @@ import {Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTi
 import {DialogBody} from "next/dist/client/components/react-dev-overlay/internal/components/Dialog"
 import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
-import {useStudents} from "../hooks/useStudents"
+import {useStudents} from "../(hooks)/useStudents"
 import { PlusIcon } from '@radix-ui/react-icons'
-
 
 export const UploadDialog = () => {
     const {handleFileChange, handleCancel, handleSave} = useStudents()
