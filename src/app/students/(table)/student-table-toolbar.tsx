@@ -5,10 +5,10 @@ import { Table } from "@tanstack/react-table"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { DataTableViewOptions } from "@/app/students/(components)/data-table-view-options"
-import { UploadDialog } from "@/app/students/(components)/data-table-upload-dialog"
+import { DataTableViewOptions } from "@/components/ui/data-table-view-options"
+import { UploadDialog } from "../(table)/student-table-upload-dialog"
 
-import { DataTableFacetedFilter } from "./data-table-faceted-filter"
+import { DataTableFacetedFilter } from "@/components/ui/data-table-faceted-filter"
 import { useStudents } from "@/app/students/(hooks)/useStudents"
 
 type DataTableToolbarProps<TData> = {
@@ -19,8 +19,7 @@ export function DataTableToolbar<TData>({
     table,
 }: DataTableToolbarProps<TData>) {
     const isFiltered = table.getState().columnFilters.length > 0
-
-    const sections = useStudents().currentSections
+    const sections = useStudents()?.currentSections ?? []
 
     return (
         <div className="flex items-center justify-between mt-2">

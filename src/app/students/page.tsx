@@ -1,12 +1,19 @@
-'use client'
+// 'use client'
 import React from 'react'
 import { StudentsProvider } from './(hooks)/useStudents'
-import { StudentsTable } from './(components)/students-table'
+import PageView from '@/components/views/Page'
+import { StudentTable } from './(table)/student-table'
+
 
 export default function StudentsPage() {
     return (
-        <StudentsProvider>
-            <StudentsTable/>
-        </StudentsProvider>
+        <PageView title="Students" breadcrumbs={[
+            {title: 'Home', href: '/'},
+            {title: 'Students', href: '/students'},
+        ]}>
+            <StudentsProvider>
+                <StudentTable/>
+            </StudentsProvider>
+        </PageView>
     )
 }

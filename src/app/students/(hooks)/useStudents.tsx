@@ -1,15 +1,16 @@
-import { useState, useEffect, useCallback, createContext, useContext, ChangeEvent, PropsWithChildren, useMemo } from 'react'
+'use client'
+import { useState, createContext, useContext, ChangeEvent, PropsWithChildren, useMemo } from 'react'
 import { parseCSV } from '@/lib/canvas/parseCSV'
 import { Student } from '@/_temp_types/student'
 
-type SectionOption  = {
+type DropdownOption  = {
   label: string;
   value: string;
 }
 
 type StudentsContextType = {
   displayStudents: Student[];
-  currentSections: SectionOption[];
+  currentSections: DropdownOption[];
   handleFileChange: (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
   handleCancel: () => void;
   handleSave: () => void;
@@ -17,10 +18,10 @@ type StudentsContextType = {
 
 const StudentsContext = createContext<StudentsContextType | undefined>(undefined)
 
-export const useStudentsProvider = (): StudentsContextType => {
+const useStudentsProvider = (): StudentsContextType => {
     const [csvStudentsParse, setStudentsParse] = useState<Student[]>([])
     const [displayStudents, setDisplayStudents] = useState<Student[]>([])
-    const [currentSections, setSections] = useState<SectionOption[]>([])
+    const [currentSections, setSections] = useState<DropdownOption[]>([])
 
     useMemo(() => {
         const sections = new Set<string>()
@@ -29,7 +30,7 @@ export const useStudentsProvider = (): StudentsContextType => {
                 sections.add(section)
             })
         })
-        const sectionsOptions: SectionOption[] = Array.from(sections).map(section => ({ label: section, value: section }))
+        const sectionsOptions: DropdownOption[] = Array.from(sections).map(section => ({ label: section, value: section }))
         setSections(sectionsOptions)
     }, [csvStudentsParse])
 
@@ -58,14 +59,10 @@ export const useStudentsProvider = (): StudentsContextType => {
 }
 
 export const StudentsProvider: React.FC<PropsWithChildren> = ({ children }) => {
-    const students = useStudentsProvider()
-    return <StudentsContext.Provider value={students}>{children}</StudentsContext.Provider>
+    const studentsContext = useStudentsProvider()
+    return <StudentsContext.Provider value={studentsContext}>{children}</StudentsContext.Provider>
 }
 
-export const useStudents = (): StudentsContextType => {
-    const context = useContext(StudentsContext)
-    if (context === undefined) {
-        throw new Error('useStudents must be used within a StudentsProvider')
-    }
-    return context
+export const useStudents = (): StudentsContextType | undefined => {
+    return useContext(StudentsContext)
 }

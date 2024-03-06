@@ -1,5 +1,4 @@
 "use client"
-
 import * as React from "react"
 import {
     ColumnDef,
@@ -25,18 +24,20 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-import { DataTablePagination } from "../(components)/data-table-pagination"
-import { DataTableToolbar } from "../(components)/data-table-toolbar"
+import { DataTablePagination } from "@/components/ui/data-table-pagination"
+import { DataTableToolbar } from "../(table)/student-table-toolbar"
+import { useStudents } from "../(hooks)/useStudents"
+import { columns } from "../(table)/columns"
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
 
-export function DataTable<TData, TValue>({
+const DataTable = <TData, TValue>({
     columns,
     data,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData, TValue>) => {
     const [rowSelection, setRowSelection] = React.useState({})
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -115,5 +116,15 @@ export function DataTable<TData, TValue>({
             </div>
             <DataTablePagination table={table} />
         </div>
+    )
+}
+
+export const StudentTable = () => {
+    const {displayStudents} = useStudents() ?? {}
+    return (
+        <DataTable
+            data={displayStudents ?? []}
+            columns={columns}
+        />
     )
 }
