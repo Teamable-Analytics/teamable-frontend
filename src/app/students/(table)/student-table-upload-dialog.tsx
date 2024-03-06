@@ -8,7 +8,7 @@ import {useStudents} from "../(hooks)/useStudents"
 import { PlusIcon } from '@radix-ui/react-icons'
 
 export const UploadDialog = () => {
-    const {handleFileChange, handleCancel, handleSave} = useStudents()
+    const {handleFileChange, handleCancel, handleSave} = useStudents() ?? {}
     return(
         <Dialog>
             <DialogTrigger asChild>

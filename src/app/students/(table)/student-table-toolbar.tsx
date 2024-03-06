@@ -19,7 +19,7 @@ export function DataTableToolbar<TData>({
     table,
 }: DataTableToolbarProps<TData>) {
     const isFiltered = table.getState().columnFilters.length > 0
-    const sections = useStudents()?.currentSections ?? []
+    const currentSections = useStudents()?.currentSections ?? []
 
     return (
         <div className="flex items-center justify-between mt-2">
@@ -36,7 +36,7 @@ export function DataTableToolbar<TData>({
                     <DataTableFacetedFilter
                         column={table.getColumn("sections")}
                         title="Sections"
-                        options={sections}
+                        options={currentSections}
                     />
                 )}
                 {isFiltered && (
