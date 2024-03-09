@@ -10,7 +10,6 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from "@dnd-kit/sortable"
 import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
@@ -18,19 +17,11 @@ import { Formik, Form, useFormikContext } from 'formik'
 import Trash from '../../../../public/trash-icon.svg'
 import Drag from '../../../../public/drag-icon.svg'
 import { Input } from "@/components/ui/input"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 type Answer = {
     id: number
     label: string
-}
-
-const INITIAL_QUESTION: string = "What is your favorite color?"
-const INITIAL_ANSWERS: Answer[] = [
-    {id: 1, label: ""},
-]
-const INITIAL_VALUES = {
-    question: INITIAL_QUESTION,
-    answers: INITIAL_ANSWERS,
 }
 
 const SortableInput = ({index}: {index: number}) => {
@@ -69,7 +60,7 @@ const SortableInput = ({index}: {index: number}) => {
     )
 }
 
-const MultipleChoiceEditor = () => {
+const CategoricalSingleEditor = () => {
     const { values, setFieldValue, handleChange } = useFormikContext<{
         question: string;
         answers: Answer[];
@@ -96,7 +87,7 @@ const MultipleChoiceEditor = () => {
                 </CardHeader>
                 <CardContent>
                     <Label>Question Text</Label>
-                    <Input name="question" type="text" onChange={handleChange} placeholder="Question Text" defaultValue={INITIAL_QUESTION} />
+                    <Input name="question" type="text" onChange={handleChange} placeholder="Question Text" />
                     <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
                         <SortableContext items={values.answers} strategy={verticalListSortingStrategy}>
                             {values.answers.map((answer, index) => (
@@ -116,7 +107,7 @@ const MultipleChoiceEditor = () => {
     )
 }
 
-const MultipleChoicePreview = () => {
+const CategoricalSinglePreview = () => {
     const { values } = useFormikContext<{
         question: string;
         answers: Answer[];
@@ -141,7 +132,16 @@ const MultipleChoicePreview = () => {
     )
 }
 
-const MultipleChoiceComponent = () => {
+const CategoricalSingle = () => {
+    const INITIAL_QUESTION: string = ""
+    const INITIAL_ANSWERS: Answer[] = [
+        {id: 1, label: ""},
+    ]
+    const INITIAL_VALUES = {
+        question: INITIAL_QUESTION,
+        answers: INITIAL_ANSWERS,
+    }
+
     return(
         <div className="container mx-auto">
             <Formik
@@ -151,12 +151,12 @@ const MultipleChoiceComponent = () => {
                 }}
             >
                 <div className="grid grid-cols-2 gap-3">
-                    <MultipleChoiceEditor />
-                    <MultipleChoicePreview />
+                    <CategoricalSingleEditor />
+                    <CategoricalSinglePreview />
                 </div>
             </Formik>
         </div>
     )
 }
 
-export default MultipleChoiceComponent
+export default CategoricalSingle

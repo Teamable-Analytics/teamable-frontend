@@ -1,7 +1,6 @@
 import PageView from "@/components/views/Page"
-import MultipleChoiceComponent from "./(components)/MultipleChoiceComponent"
-
-// Only have Multiple Choice Editor for now
+import CategoricalSingle from "./(components)/CategoricalSingle"
+import CategoricalMulti from "./(components)/CategoricalMulti"
 
 const Profiles = () => {
     return (
@@ -9,7 +8,8 @@ const Profiles = () => {
             {title: 'Home', href: '/'},
             {title: 'Profiles', href: '/profiles'},
         ]}>
-            <MultipleChoiceComponent />
+            <CategoricalSingle />
+            <CategoricalMulti />
         </PageView>
     )
 }
