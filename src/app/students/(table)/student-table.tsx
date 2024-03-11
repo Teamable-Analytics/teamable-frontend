@@ -28,6 +28,7 @@ import { DataTablePagination } from "@/components/ui/data-table-pagination"
 import { DataTableToolbar } from "../(table)/student-table-toolbar"
 import { useStudents } from "../(hooks)/useStudents"
 import { columns } from "../(table)/columns"
+import { StudentTablePagination } from "./student-table-pagination"
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[]
@@ -114,7 +115,7 @@ const DataTable = <TData, TValue>({
                     </TableBody>
                 </Table>
             </div>
-            <DataTablePagination table={table} />
+            <StudentTablePagination table={table} pageSizeOptions={[2, 4, 6, 8]}/>
         </div>
     )
 }
