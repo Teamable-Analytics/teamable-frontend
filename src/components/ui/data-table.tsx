@@ -77,7 +77,7 @@ const DataTable = <TData, >({columns, data, searchBarOptions, bulkActionItems, a
                         }}
                     />
                 </div>
-                <div className="space-x-2">
+                <div className="space-x-2 flex-1">
                     {!!bulkActionItems && bulkActionItems(table.getRowModel())}
                     {!!actionItems && !!table && actionItems(table)}
                 </div>

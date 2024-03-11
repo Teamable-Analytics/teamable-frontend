@@ -21,12 +21,12 @@ const PageView = ({
                 {breadcrumbs && (
                     <div className="flex gap-1">
                         {breadcrumbs.map((breadcrumb, index) => (
-                            <>
-                                <Link key={index} href={breadcrumb.href}>
+                            <div key={index} className="flex flex-row">
+                                <Link href={breadcrumb.href}>
                                     <Text element="p" as={"smallText"}>{breadcrumb.title}</Text>
                                 </Link>
                                 <Text element="p" as={"smallText"}>/</Text>
-                            </>
+                            </div>
                         ))}
                     </div>
                 )}
