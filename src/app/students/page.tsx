@@ -1,4 +1,3 @@
-// 'use client'
 import React from 'react'
 import { StudentsProvider } from './(hooks)/useStudents'
 import PageView from '@/components/views/Page'

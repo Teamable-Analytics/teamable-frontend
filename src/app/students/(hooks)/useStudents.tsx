@@ -19,20 +19,20 @@ type StudentsContextType = {
 const StudentsContext = createContext<StudentsContextType | undefined>(undefined)
 
 const useStudentsProvider = (): StudentsContextType => {
-    const [csvStudentsParse, setStudentsParse] = useState<Student[]>([])
+    const [studentsParse, setStudentsParse] = useState<Student[]>([])
     const [displayStudents, setDisplayStudents] = useState<Student[]>([])
-    const [currentSections, setSections] = useState<DropdownOption[]>([])
+    const [sections, setSections] = useState<DropdownOption[]>([])
 
     useMemo(() => {
         const sections = new Set<string>()
-        csvStudentsParse.forEach(student => {
+        studentsParse.forEach(student => {
             student.sections?.forEach(section => {
                 sections.add(section)
             })
         })
         const sectionsOptions: DropdownOption[] = Array.from(sections).map(section => ({ label: section, value: section }))
         setSections(sectionsOptions)
-    }, [csvStudentsParse])
+    }, [studentsParse])
 
     const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0]
@@ -46,12 +46,12 @@ const useStudentsProvider = (): StudentsContextType => {
     const handleCancel = () => setStudentsParse([])
 
     const handleSave = () => {
-        setDisplayStudents(csvStudentsParse)
+        setDisplayStudents(studentsParse)
     }
 
     return {
-        displayStudents,
-        currentSections,
+        displayStudents: displayStudents,
+        currentSections: sections,
         handleFileChange,
         handleCancel,
         handleSave,
