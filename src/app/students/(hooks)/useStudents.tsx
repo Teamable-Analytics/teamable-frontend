@@ -28,7 +28,7 @@ const useStudentsProvider = (): StudentsContextType => {
 
     const fetchStudents = async (pageIndex: number = 1, pageSize: number = 2) => {
         console.log('fetching students')
-        const fixedCourseNum = 1
+        const fixedCourseNum = 1 // to-do: replace with actual course number
         const courseMemberData = await fetch(`http://127.0.0.1:8000/api/v1/course-members/?course=${fixedCourseNum}&page=${pageIndex}&per_page=${pageSize}&`).then(res => res.json())
         const studentsToDisplay: Student[] = courseMemberData.results.map((member: any) => ({
             id: member.id,
@@ -38,7 +38,7 @@ const useStudentsProvider = (): StudentsContextType => {
         setDisplayStudents(studentsToDisplay)
         setTotalStudents(courseMemberData.count)
     }
-    // to-do: remove useMemo and fetch all sections from api call
+    // to-do: remove this useMemo and use API call to get a set of sections all student course_members that are in specific course
     useMemo(() => {
         const sections = new Set<string>()
         displayStudents.forEach(student => {
