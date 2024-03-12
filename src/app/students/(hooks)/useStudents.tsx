@@ -1,6 +1,5 @@
 'use client'
 import { useState, createContext, useContext, ChangeEvent, PropsWithChildren, useMemo } from 'react'
-import { parseCSV } from '@/lib/canvas/parseCSV'
 import { Student } from '@/_temp_types/student'
 
 type DropdownOption  = {
@@ -11,9 +10,6 @@ type DropdownOption  = {
 type StudentsContextType = {
   displayStudents: Student[];
   currentSections: DropdownOption[];
-  handleFileChange: (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
-  handleCancel: () => void;
-  handleSave: () => void;
 }
 
 const StudentsContext = createContext<StudentsContextType | undefined>(undefined)
@@ -34,27 +30,9 @@ const useStudentsProvider = (): StudentsContextType => {
         setSections(sectionsOptions)
     }, [studentsParse])
 
-    const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]
-        let parsedCSV: Student[] = []
-        if (file) {
-            parsedCSV = await parseCSV(file) as Student[]
-            setStudentsParse(parsedCSV)
-        }
-    }
-
-    const handleCancel = () => setStudentsParse([])
-
-    const handleSave = () => {
-        setDisplayStudents(studentsParse)
-    }
-
     return {
         displayStudents: displayStudents,
         currentSections: sections,
-        handleFileChange,
-        handleCancel,
-        handleSave,
     }
 }
 

@@ -6,7 +6,6 @@ import { Table } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DataTableViewOptions } from "@/components/ui/data-table-view-options"
-import { UploadDialog } from "../(table)/student-table-upload-dialog"
 
 import { DataTableFacetedFilter } from "@/components/ui/data-table-faceted-filter"
 import { useStudents } from "@/app/students/(hooks)/useStudents"
@@ -52,7 +51,7 @@ export function DataTableToolbar<TData>({
             </div>
             <div className="flex items-center space-x-2">
                 <DataTableViewOptions table={table} />
-                <UploadDialog />
+                <Button className="h-8 px-2 lg:px-3" onClick={() => {}}> Insert students </Button>
             </div>
         </div>
     )
