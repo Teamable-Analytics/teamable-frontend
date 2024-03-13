@@ -1,6 +1,7 @@
 'use client'
-import { useState, createContext, useContext, PropsWithChildren, useMemo, useCallback } from 'react'
+import { useState, createContext, useContext, PropsWithChildren, useMemo, useEffect } from 'react'
 import { Student } from '@/_temp_types/student'
+import { useSearchParams } from 'next/navigation'
 
 type DropdownOption  = {
   label: string;
@@ -10,11 +11,6 @@ type DropdownOption  = {
 type StudentsContextType = {
   displayStudents: Student[];
   currentSections: DropdownOption[];
-  fetchStudents: (pageIndex: number, pageSize: number) => Promise<void>;
-  pageIndex: number;
-  setPageIndex: (pageIndex: number) => void;
-  pageSize: number;
-  setPageSize: (pageSize: number) => void;
   totalStudents: number;
 }
 const StudentsContext = createContext<StudentsContextType | undefined>(undefined)
@@ -22,22 +18,31 @@ const StudentsContext = createContext<StudentsContextType | undefined>(undefined
 const useStudentsProvider = (): StudentsContextType => {
     const [displayStudents, setDisplayStudents] = useState<Student[]>([])
     const [sections, setSections] = useState<DropdownOption[]>([])
-    const [pageIndex, setPageIndex] = useState<number>(1)
-    const [pageSize, setPageSize] = useState<number>(2)
     const [totalStudents, setTotalStudents] = useState<number>(0)
+    const searchParams = useSearchParams()
+    const { pageIndex, pageSize } = useMemo(() => {
+        return {
+            pageIndex: parseInt(searchParams.get('page') ?? '1', 10),
+            pageSize: parseInt(searchParams.get('per_page') ?? '10', 10),
+        }
+    }, [searchParams])
 
-    const fetchStudents = async (pageIndex: number = 1, pageSize: number = 2) => {
-        console.log('fetching students')
-        const fixedCourseNum = 1 // to-do: replace with actual course number
-        const courseMemberData = await fetch(`http://127.0.0.1:8000/api/v1/course-members/?course=${fixedCourseNum}&page=${pageIndex}&per_page=${pageSize}&`).then(res => res.json())
-        const studentsToDisplay: Student[] = courseMemberData.results.map((member: any) => ({
-            id: member.id,
-            name: member.user.last_name + ',' + member.user.first_name,
-            sections: member.sections.map((section: any) => section.name),
-        }))
-        setDisplayStudents(studentsToDisplay)
-        setTotalStudents(courseMemberData.count)
-    }
+
+    useEffect(() => {
+        const fetchStudents = async () => {
+            const fixedCourseNum = 1 // Replace with actual course number
+            const courseMemberData = await fetch(`http://127.0.0.1:8000/api/v1/course-members/?course=${fixedCourseNum}&page=${pageIndex}&per_page=${pageSize}`).then(res => res.json())
+            const studentsToDisplay: Student[] = courseMemberData.results.map((member: any) => ({
+                id: member.id,
+                name: member.user.last_name + ', ' + member.user.first_name,
+                sections: member.sections.map((section: any) => section.name),
+            }))
+            setDisplayStudents(studentsToDisplay)
+            setTotalStudents(courseMemberData.count)
+        }
+        fetchStudents()
+    }, [pageIndex, pageSize])
+
     // to-do: remove this useMemo and use API call to get a set of sections all student course_members that are in specific course
     useMemo(() => {
         const sections = new Set<string>()
@@ -53,12 +58,7 @@ const useStudentsProvider = (): StudentsContextType => {
     return {
         displayStudents: displayStudents,
         currentSections: sections,
-        fetchStudents,
-        pageIndex,
-        setPageIndex,
-        pageSize,
-        setPageSize,
-        totalStudents,
+        totalStudents: totalStudents,
     }
 }
 
