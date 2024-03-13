@@ -20,6 +20,7 @@ const useStudentsProvider = (): StudentsContextType => {
     const [sections, setSections] = useState<DropdownOption[]>([])
     const [totalStudents, setTotalStudents] = useState<number>(0)
     const searchParams = useSearchParams()
+
     const { pageIndex, pageSize } = useMemo(() => {
         return {
             pageIndex: parseInt(searchParams.get('page') ?? '1', 10),
@@ -43,7 +44,7 @@ const useStudentsProvider = (): StudentsContextType => {
         fetchStudents()
     }, [pageIndex, pageSize])
 
-    // to-do: remove this useMemo and use API call to get a set of sections all student course_members that are in specific course
+    // to-do: remove this useMemo and use API call to get a set of all sections that student course_members that are in for a specific course
     useMemo(() => {
         const sections = new Set<string>()
         displayStudents.forEach(student => {

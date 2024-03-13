@@ -46,7 +46,7 @@ const DataTable = <TData, TValue>({
     const [sorting, setSorting] = useState<SortingState>([])
 
     const [pagination, setPagination] = useState<PaginationState>({
-        pageIndex: 0,
+        pageIndex: 1,
         pageSize: 4,
     })
 

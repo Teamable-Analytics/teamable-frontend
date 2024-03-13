@@ -19,7 +19,6 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
     const isFiltered = table.getState().columnFilters.length > 0
     const currentSections = useStudents()?.currentSections ?? []
-    const fetchStudents = useStudents()?.fetchStudents ?? (() => Promise.resolve())
     return (
         <div className="flex items-center justify-between mt-2">
             <div className="flex flex-1 items-center space-x-2">
@@ -51,7 +50,7 @@ export function DataTableToolbar<TData>({
             </div>
             <div className="flex items-center space-x-2">
                 <DataTableViewOptions table={table} />
-                <Button className="h-8 px-2 lg:px-3" onClick={() => fetchStudents(1, 2)}> Insert students </Button>
+                <Button className="h-8 px-2 lg:px-3"> Insert students </Button>
             </div>
         </div>
     )
