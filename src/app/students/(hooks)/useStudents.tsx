@@ -55,7 +55,6 @@ const useStudentsProvider = (): StudentsContextType => {
         const sectionsOptions: DropdownOption[] = Array.from(sections).map(section => ({ label: section, value: section }))
         setSections(sectionsOptions)
     }, [displayStudents])
-
     return {
         displayStudents: displayStudents,
         currentSections: sections,
