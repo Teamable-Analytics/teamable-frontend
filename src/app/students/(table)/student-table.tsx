@@ -47,18 +47,18 @@ const DataTable = <TData, TValue>({
 
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 1,
-        pageSize: 4,
+        pageSize: 10,
     })
 
     const [pageCount, setPageCount] = useState(0)
-    const totalStudents = useStudents()?.totalStudents ?? 0
+    const { totalStudents = 0 } = useStudents() || {}
     const router = useRouter()
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
     useEffect(() => {
-        const page = parseInt(searchParams.get('page') ?? '1', 10) - 1
-        const pageSize = parseInt(searchParams.get('per_page') ?? '10', 10)
+        const page = parseInt(searchParams.get('page') ?? '1') - 1
+        const pageSize = parseInt(searchParams.get('per_page') ?? '10')
         setPagination({
             pageIndex: page,
             pageSize: pageSize,
