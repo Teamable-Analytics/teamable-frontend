@@ -16,22 +16,22 @@ const Navbar = () => {
             <Logo />
             <NavigationMenuList className="flex justify-between">
                 <NavigationMenuItem>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()} href="/students">
+                    <NavigationMenuLink href="/students" className={navigationMenuTriggerStyle()}>
                         Students
                     </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()} href="/profiles">
+                    <NavigationMenuLink href="/profiles" className={navigationMenuTriggerStyle()}>
                         Profiles
                     </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()} href="/projects">
+                    <NavigationMenuLink href="/projects" className={navigationMenuTriggerStyle()}>
                         Projects
                     </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()} href="/teams">
+                    <NavigationMenuLink href="/teams" className={navigationMenuTriggerStyle()}>
                         Manage Teams
                     </NavigationMenuLink>
                 </NavigationMenuItem>
