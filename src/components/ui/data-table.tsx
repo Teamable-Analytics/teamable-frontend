@@ -107,7 +107,7 @@ const DataTable = <TData, >({columns, data, searchBarOptions, bulkActionItems, a
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
                                     onClick={() => rowAction && rowAction(row.original)}
-                                    className={rowAction && "cursor-pointer"}
+                                    className={rowAction && "hover:cursor-pointer"}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
