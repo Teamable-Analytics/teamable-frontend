@@ -9,7 +9,7 @@ const nextConfig = {
         return config
     },
     env: {
-        DJANGO_BACKEND_URI: process.env.DJANGO_BACKEND_URI,
+        BACKEND_BASE_URI: process.env.BACKEND_BASE_URI,
     },
 }
 
