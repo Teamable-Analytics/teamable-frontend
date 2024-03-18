@@ -133,4 +133,4 @@ const DataTable = <TData, >({columns, data, searchBarOptions, bulkActionItems, a
     )
 }
 
-export { DataTable }
+export {DataTable}
