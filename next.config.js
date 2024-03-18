@@ -8,6 +8,9 @@ const nextConfig = {
 
         return config
     },
+    env: {
+        DJANGO_BACKEND_URI: process.env.DJANGO_BACKEND_URI,
+    },
 }
 
 module.exports = nextConfig

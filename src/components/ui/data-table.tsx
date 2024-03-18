@@ -39,7 +39,7 @@ type DataTableProps<TData, > = {
     // Buttons group for bulk actions
     bulkActionItems?: (selectedRowModels: RowModel<TData>) => React.ReactNode
     // Function Controlling the action when a row is clicked
-    rowAction?: (e: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => void
+    rowAction?: (row: TData) => void
 }
 
 const DataTable = <TData, >({columns, data, searchBarOptions, bulkActionItems, actionItems, rowAction}: DataTableProps<TData>) => {
@@ -106,7 +106,8 @@ const DataTable = <TData, >({columns, data, searchBarOptions, bulkActionItems, a
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
-                                    onClick={rowAction}
+                                    onClick={() => rowAction && rowAction(row.original)}
+                                    className={rowAction && "cursor-pointer"}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>

@@ -1,8 +1,11 @@
+'use client'
+
 import React from "react"
 import {columns, type ProjectSet} from "@/app/project-sets/columns"
 import {DataTable} from "@/components/ui/data-table"
 import PageView from "@/components/views/Page"
 import {type ApiProjectSet} from "../../../types/api/teams"
+import {useRouter} from "next/navigation"
 
 async function getProjectSetsData(): Promise<ProjectSet[]> {
     const response = await fetch(process.env.DJANGO_BACKEND_URI + '/api/v1/teamset-templates')
@@ -17,7 +20,18 @@ async function getProjectSetsData(): Promise<ProjectSet[]> {
     } as ProjectSet))
 }
 
-async function ProjectSetsPage() {
+function ProjectSetsPage() {
+    const router = useRouter()
+
+    const handleRowClick = (row: ProjectSet) => {
+        router.push(`/project/${row.id}`)
+    }
+
+    const [projectSets, setProjectSets] = React.useState<ProjectSet[]>([])
+    React.useEffect(() => {
+        getProjectSetsData().then(setProjectSets).catch(console.error)
+    }, [])
+
     return (
         <PageView
             title="Project Sets"
@@ -27,13 +41,14 @@ async function ProjectSetsPage() {
             ]}
         >
             <>
-                <DataTable
+                <DataTable<ProjectSet>
                     columns={columns}
-                    data={await getProjectSetsData()}
+                    data={projectSets}
                     searchBarOptions={{
                         placeholder: "Search Project Set",
                         searchColumn: "name",
                     }}
+                    rowAction={handleRowClick}
                 />
             </>
         </PageView>
