@@ -1,11 +1,12 @@
 'use client'
 
 import React from "react"
-import {columns, type ProjectSet} from "@/app/project-sets/columns"
+import {columns} from "@/app/project-sets/columns"
 import {DataTable} from "@/components/ui/data-table"
 import PageView from "@/components/views/Page"
 import {type ApiProjectSet} from "../../../types/api/teams"
 import {useRouter} from "next/navigation"
+import {type ProjectSet} from "../../../types/pages/projectSet"
 
 async function getProjectSetsData(): Promise<ProjectSet[]> {
     const response = await fetch(process.env.DJANGO_BACKEND_URI + '/api/v1/teamset-templates')
@@ -40,17 +41,15 @@ function ProjectSetsPage() {
                 {title: 'Project Sets', href: '/project-sets'},
             ]}
         >
-            <>
-                <DataTable<ProjectSet>
-                    columns={columns}
-                    data={projectSets}
-                    searchBarOptions={{
-                        placeholder: "Search Project Set",
-                        searchColumn: "name",
-                    }}
-                    rowAction={handleRowClick}
-                />
-            </>
+            <DataTable<ProjectSet>
+                columns={columns}
+                data={projectSets}
+                searchBarOptions={{
+                    placeholder: "Search for a project set",
+                    searchColumn: "name",
+                }}
+                rowAction={handleRowClick}
+            />
         </PageView>
     )
 }
