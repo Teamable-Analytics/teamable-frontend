@@ -8,7 +8,7 @@ import {DataTable} from "@/components/ui/data-table"
 import {editableColumns, uneditableColumns} from "./columns"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import {useRouter} from "next/navigation"
-import {SearchBar} from "@/components/search-bar"
+import {SearchBar} from '@/components/SearchBar'
 import {Input} from "@/components/ui/input"
 import { Pencil1Icon, FileIcon } from "@radix-ui/react-icons"
 
