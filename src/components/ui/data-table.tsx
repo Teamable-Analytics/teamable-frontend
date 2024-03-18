@@ -22,9 +22,13 @@ import {
     TableRow,
 } from '@/components/ui/table'
 import {DataTablePagination} from "@/components/ui/data-table-pagination"
-import {SearchBar} from "@/components/search-bar"
+import {SearchBar} from "@/components/SearchBar"
 import React from "react"
-import {DataTableSearchBarProps} from "@/types/components/search-bar"
+
+type DataTableSearchBarProps = {
+    placeholder: string;
+    searchColumn: string;
+}
 
 type DataTableProps<TData, > = {
     columns: ColumnDef<TData>[]
@@ -73,7 +77,7 @@ const DataTable = <TData, >({columns, data, searchBarOptions, bulkActionItems, a
                         }}
                     />
                 </div>
-                <div className="space-x-2">
+                <div className="space-x-2 flex-1">
                     {!!bulkActionItems && bulkActionItems(table.getRowModel())}
                     {!!actionItems && !!table && actionItems(table)}
                 </div>
