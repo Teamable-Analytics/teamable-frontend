@@ -5,10 +5,12 @@ import {Text} from "@/components/ui/text"
 import {type Project, ProjectRequirement, ProjectSet, RequirementOperator} from "@/_temp_types/projects"
 import {Button} from "@/components/ui/button"
 import {DataTable} from "@/components/ui/data-table"
-import {columns} from "./columns"
+import {editableColumns, uneditableColumns} from "./columns"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import {useRouter} from "next/navigation"
 import {SearchBar} from "@/components/search-bar"
+import {Input} from "@/components/ui/input"
+import { Pencil1Icon, FileIcon } from "@radix-ui/react-icons"
 
 type ProjectPageParams = {
     params: {
@@ -28,6 +30,8 @@ function ProjectPage({params}: ProjectPageParams) {
     const [currentProject, setCurrentProject] = React.useState<Project>()
 
     const [projectSearchText, setProjectSearchText] = React.useState<string>('')
+
+    const [isEditMode, setIsEditMode] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         if (!projectSetId) return
@@ -56,6 +60,11 @@ function ProjectPage({params}: ProjectPageParams) {
         setDisplayProjectsSidebar(filteredProjects)
     }, [allProjects, projectSearchText])
 
+    const columns = React.useMemo(() => {
+        return isEditMode && !!handleUpdatedProjectRequirement
+            ? editableColumns({ handleChange: handleUpdatedProjectRequirement })
+            : uneditableColumns()
+    }, [handleUpdatedProjectRequirement, isEditMode])
 
     return (
         <div className="container mx-auto py-10">
@@ -123,11 +132,44 @@ function ProjectPage({params}: ProjectPageParams) {
                                 <Text as="h3" element="h3">
                                     {currentProject.name}
                                 </Text>
-                                <Button variant="destructive" size="sm">Delete Project</Button>
+                                <div className="flex items-center gap-2">
+                                    {isEditMode ? (
+                                        <Button variant="outline" size="sm" onClick={() => setIsEditMode(false)}>
+                                            <FileIcon className="mr-2" />
+                                            Save changes
+                                        </Button>
+                                    ) : (
+                                        <Button variant="outline" size="sm" onClick={() => setIsEditMode(true)}>
+                                            <Pencil1Icon className="mr-2" />
+                                            Edit mode
+                                        </Button>
+                                    )}
+                                    <Button variant="destructive" size="sm">Delete Project</Button>
+                                </div>
                             </div>
-                            <Text element="p" as="p">
-                                This project can be completed by {currentProject.numberOfTeams} team(s).
-                            </Text>
+                            <div className="flex items-center mt-2">
+                                <Text element="p" as="smallText">
+                                    This project can be completed by&nbsp;
+                                </Text>
+                                {isEditMode ? (
+                                    <Input
+                                        className="w-8 text-center h-fit text-foreground text-sm font-medium leading-none border-0 border-b p-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:ring-offset-transparent focus-visible:ring-transparent focus-visible:outline-none"
+                                        defaultValue={currentProject.numberOfTeams}
+                                        onBlur={(e) => {
+                                            if (!isNaN(parseInt(e.target.value))) {
+                                                handleUpdateNumTeamsPerProject(parseInt(e.target.value))
+                                            }
+                                        }}
+                                    />
+                                ) : (
+                                    <Text element="p" as="smallText">
+                                        {currentProject.numberOfTeams}
+                                    </Text>
+                                )}
+                                <Text element="p" as="smallText" className="">
+                                    &nbsp;team(s).
+                                </Text>
+                            </div>
                         </div>
                         <div className="flex flex-col mt-5">
                             <div className="flex justify-between items-end">
@@ -156,6 +198,27 @@ function ProjectPage({params}: ProjectPageParams) {
     function handleProjectChanged(project: Project) {
         setCurrentProject(project)
     }
+
+    function handleUpdatedProjectRequirement(updatedRequirement: ProjectRequirement) {
+        const newRequirements = currentProject?.requirements?.findIndex((requirement) => requirement.id === updatedRequirement.id) ?? -1
+        if (newRequirements === -1) return
+
+        const updatedRequirements = [...currentProject?.requirements ?? []]
+        updatedRequirements[newRequirements] = updatedRequirement
+
+        // TODO: API call to update the project requirements
+        setCurrentProject({
+            ...currentProject,
+            requirements: updatedRequirements,
+        } as Project)
+    }
+
+    function handleUpdateNumTeamsPerProject(numOfTeams: number) {
+        setCurrentProject({
+            ...currentProject,
+            numberOfTeams: numOfTeams,
+        } as Project)
+    }
 }
 
 function getProjects(projectSetId: string): Project[] {
@@ -166,16 +229,19 @@ function getProjects(projectSetId: string): Project[] {
             numberOfTeams: 3,
             requirements: [
                 {
+                    id: 1,
                     attribute: 1,
                     operator: RequirementOperator.MORE_THAN,
                     value: 2,
                 },
                 {
+                    id: 2,
                     attribute: 2,
                     operator: RequirementOperator.EXACTLY,
                     value: 1,
                 },
                 {
+                    id: 3,
                     attribute: 3,
                     operator: RequirementOperator.LESS_THAN,
                     value: 3,
@@ -188,16 +254,19 @@ function getProjects(projectSetId: string): Project[] {
             numberOfTeams: 10,
             requirements: [
                 {
+                    id: 4,
                     attribute: 1,
                     operator: RequirementOperator.EXACTLY,
                     value: 2,
                 },
                 {
+                    id: 5,
                     attribute: 2,
                     operator: RequirementOperator.MORE_THAN,
                     value: 1,
                 },
                 {
+                    id: 6,
                     attribute: 3,
                     operator: RequirementOperator.EXACTLY,
                     value: 3,

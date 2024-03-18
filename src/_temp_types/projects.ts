@@ -2,6 +2,7 @@
  * A requirement for a student with a specific attribute to work on a project
  */
 export type ProjectRequirement = {
+    id: number
     attribute: number
     operator: RequirementOperator
     // The number of students with this attribute required as described by the RequirementOperator
