@@ -33,7 +33,7 @@ const useStudentsProvider = (): StudentsContextType => {
 
     useEffect(() => {
         const fetchStudents = async () => {
-            const baseURL = process.env.NEXT_PUBLIC_DB_HOST
+            const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL
             const courseMemberData = await fetch(`${baseURL}/api/v1/course-members/course/${fixedCourseNum}/?page=${pageIndex}&per_page=${pageSize}`).then(res => res.json())
             const studentsToDisplay: Student[] = courseMemberData.results.map((member: any) => ({
                 id: member.id,
