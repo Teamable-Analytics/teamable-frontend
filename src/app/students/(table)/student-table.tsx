@@ -1,5 +1,6 @@
 "use client"
 import {useState} from "react"
+
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -45,7 +46,6 @@ const DataTable = <TData, TValue>({
 
     const { pagination, setPagination } = useStudents() ?? { pagination: { pageIndex: 0, pageSize: 10 }, setPagination: () => {} }
     const { pageCount = 0 } = useStudents() || {}
-
 
     const table = useReactTable({
         data,
