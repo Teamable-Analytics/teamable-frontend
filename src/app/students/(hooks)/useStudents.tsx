@@ -93,7 +93,7 @@ const useStudentsProvider = (): StudentsContextType => {
             setTotalStudents(courseMemberData.count)
         }
         fetchStudents()
-    }, [pageIndex, pageSize, titleTerms]) // Now includes searchTerms
+    }, [pageIndex, pageSize, titleTerms])
 
     // TODO: remove the useMemo below and grab sections using API call
     useMemo(() => {
