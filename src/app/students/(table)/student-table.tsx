@@ -1,5 +1,5 @@
 "use client"
-import {useEffect, useState} from "react"
+import {useState} from "react"
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -13,7 +13,6 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
-    type PaginationState,
 } from "@tanstack/react-table"
 
 import {
@@ -29,7 +28,6 @@ import { DataTablePagination } from "@/components/ui/data-table-pagination"
 import { DataTableToolbar } from "../(table)/student-table-toolbar"
 import { useStudents } from "../(hooks)/useStudents"
 import { columns } from "../(table)/columns"
-import { useRouter, usePathname, useSearchParams} from 'next/navigation'
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[]
@@ -45,44 +43,8 @@ const DataTable = <TData, TValue>({
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [sorting, setSorting] = useState<SortingState>([])
 
-    const [pagination, setPagination] = useState<PaginationState>({
-        pageIndex: 1,
-        pageSize: 10,
-    })
-
-    const [pageCount, setPageCount] = useState(0)
-    const { totalStudents = 0 } = useStudents() || {}
-    const router = useRouter()
-    const pathname = usePathname()
-    const searchParams = useSearchParams()
-
-    useEffect(() => {
-        const page = parseInt(searchParams.get('page') ?? '1') - 1
-        const pageSize = parseInt(searchParams.get('per_page') ?? '10')
-        setPagination({
-            pageIndex: page,
-            pageSize: pageSize,
-        })
-        setPageCount(Math.ceil(totalStudents / pageSize))
-    }, [searchParams, totalStudents])
-
-    const createQueryString = (params: Record<string, string | number>) => {
-        const searchParams = new URLSearchParams()
-        Object.entries(params).forEach(([key, value]) => {
-            searchParams.set(key, value.toString())
-        })
-        return searchParams.toString()
-    }
-
-    useEffect(() => {
-        router.push(`${pathname}?${createQueryString({
-            page: pagination.pageIndex + 1,
-            per_page: pagination.pageSize,
-        })}`,
-        {
-            scroll: false,
-        })
-    }, [router, pathname, pagination])
+    const { pagination, setPagination } = useStudents() ?? { pagination: { pageIndex: 0, pageSize: 10 }, setPagination: () => {} }
+    const { pageCount = 0 } = useStudents() || {}
 
 
     const table = useReactTable({
