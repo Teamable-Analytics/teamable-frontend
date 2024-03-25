@@ -3,7 +3,7 @@
 import {type ColumnDef} from "@tanstack/table-core"
 import {Checkbox} from "@/components/ui/checkbox"
 import {DataTableColumnHeader} from "@/components/ui/data-table-column-header"
-import {type ProjectSet} from "../../_temp_types/projectSet"
+import {type ProjectSet} from "@/_temp_types/projects"
 
 export const columns: ColumnDef<ProjectSet>[] = [
     {
