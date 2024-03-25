@@ -39,12 +39,12 @@ type DataTableProps<TData, > = {
     // Buttons group for bulk actions
     bulkActionItems?: (selectedRowModels: RowModel<TData>) => React.ReactNode
     // Function Controlling the action when a row is clicked
-    rowAction?: (e: React.MouseEvent<HTMLTableRowElement, MouseEvent>) => void
+    rowAction?: (row: TData) => void
     // Toggle pagination
     isPaginated?: boolean
 }
 
-function DataTable<TData>({columns, data, searchBarOptions, bulkActionItems, actionItems, rowAction, isPaginated}: DataTableProps<TData>) {
+const DataTable = <TData, >({columns, data, searchBarOptions, bulkActionItems, actionItems, rowAction, isPaginated}: DataTableProps<TData>) => {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [rowSelection, setRowSelection] = React.useState({})
@@ -109,7 +109,8 @@ function DataTable<TData>({columns, data, searchBarOptions, bulkActionItems, act
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
-                                    onClick={rowAction}
+                                    onClick={() => rowAction && rowAction(row.original)}
+                                    className={rowAction && "hover:cursor-pointer"}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
@@ -135,4 +136,4 @@ function DataTable<TData>({columns, data, searchBarOptions, bulkActionItems, act
     )
 }
 
-export { DataTable }
+export {DataTable}
