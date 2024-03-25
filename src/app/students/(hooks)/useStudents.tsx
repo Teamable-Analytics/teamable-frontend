@@ -15,6 +15,7 @@ type StudentsContextType = {
   totalStudents: number;
   pageCount: number;
   updateTitle: (titleTerms: string) => void;
+  filterSections: (sectionTerms: DropdownOption[]) => void;
   pagination: PaginationState;
   setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
 }
@@ -26,14 +27,15 @@ const useStudentsProvider = (): StudentsContextType => {
     const [totalStudents, setTotalStudents] = useState<number>(0)
     const searchParams = useSearchParams()
     const [titleTerms, setTitleTerms] = useState<string>('')
+    const [sectionTerms, setSectionTerms] = useState<DropdownOption[]>([])
     const [pageCount, setPageCount] = useState(0)
     const [pagination, setPagination] = useState<PaginationState>({
-        pageIndex: 0,
+        pageIndex: 1,
         pageSize: 10,
     })
 
-    useEffect(() => {
-        const page = parseInt(searchParams.get('page') ?? '1') - 1
+    useMemo(() => {
+        const page = parseInt(searchParams.get('page') ?? '1') - 1 // 0 indexed for react-table
         const pageSize = parseInt(searchParams.get('per_page') ?? '10')
         setPagination({
             pageIndex: page,
@@ -52,14 +54,19 @@ const useStudentsProvider = (): StudentsContextType => {
         setPagination({ ...pagination, pageIndex: 0})
     }
 
-    const { pageIndex, pageSize } = useMemo(() => {
-        return {
-            pageIndex: parseInt(searchParams.get('page') ?? '1'),
-            pageSize: parseInt(searchParams.get('per_page') ?? '10'),
-        }
-    }, [searchParams])
+    const filterSections = (sectionTerms: DropdownOption[]) => {
+        setSectionTerms(sectionTerms)
+        setPagination({ ...pagination, pageIndex: 0})
+    }
 
     useEffect(() => {
+        type QueryParams = {
+            page: number;
+            per_page: number;
+            title?: string;
+            sections?: string;
+        }
+
         const createQueryString = (params: Record<string, string | number>) => {
             const searchParams = new URLSearchParams()
             Object.entries(params).forEach(([key, value]) => {
@@ -67,23 +74,29 @@ const useStudentsProvider = (): StudentsContextType => {
             })
             return searchParams.toString()
         }
-        const queryString = createQueryString({
-            page: pagination.pageIndex + 1,
+        const queryStringParams: QueryParams = {
+            page: pagination.pageIndex + 1, // adding one to make it 1 indexed for backend API
             per_page: pagination.pageSize,
-            title: titleTerms,
-        })
+        }
+        if (titleTerms) {
+            queryStringParams.title = titleTerms
+        }
+        if (sectionTerms.length > 0) {
+            queryStringParams.sections = sectionTerms.map((section) => section.value).join('.')
+        }
+        const queryString = createQueryString({ ...queryStringParams})
         router.push(`${pathname}?${queryString}`, { scroll: false })
-    }, [pagination.pageIndex, pagination.pageSize, titleTerms, router, pathname])
+    }, [pagination.pageIndex, pagination.pageSize, titleTerms, sectionTerms, router, pathname])
 
 
-    const constructURL = (pageIndex: number, pageSize: number, searchTerm?: string) => {
+    const constructURL = (pageIndex: number, pageSize: number, titleTerm?: string, sectionTerm?: string) => {
         const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL
-        return `${baseURL}/api/v1/course-members/course/${fixedCourseNum}/?page=${pageIndex}&per_page=${pageSize}${searchTerm ? `&title=${searchTerm}` : ''}`
+        return `${baseURL}/api/v1/course-members/course/${fixedCourseNum}/?page=${pageIndex}&per_page=${pageSize}${titleTerm ? `&title=${titleTerm}` : ''} ${sectionTerm ? `&sections=${sectionTerm}` : ''}`
     }
 
     useEffect(() => {
         const fetchStudents = async () => {
-            const courseMemberData = await fetch(constructURL(pageIndex, pageSize, titleTerms)).then(res => res.json())
+            const courseMemberData = await fetch(constructURL(pagination.pageIndex + 1, pagination.pageSize, titleTerms)).then(res => res.json())
             const studentsToDisplay: Student[] = courseMemberData.results.map((member: any) => ({
                 id: member.user.id,
                 name: `${member.user.last_name}, ${member.user.first_name}`,
@@ -93,7 +106,7 @@ const useStudentsProvider = (): StudentsContextType => {
             setTotalStudents(courseMemberData.count)
         }
         fetchStudents()
-    }, [pageIndex, pageSize, titleTerms])
+    }, [pagination.pageIndex, pagination.pageSize, titleTerms])
 
     useEffect(() => {
         const fetchSections = async () => {
@@ -113,6 +126,7 @@ const useStudentsProvider = (): StudentsContextType => {
         totalStudents: totalStudents,
         pageCount: pageCount,
         updateTitle: updateTitleTerms,
+        filterSections: filterSections,
         pagination: pagination,
         setPagination: setPagination,
     }

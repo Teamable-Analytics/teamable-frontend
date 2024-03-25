@@ -20,6 +20,7 @@ export function DataTableToolbar<TData>({
     const isFiltered = table.getState().columnFilters.length > 0
     const currentSections = useStudents()?.currentSections ?? []
     const { updateTitle } = useStudents() ?? { updateTitle: () => {} }
+    const { filterSections } = useStudents() ?? { filterSections: () => {} }
     return (
         <div className="flex items-center justify-between mt-2">
             <div className="flex flex-1 items-center space-x-2">
