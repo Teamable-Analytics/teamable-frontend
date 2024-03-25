@@ -8,9 +8,6 @@ const nextConfig = {
 
         return config
     },
-    env: {
-        BACKEND_BASE_URI: process.env.BACKEND_BASE_URI,
-    },
 }
 
 module.exports = nextConfig

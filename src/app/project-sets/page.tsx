@@ -3,8 +3,8 @@ import {columns} from "@/app/project-sets/columns"
 import {DataTable} from "@/components/ui/data-table"
 import PageView from "@/components/views/Page"
 import {type ApiTeamSetTemplate} from "@/_temp_types/api/teams"
-import {type ProjectSet} from "@/_temp_types/projectSet"
 import {redirect} from "next/navigation"
+import {type ProjectSet} from "@/_temp_types/projects"
 
 async function getProjectSetsData(): Promise<ProjectSet[]> {
     const response = await fetch(process.env.BACKEND_URL + '/api/v1/teamset-templates')

@@ -10,9 +10,14 @@ export type ProjectRequirement = {
 }
 
 export enum RequirementOperator {
-    EXACTLY = "exactly",
-    LESS_THAN = "less than",
-    MORE_THAN = "more than",
+    GT = "Greater Than",
+    GTE = "Greater Than or Equal",
+    LT = "Less Than",
+    LTE = "Less Than or Equal",
+    IN = "In",
+    NOT_IN = "Not In",
+    CONTAINS = "Contains",
+    EQ = "Equal",
 }
 
 /**
@@ -29,4 +34,5 @@ export type Project = {
 export type ProjectSet = {
     id: number
     name: string
+    numProjects: number
 }
