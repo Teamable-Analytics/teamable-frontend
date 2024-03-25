@@ -1,4 +1,4 @@
-import Home from '../../../src/app/page'
+import Home from "@/app/(template)/page"
 
 describe('<Home />', () => {
     it('renders', () => {
