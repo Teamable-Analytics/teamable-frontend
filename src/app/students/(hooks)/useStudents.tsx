@@ -92,7 +92,7 @@ const useStudentsProvider = (): StudentsContextType => {
     const constructURL = (pageIndex: number, pageSize: number, titleTerm?: string, sectionTerm?: string) => {
         const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL
         const fixedCourseNum = 1
-        return `${baseURL}/api/v1/course-members/course/${fixedCourseNum}/?page=${pageIndex}&per_page=${pageSize}${titleTerm ? `&title=${titleTerm}` : ''} ${sectionTerm ? `&sections=${sectionTerm}` : ''}`
+        return `${baseURL}/api/v1/course-members/course/${fixedCourseNum}/?page=${pageIndex}&per_page=${pageSize}${titleTerm ? `&title=${titleTerm}` : ''}${sectionTerm ? `&sections=${sectionTerm}` : ''}`
     }
 
     useEffect(() => {
