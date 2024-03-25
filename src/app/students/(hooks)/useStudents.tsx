@@ -95,7 +95,6 @@ const useStudentsProvider = (): StudentsContextType => {
         fetchStudents()
     }, [pageIndex, pageSize, titleTerms])
 
-    // TODO: remove the useMemo below and grab sections using API call
     useEffect(() => {
         const fetchSections = async () => {
             const sectionsData = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/course/${fixedCourseNum}/sections`).then(res => res.json())
