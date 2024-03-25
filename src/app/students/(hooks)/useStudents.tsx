@@ -75,7 +75,7 @@ const useStudentsProvider = (): StudentsContextType => {
             return searchParams.toString()
         }
         const queryStringParams: QueryParams = {
-            page: pagination.pageIndex + 1, // adding one to make it 1 indexed for backend API
+            page: pagination.pageIndex + 1, // adding one to make it appear as 1 indexed for the URL query in browser
             per_page: pagination.pageSize,
         }
         if (titleTerms) {
@@ -96,6 +96,7 @@ const useStudentsProvider = (): StudentsContextType => {
 
     useEffect(() => {
         const fetchStudents = async () => {
+            // adding one to make pageIndex 1 indexed for the API endpoint
             const courseMemberData = await fetch(constructURL(pagination.pageIndex + 1, pagination.pageSize, titleTerms)).then(res => res.json())
             const studentsToDisplay: Student[] = courseMemberData.results.map((member: any) => ({
                 id: member.user.id,
