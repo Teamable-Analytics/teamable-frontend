@@ -1,5 +1,3 @@
-'use client'
-
 import * as React from "react"
 import {Text} from "@/components/ui/text"
 import {type Project, ProjectRequirement, ProjectSet, RequirementOperator} from "@/_temp_types/projects"
