@@ -96,16 +96,17 @@ const useStudentsProvider = (): StudentsContextType => {
     }, [pageIndex, pageSize, titleTerms])
 
     // TODO: remove the useMemo below and grab sections using API call
-    useMemo(() => {
-        const sections = new Set<string>()
-        displayStudents.forEach(student => {
-            student.sections?.forEach(section => {
-                sections.add(section)
-            })
-        })
-        const sectionsOptions: DropdownOption[] = Array.from(sections).map(section => ({ label: section, value: section }))
-        setSections(sectionsOptions)
-    }, [displayStudents])
+    useEffect(() => {
+        const fetchSections = async () => {
+            const sectionsData = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/course/${fixedCourseNum}/sections`).then(res => res.json())
+            const sectionsToDisplay: DropdownOption[] = sectionsData.map((section: any) => ({
+                label: section.name,
+                value: section.name,
+            }))
+            setSections(sectionsToDisplay)
+        }
+        fetchSections()
+    }, [])
 
     return {
         displayStudents: displayStudents,
