@@ -30,7 +30,7 @@ const useStudentsProvider = (): StudentsContextType => {
     const [sectionTerms, setSectionTerms] = useState<string>('')
     const [pageCount, setPageCount] = useState(0)
     const [pagination, setPagination] = useState<PaginationState>({
-        pageIndex: 1,
+        pageIndex: 0,
         pageSize: 10,
     })
 
