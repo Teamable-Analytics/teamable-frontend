@@ -15,6 +15,7 @@ type StudentsContextType = {
   totalStudents: number;
   pageCount: number;
   updateTitle: (titleTerms: string) => void;
+  filterSections: (sectionTerms: DropdownOption[]) => void;
   pagination: PaginationState;
   setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
 }
@@ -26,14 +27,15 @@ const useStudentsProvider = (): StudentsContextType => {
     const [totalStudents, setTotalStudents] = useState<number>(0)
     const searchParams = useSearchParams()
     const [titleTerms, setTitleTerms] = useState<string>('')
+    const [sectionTerms, setSectionTerms] = useState<string>('')
     const [pageCount, setPageCount] = useState(0)
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
     })
 
-    useEffect(() => {
-        const page = parseInt(searchParams.get('page') ?? '1') - 1
+    useMemo(() => {
+        const page = parseInt(searchParams.get('page') ?? '1') - 1 // 0 indexed for react-table
         const pageSize = parseInt(searchParams.get('per_page') ?? '10')
         setPagination({
             pageIndex: page,
@@ -42,7 +44,6 @@ const useStudentsProvider = (): StudentsContextType => {
         setPageCount(Math.ceil(totalStudents / pageSize))
     }, [searchParams, totalStudents, setPagination])
 
-    const fixedCourseNum = 1
 
     const router = useRouter()
     const pathname = usePathname()
@@ -52,14 +53,20 @@ const useStudentsProvider = (): StudentsContextType => {
         setPagination({ ...pagination, pageIndex: 0})
     }
 
-    const { pageIndex, pageSize } = useMemo(() => {
-        return {
-            pageIndex: parseInt(searchParams.get('page') ?? '1'),
-            pageSize: parseInt(searchParams.get('per_page') ?? '10'),
-        }
-    }, [searchParams])
+    const filterSections = (sectionsPassed: DropdownOption[]) => {
+        setSectionTerms(sectionsPassed.map((section) => section.value).join('.'))
+        setPagination({ ...pagination, pageIndex: 0})
+        return sectionTerms
+    }
 
     useEffect(() => {
+        type QueryParams = {
+            page: number;
+            per_page: number;
+            title?: string;
+            sections?: string;
+        }
+
         const createQueryString = (params: Record<string, string | number>) => {
             const searchParams = new URLSearchParams()
             Object.entries(params).forEach(([key, value]) => {
@@ -67,23 +74,31 @@ const useStudentsProvider = (): StudentsContextType => {
             })
             return searchParams.toString()
         }
-        const queryString = createQueryString({
-            page: pagination.pageIndex + 1,
+        const queryStringParams: QueryParams = {
+            page: pagination.pageIndex + 1, // adding one to make it appear as 1 indexed for the URL query in browser
             per_page: pagination.pageSize,
-            title: titleTerms,
-        })
+        }
+        if (titleTerms) {
+            queryStringParams.title = titleTerms
+        }
+        if (sectionTerms.length > 0) {
+            queryStringParams.sections = sectionTerms
+        }
+        const queryString = createQueryString({ ...queryStringParams})
         router.push(`${pathname}?${queryString}`, { scroll: false })
-    }, [pagination.pageIndex, pagination.pageSize, titleTerms, router, pathname])
+    }, [pagination.pageIndex, pagination.pageSize, titleTerms, sectionTerms, router, pathname])
 
 
-    const constructURL = (pageIndex: number, pageSize: number, searchTerm?: string) => {
+    const constructURL = (pageIndex: number, pageSize: number, titleTerm?: string, sectionTerm?: string) => {
         const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL
-        return `${baseURL}/api/v1/course-members/course/${fixedCourseNum}/?page=${pageIndex}&per_page=${pageSize}${searchTerm ? `&title=${searchTerm}` : ''}`
+        const fixedCourseNum = 1
+        return `${baseURL}/api/v1/course-members/course/${fixedCourseNum}/?page=${pageIndex}&per_page=${pageSize}${titleTerm ? `&title=${titleTerm}` : ''}${sectionTerm ? `&sections=${sectionTerm}` : ''}`
     }
 
     useEffect(() => {
         const fetchStudents = async () => {
-            const courseMemberData = await fetch(constructURL(pageIndex, pageSize, titleTerms)).then(res => res.json())
+            // adding one to make pageIndex 1 indexed for the API endpoint
+            const courseMemberData = await fetch(constructURL(pagination.pageIndex + 1, pagination.pageSize, titleTerms, sectionTerms)).then(res => res.json())
             const studentsToDisplay: Student[] = courseMemberData.results.map((member: any) => ({
                 id: member.user.id,
                 name: `${member.user.last_name}, ${member.user.first_name}`,
@@ -93,19 +108,20 @@ const useStudentsProvider = (): StudentsContextType => {
             setTotalStudents(courseMemberData.count)
         }
         fetchStudents()
-    }, [pageIndex, pageSize, titleTerms])
+    }, [pagination.pageIndex, pagination.pageSize, titleTerms, sectionTerms])
 
-    // TODO: remove the useMemo below and grab sections using API call
-    useMemo(() => {
-        const sections = new Set<string>()
-        displayStudents.forEach(student => {
-            student.sections?.forEach(section => {
-                sections.add(section)
-            })
-        })
-        const sectionsOptions: DropdownOption[] = Array.from(sections).map(section => ({ label: section, value: section }))
-        setSections(sectionsOptions)
-    }, [displayStudents])
+    useEffect(() => {
+        const fetchSections = async () => {
+            const fixedCourseNum = 1
+            const sectionsData = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/course/${fixedCourseNum}/sections`).then(res => res.json())
+            const sectionsToDisplay: DropdownOption[] = sectionsData.map((section: any) => ({
+                label: section.name,
+                value: section.id,
+            }))
+            setSections(sectionsToDisplay)
+        }
+        fetchSections()
+    }, [])
 
     return {
         displayStudents: displayStudents,
@@ -113,6 +129,7 @@ const useStudentsProvider = (): StudentsContextType => {
         totalStudents: totalStudents,
         pageCount: pageCount,
         updateTitle: updateTitleTerms,
+        filterSections: filterSections,
         pagination: pagination,
         setPagination: setPagination,
     }

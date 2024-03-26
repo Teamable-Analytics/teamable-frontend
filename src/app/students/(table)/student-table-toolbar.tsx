@@ -9,6 +9,7 @@ import { DataTableViewOptions } from "@/components/ui/data-table-view-options"
 
 import { DataTableFacetedFilter } from "@/components/ui/data-table-faceted-filter"
 import { useStudents } from "@/app/students/(hooks)/useStudents"
+import { StudentTableFilter } from "./student-table-filter"
 
 type DataTableToolbarProps<TData> = {
   table: Table<TData>
@@ -29,7 +30,7 @@ export function DataTableToolbar<TData>({
                     className="h-8 w-[150px] lg:w-[250px]"
                 />
                 {table.getColumn("sections") && (
-                    <DataTableFacetedFilter
+                    <StudentTableFilter
                         column={table.getColumn("sections")}
                         title="Sections"
                         options={currentSections}
