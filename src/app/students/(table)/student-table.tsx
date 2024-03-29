@@ -44,8 +44,7 @@ const DataTable = <TData, TValue>({
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [sorting, setSorting] = useState<SortingState>([])
 
-    const { pagination, setPagination } = useStudents() ?? { pagination: { pageIndex: 0, pageSize: 10 }, setPagination: () => {} }
-    const { pageCount = 0 } = useStudents() || {}
+    const { pagination, setPagination, pageCount } = useStudents()
 
     const table = useReactTable({
         data,

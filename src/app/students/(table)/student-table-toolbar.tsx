@@ -19,14 +19,13 @@ export function DataTableToolbar<TData>({
     table,
 }: DataTableToolbarProps<TData>) {
     const isFiltered = table.getState().columnFilters.length > 0
-    const currentSections = useStudents()?.currentSections ?? []
-    const { updateTitle } = useStudents() ?? { updateTitle: () => {} }
+    const { currentSections, setSearchQuery } = useStudents()
     return (
         <div className="flex items-center justify-between mt-2">
             <div className="flex flex-1 items-center space-x-2">
                 <Input
                     placeholder="Search students..."
-                    onChange={(event) => updateTitle(event.target.value)}
+                    onChange={(event) => setSearchQuery(event.target.value)}
                     className="h-8 w-[150px] lg:w-[250px]"
                 />
                 {table.getColumn("sections") && (

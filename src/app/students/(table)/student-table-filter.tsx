@@ -37,17 +37,13 @@ export function StudentTableFilter<TData, TValue>({
     title,
     options,
 }: DataTableFacetedFilterProps<TData, TValue>) {
-    const { filterSections } = useStudents() ?? { filterSections: () => {} }
+    const { filterSections } = useStudents()
     const [selectedValues, setSelectedValues] = useState<Set<string>>(new Set())
 
     const handleSelect = (selectedOption: string) => {
         setSelectedValues((prevSelectedValues) => {
             const newSelectedValues = new Set(prevSelectedValues)
-            if (newSelectedValues.has(selectedOption)) {
-                newSelectedValues.delete(selectedOption)
-            } else {
-                newSelectedValues.add(selectedOption)
-            }
+            newSelectedValues.add(selectedOption)
             const updatedOptions = options.filter(option => newSelectedValues.has(option.value))
             filterSections(updatedOptions)
             return newSelectedValues
