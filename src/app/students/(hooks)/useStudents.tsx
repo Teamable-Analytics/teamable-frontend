@@ -83,7 +83,6 @@ const useStudentsProvider = (): StudentsContextType => {
     }), [pagination.pageIndex, pagination.pageSize, search, sectionTerms])
 
     useEffect(() => {
-        console.log('hellooo')
         const queryString = createQueryString(queryStringParams)
         const fetchStudents = async () => {
             const courseMemberResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/course-members/course/${FIXED_COURSE_NUM}/?${queryString}`)
