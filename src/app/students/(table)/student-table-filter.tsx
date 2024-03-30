@@ -1,5 +1,4 @@
 import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons"
-import { Column } from "@tanstack/react-table"
 
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
@@ -22,15 +21,7 @@ import { Separator } from "@/components/ui/separator"
 import { useStudents } from "../(hooks)/useStudents"
 import { useState } from "react"
 
-type DataTableFacetedFilterProps<TData, TValue> = {
-  column?: Column<TData, TValue>
-  title?: string
-  options: {
-    label: string
-    value: string
-    icon?: React.ComponentType<{ className?: string }>
-  }[]
-}
+import type { DataTableFacetedFilterProps } from "@/components/ui/data-table-faceted-filter"
 
 export function StudentTableFilter<TData, TValue>({
     column,

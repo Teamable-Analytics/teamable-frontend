@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DataTableViewOptions } from "@/components/ui/data-table-view-options"
 
-import { DataTableFacetedFilter } from "@/components/ui/data-table-faceted-filter"
 import { useStudents } from "@/app/students/(hooks)/useStudents"
 import { StudentTableFilter } from "./student-table-filter"
 

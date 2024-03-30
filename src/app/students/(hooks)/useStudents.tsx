@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, createContext, useContext, PropsWithChildren, useMemo, useEffect, useCallback } from 'react'
 import { Student } from '@/_temp_types/student'
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { useSearchParams, usePathname } from 'next/navigation'
 import { PaginationState } from '@tanstack/react-table'
 
 
@@ -47,7 +47,6 @@ const createQueryString = (params: Record<string, string | number | undefined>) 
     })
     return searchParams.toString()
 }
-// todo
 const FIXED_COURSE_NUM = 1
 
 const useStudentsProvider = (): StudentsContextType => {
