@@ -5,15 +5,19 @@ import {Button} from "@/components/ui/button"
 import {DataTable} from "@/components/ui/data-table"
 import {mutableColumnDefs, persistedColumnDefs} from "@/app/project-sets/[projectSetId]/columns"
 import {redirect} from "next/navigation"
-import {Input} from "@/components/ui/input"
 import {ApiTeamSetTemplate} from "@/_temp_types/api/teams"
 import {toast} from "@/components/ui/use-toast"
 import {ProjectSetSelect} from "@/app/project-sets/[projectSetId]/(components)/projectSetSelect"
 import {SidebarProjectsDisplay} from "@/app/project-sets/[projectSetId]/(components)/sidebarProjectsDisplay"
 import {EditModeButton} from "@/app/project-sets/[projectSetId]/(components)/editModeButton"
+import {NumProjectsSubtitle} from "@/app/project-sets/[projectSetId]/(components)/numProjectsSubtitle"
 
 async function getRawProjectSetsData(): Promise<ApiTeamSetTemplate[]> {
-    const response = await fetch(process.env.BACKEND_URL + '/api/v1/teamset-templates')
+    const response = await fetch(process.env.BACKEND_URL + '/api/v1/teamset-templates',
+        {
+            // The data needs to be fetched from the API because it is dynamically patched
+            cache: 'no-cache',
+        })
     if (!response.ok) {
         throw new Error('Unable to fetch project sets from API.')
     }
@@ -30,7 +34,6 @@ type ProjectPageParams = {
 async function ProjectPage({params, searchParams}: ProjectPageParams) {
     const {projectSetId} = params
     const isEditMode = searchParams?.isEdit?.toLowerCase() === 'true' ?? false
-    const currentProjectIdx = searchParams?.projectIdx ? parseInt(searchParams.projectIdx) : 0
     const sidebarSearchTerm = searchParams?.search ?? ''
 
     const rawProjectSets = await getRawProjectSetsData()
@@ -54,7 +57,7 @@ async function ProjectPage({params, searchParams}: ProjectPageParams) {
     const currentProjectSet: ProjectSet = {
         id: rawCurrentProjectSet.id,
         name: rawCurrentProjectSet.name,
-        numProjects: rawCurrentProjectSet.teams.length,
+        numProjects: rawCurrentProjectSet?.teams?.length ?? 0,
     }
 
     const allProjects: Project[] = rawCurrentProjectSet.teams.map((team): Project => ({
@@ -65,8 +68,11 @@ async function ProjectPage({params, searchParams}: ProjectPageParams) {
     }))
     const displayProjects = allProjects.filter((project) => project.name.toLowerCase().includes(sidebarSearchTerm.toLowerCase()))
 
-    console.log(currentProjectIdx)
-    const currentProject: Project = displayProjects[currentProjectIdx]
+    const currentProjectId: number | null = searchParams?.projectId ? parseInt(searchParams.projectId) : (displayProjects?.[0]?.id ?? null)
+    const currentProject: Project | undefined = displayProjects?.find((project) => project.id === currentProjectId)
+    if (!currentProject && displayProjects?.length > 0) {
+        redirect(`/project-sets/${projectSetId}?isEdit=${isEditMode}&projectId=${displayProjects[0].id}&search=${sidebarSearchTerm}`)
+    }
 
     const columns = isEditMode ? mutableColumnDefs : persistedColumnDefs
 
@@ -94,7 +100,7 @@ async function ProjectPage({params, searchParams}: ProjectPageParams) {
                             <div className="w-full">
                                 <SidebarProjectsDisplay
                                     projects={displayProjects}
-                                    currentProjectIdx={currentProjectIdx}
+                                    currentProjectId={currentProjectId}
                                     currentSearchTerm={sidebarSearchTerm}
                                     currentEditMode={isEditMode}
                                 />
@@ -116,33 +122,17 @@ async function ProjectPage({params, searchParams}: ProjectPageParams) {
                                 <div className="flex items-center gap-2">
                                     <EditModeButton
                                         currentEditMode={isEditMode}
-                                        currentProjectIdx={currentProjectIdx}
+                                        currentProjectId={currentProjectId}
                                         currentSearchTerm={sidebarSearchTerm}
                                     />
                                 </div>
                             </div>
                             <div className="flex items-center mt-2">
-                                <Text element="p" as="smallText">
-                                    This project can be completed by&nbsp;
-                                </Text>
-                                {isEditMode ? (
-                                    <Input
-                                        className="w-8 text-center h-fit text-foreground text-sm font-medium leading-none border-0 border-b p-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:ring-offset-transparent focus-visible:ring-transparent focus-visible:outline-none"
-                                        defaultValue={currentProject.numberOfTeams}
-                                        // onBlur={(e) => {
-                                        //     if (!isNaN(parseInt(e.target.value))) {
-                                        //         handleUpdateNumTeamsPerProject(parseInt(e.target.value))
-                                        //     }
-                                        // }}
-                                    />
-                                ) : (
-                                    <Text element="p" as="smallText">
-                                        {currentProject.numberOfTeams}
-                                    </Text>
-                                )}
-                                <Text element="p" as="smallText" className="">
-                                    &nbsp;team(s).
-                                </Text>
+                                <NumProjectsSubtitle
+                                    project={currentProject}
+                                    isEditMode={isEditMode}
+                                    projectSetId={currentProjectSet.id}
+                                />
                             </div>
                         </div>
                         <div className="flex flex-col mt-5">
@@ -168,21 +158,6 @@ async function ProjectPage({params, searchParams}: ProjectPageParams) {
             </div>
         </div>
     )
-
-    async function handleUpdateNumTeamsPerProject(numOfTeams: number) {
-        const res = await fetch(process.env.BACKEND_URL + '/api/v1/teamset-templates/' + currentProjectSet.id + '/teams/' + currentProject.id, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                number_of_teams: numOfTeams,
-            }),
-        })
-
-        // TODO: check res
-        console.log(res)
-    }
 }
 
 export default ProjectPage

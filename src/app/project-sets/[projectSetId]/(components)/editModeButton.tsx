@@ -7,15 +7,15 @@ import {useRouter} from "next/navigation"
 
 export type EditModeButtonProps = {
     currentSearchTerm: string
-    currentProjectIdx: number
+    currentProjectId: number
     currentEditMode: boolean
 }
 
-export function EditModeButton({currentSearchTerm, currentProjectIdx, currentEditMode}: EditModeButtonProps) {
+export function EditModeButton({currentSearchTerm, currentProjectId, currentEditMode}: EditModeButtonProps) {
     const router = useRouter()
 
     const updateIsEditMode = (isEditMode: boolean) => {
-        router.push(`?isEdit=${isEditMode}&projectIdx=${currentProjectIdx}&search=${currentSearchTerm}`)
+        router.push(`?isEdit=${isEditMode}&projectId=${currentProjectId}&search=${currentSearchTerm}`)
     }
 
     return (

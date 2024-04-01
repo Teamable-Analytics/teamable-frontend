@@ -10,25 +10,23 @@ import {useRouter} from "next/navigation"
 export type SidebarProjectsDisplayProps = {
     projects: Project[]
     currentSearchTerm: string
-    currentProjectIdx: number
+    currentProjectId: number
     currentEditMode: boolean
 }
 
-export function SidebarProjectsDisplay({projects, currentSearchTerm, currentProjectIdx, currentEditMode}: SidebarProjectsDisplayProps) {
+export function SidebarProjectsDisplay({projects, currentSearchTerm, currentProjectId, currentEditMode}: SidebarProjectsDisplayProps) {
     const router = useRouter()
 
-    const currentProjectId = projects.length > 0 ? projects[currentProjectIdx].id : null
-
     const updateSearchTerm = (newSearchTerm: string) => {
-        router.push(`?isEdit=${currentEditMode}&projectIdx=${currentProjectIdx}&search=${newSearchTerm}`)
+        router.push(`?isEdit=${currentEditMode}&projectId=${currentProjectId}&search=${newSearchTerm}`)
     }
 
-    const updateProjectIdx = (newProjectIdx: number) => {
-        router.push(`?isEdit=${currentEditMode}&projectIdx=${newProjectIdx}&search=${currentSearchTerm}`)
+    const updateProjectIdx = (newProjectId: number) => {
+        router.push(`?isEdit=${currentEditMode}&projectId=${newProjectId}&search=${currentSearchTerm}`)
     }
 
-    const handleProjectChanged = (project: Project, projectIdx: number) => {
-        updateProjectIdx(projectIdx)
+    const handleProjectChanged = (project: Project) => {
+        updateProjectIdx(project.id)
         // TODO: shoot update api
     }
 
@@ -46,12 +44,12 @@ export function SidebarProjectsDisplay({projects, currentSearchTerm, currentProj
                 }}
             />
             <div className="flex flex-col w-full mt-2 gap-1 pr-4">
-                {projects.map((project, projectIdx) => (
+                {projects.map((project) => (
                     <Button
                         className="justify-start"
                         variant={project.id === currentProjectId ? "secondary" : "ghost"}
                         key={project.id}
-                        onClick={() => handleProjectChanged(project, projectIdx)}
+                        onClick={() => handleProjectChanged(project)}
                     >
                         {project.name}
                     </Button>
