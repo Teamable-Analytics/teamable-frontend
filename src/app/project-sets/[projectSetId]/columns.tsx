@@ -13,39 +13,10 @@ import {
 import React from "react"
 import {ChevronDownIcon} from "@radix-ui/react-icons"
 
-function getAttributeNameMap(): Record<number, string> {
-    return {
-        1: "Academic History",
-        2: "Timeslot Availability",
-        3: "Age",
-    }
-}
-
-function getAttributeValueMap(): Record<number, Record<number, string>> {
-    return {
-        1: {
-            1: '10%',
-            2: '50%',
-            3: '90%',
-        },
-        2: {
-            1: '3pm - 6pm',
-            2: '6pm - 9pm',
-            3: '9pm - 12am',
-        },
-        3: {
-            1: '20',
-            2: '25',
-            3: '30',
-        },
-    }
-}
-
 
 function convertAttributeName(projectId: number): string {
-    const attributeNameMap = getAttributeNameMap()
-
-    return attributeNameMap[projectId]
+    // TODO: Get attribute name from API
+    return ""
 }
 
 export const persistedColumnDefs: ColumnDef<ProjectRequirement>[] = [
@@ -65,8 +36,8 @@ export const persistedColumnDefs: ColumnDef<ProjectRequirement>[] = [
     },
 ]
 
-const allAttributes = getAttributeNameMap()
-const attributeMap = getAttributeValueMap()
+const allAttributes: Record<number, string> = {}
+const attributeMap: Record<number, Record<number, string>> = {}
 
 function handleUpdatedProjectRequirement(updatedRequirement: ProjectRequirement) {
     // TODO: API call to update the project requirements
