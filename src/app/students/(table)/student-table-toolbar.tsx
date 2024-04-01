@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DataTableViewOptions } from "@/components/ui/data-table-view-options"
 
-import { DataTableFacetedFilter } from "@/components/ui/data-table-faceted-filter"
 import { useStudents } from "@/app/students/(hooks)/useStudents"
+import { StudentTableFilter } from "./student-table-filter"
 
 type DataTableToolbarProps<TData> = {
   table: Table<TData>
@@ -18,20 +18,17 @@ export function DataTableToolbar<TData>({
     table,
 }: DataTableToolbarProps<TData>) {
     const isFiltered = table.getState().columnFilters.length > 0
-    const currentSections = useStudents()?.currentSections ?? []
+    const { currentSections, setSearchQuery } = useStudents()
     return (
         <div className="flex items-center justify-between mt-2">
             <div className="flex flex-1 items-center space-x-2">
                 <Input
-                    placeholder="Filter students..."
-                    value={(table.getColumn("firstName")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("firstName")?.setFilterValue(event.target.value)
-                    }
+                    placeholder="Search students..."
+                    onChange={(event) => setSearchQuery(event.target.value)}
                     className="h-8 w-[150px] lg:w-[250px]"
                 />
                 {table.getColumn("sections") && (
-                    <DataTableFacetedFilter
+                    <StudentTableFilter
                         column={table.getColumn("sections")}
                         title="Sections"
                         options={currentSections}
