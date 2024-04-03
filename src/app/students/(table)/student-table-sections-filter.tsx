@@ -34,7 +34,6 @@ export function StudentTableSectionsFilter<TData, TValue>({
     const handleSelect = (selectedOption: string) => {
         if (selectedSections.includes(selectedOption)) {
             setSelectedSections((prev) => prev.filter((section) => section !== selectedOption))
-
         } else {
             setSelectedSections((prev) => [...prev, selectedOption])
         }
