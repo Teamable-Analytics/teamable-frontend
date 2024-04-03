@@ -19,7 +19,7 @@ type DropdownOption = {
 
 type StudentsContextType = {
   displayStudents: Student[];
-  allSections: DropdownOption[];
+  allSections: DropdownOption[] | undefined;
   totalStudents: number;
   pageCount: number;
   setSearchQuery: (searchQuery: string) => void;
@@ -74,12 +74,6 @@ const useStudentsProvider = (): StudentsContextType => {
         setPagination({ ...pagination, pageIndex: 0})
     }, [pagination, setSearch, setPagination])
 
-
-    const setCurrentlySelectedSections = useCallback((sectionsPassed: DropdownOption[]) => {
-        setSelectedSections(sectionsPassed.map((section) => section.value))
-        setPagination({ ...pagination, pageIndex: 0})
-    }, [ setPagination, pagination])
-
     const queryStringParams: QueryParams = useMemo(() => ({
         page: pagination.pageIndex + 1, // adding one to make it appear as 1 indexed for the URL query in browser
         per_page: pagination.pageSize,
@@ -89,11 +83,8 @@ const useStudentsProvider = (): StudentsContextType => {
 
     useEffect(() => {
         let newSelectedSections = selectedSections.filter((section) => !isNaN(parseInt(section)))
-        // todo: allsections make undefined
-        console.log({selectedSections, newSelectedSections})
-        if (allSections.length > 0) {
+        if (allSections !== undefined) {
             newSelectedSections = newSelectedSections.filter((section) => allSections.find((sectionOption) => sectionOption.value === section))
-            console.log('this would be bad', newSelectedSections)
         }
         if (newSelectedSections.length !== selectedSections.length) {
             setSelectedSections(newSelectedSections)

@@ -30,7 +30,7 @@ export function DataTableToolbar<TData>({
                     <StudentTableSectionsFilter
                         column={table.getColumn("sections")}
                         title="Sections"
-                        options={allSections}
+                        options={allSections ?? []}
                     />
                 )}
             </div>
