@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { DataTableViewOptions } from "@/components/ui/data-table-view-options"
 
 import { useStudents } from "@/app/students/(hooks)/useStudents"
-import { StudentTableFilter } from "./student-table-filter"
+import { StudentTableSectionsFilter } from "@/app/students/(table)/student-table-sections-filter"
 
 type DataTableToolbarProps<TData> = {
   table: Table<TData>
@@ -17,8 +17,7 @@ type DataTableToolbarProps<TData> = {
 export function DataTableToolbar<TData>({
     table,
 }: DataTableToolbarProps<TData>) {
-    const isFiltered = table.getState().columnFilters.length > 0
-    const { currentSections, setSearchQuery } = useStudents()
+    const { allSections, setSearchQuery } = useStudents()
     return (
         <div className="flex items-center justify-between mt-2">
             <div className="flex flex-1 items-center space-x-2">
@@ -28,21 +27,11 @@ export function DataTableToolbar<TData>({
                     className="h-8 w-[150px] lg:w-[250px]"
                 />
                 {table.getColumn("sections") && (
-                    <StudentTableFilter
+                    <StudentTableSectionsFilter
                         column={table.getColumn("sections")}
                         title="Sections"
-                        options={currentSections}
+                        options={allSections ?? []}
                     />
-                )}
-                {isFiltered && (
-                    <Button
-                        variant="ghost"
-                        onClick={() => table.resetColumnFilters()}
-                        className="h-8 px-2 lg:px-3"
-                    >
-            Reset
-                        <Cross2Icon className="ml-2 h-4 w-4" />
-                    </Button>
                 )}
             </div>
             <div className="flex items-center space-x-2">

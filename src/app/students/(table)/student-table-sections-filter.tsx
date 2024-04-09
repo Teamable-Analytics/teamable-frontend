@@ -19,26 +19,24 @@ import {
 } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 import { useStudents } from "../(hooks)/useStudents"
-import { useState } from "react"
+import { useSearchParams } from "next/navigation"
+import { useState, useEffect } from "react"
 
 import type { DataTableFacetedFilterProps } from "@/components/ui/data-table-faceted-filter"
 
-export function StudentTableFilter<TData, TValue>({
+export function StudentTableSectionsFilter<TData, TValue>({
     column,
     title,
     options,
 }: DataTableFacetedFilterProps<TData, TValue>) {
-    const { filterSections } = useStudents()
-    const [selectedValues, setSelectedValues] = useState<Set<string>>(new Set())
+    const { setSelectedSections, selectedSections } = useStudents()
 
     const handleSelect = (selectedOption: string) => {
-        setSelectedValues((prevSelectedValues) => {
-            const newSelectedValues = new Set(prevSelectedValues)
-            newSelectedValues.add(selectedOption)
-            const updatedOptions = options.filter(option => newSelectedValues.has(option.value))
-            filterSections(updatedOptions)
-            return newSelectedValues
-        })
+        if (selectedSections.includes(selectedOption)) {
+            setSelectedSections((prev) => prev.filter((section) => section !== selectedOption))
+        } else {
+            setSelectedSections((prev) => [...prev, selectedOption])
+        }
     }
 
     return (
@@ -47,26 +45,26 @@ export function StudentTableFilter<TData, TValue>({
                 <Button variant="outline" size="sm" className="h-8 border-dashed">
                     <PlusCircledIcon className="mr-2 h-4 w-4" />
                     {title}
-                    {selectedValues?.size > 0 && (
+                    {selectedSections.length > 0 && (
                         <>
                             <Separator orientation="vertical" className="mx-2 h-4" />
                             <Badge
                                 variant="secondary"
                                 className="rounded-sm px-1 font-normal lg:hidden"
                             >
-                                {selectedValues.size}
+                                {selectedSections.length}
                             </Badge>
                             <div className="hidden space-x-1 lg:flex">
-                                {selectedValues.size > 2 ? (
+                                {selectedSections.length > 2 ? (
                                     <Badge
                                         variant="secondary"
                                         className="rounded-sm px-1 font-normal"
                                     >
-                                        {selectedValues.size} selected
+                                        {selectedSections.length} selected
                                     </Badge>
                                 ) : (
                                     options
-                                        .filter((option) => selectedValues.has(option.value))
+                                        .filter((option) => selectedSections.includes(option.value))
                                         .map((option) => (
                                             <Badge
                                                 variant="secondary"
@@ -92,7 +90,7 @@ export function StudentTableFilter<TData, TValue>({
                                 <CommandItem key = {option.value} onSelect={() => handleSelect(option.value)}>
                                     <div
                                         className={cn("mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
-                                            selectedValues.has(option.value)
+                                            selectedSections.includes(option.value)
                                                 ? "bg-primary text-primary-foreground"
                                                 : "opacity-50 [&_svg]:invisible")}
                                     >
@@ -106,14 +104,13 @@ export function StudentTableFilter<TData, TValue>({
                             ))
                             }
                         </CommandGroup>
-                        {selectedValues.size > 0 && (
+                        {selectedSections.length > 0 && (
                             <>
                                 <CommandSeparator />
                                 <CommandGroup>
                                     <CommandItem
                                         onSelect={() => {
-                                            setSelectedValues(new Set())
-                                            filterSections([])
+                                            setSelectedSections([])
                                         }}
                                         className="justify-center text-center"
                                     >
