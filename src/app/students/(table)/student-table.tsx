@@ -44,7 +44,7 @@ const DataTable = <TData, TValue>({
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [sorting, setSorting] = useState<SortingState>([])
 
-    const { pagination, setPagination, pageCount } = useStudents()
+    const { pagination, setPagination, pageCount, isLoadingData } = useStudents()
 
     const table = useReactTable({
         data,
@@ -114,7 +114,7 @@ const DataTable = <TData, TValue>({
                                     colSpan={columns.length}
                                     className="h-24 text-center"
                                 >
-                  No results.
+                                    {isLoadingData ? "Loading..." : "No results."}
                                 </TableCell>
                             </TableRow>
                         )}
