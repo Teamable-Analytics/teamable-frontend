@@ -1,14 +1,13 @@
 "use client"
 
-import { Cross2Icon } from "@radix-ui/react-icons"
 import { Table } from "@tanstack/react-table"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DataTableViewOptions } from "@/components/ui/data-table-view-options"
+import { useStudents } from "../(hooks)/useStudents"
+import { StudentTableSectionsFilter } from "./student-table-sections-filter"
 
-import { useStudents } from "@/app/students/(hooks)/useStudents"
-import { StudentTableSectionsFilter } from "@/app/students/(table)/student-table-sections-filter"
 
 type DataTableToolbarProps<TData> = {
   table: Table<TData>

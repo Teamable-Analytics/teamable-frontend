@@ -15,8 +15,8 @@ import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } 
 import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import { Formik, Form, useFormikContext } from 'formik'
-import Trash from '../../../../public/trash-icon.svg'
-import Drag from '../../../../public/drag-icon.svg'
+import Trash from '@public/trash-icon.svg'
+import Drag from '@public/drag-icon.svg'
 import { Input } from "@/components/ui/input"
 
 type Answer = {

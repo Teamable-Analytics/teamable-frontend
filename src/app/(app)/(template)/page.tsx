@@ -1,6 +1,6 @@
 import PageView from "@/components/views/Page"
 import {DataTable} from "@/components/ui/data-table"
-import {columns, DummyData} from "@/app/(template)/columns"
+import { DummyData, columns } from "./columns"
 
 const getFakeData = async () => {
     return [
