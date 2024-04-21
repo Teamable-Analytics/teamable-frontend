@@ -22,7 +22,7 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 ## Loading components from shadcn/ui
 
-Run ```npx shadcn-ui@latest add component-name```
+Run `npx shadcn-ui@latest add component-name`
 (run this in root directory, where package.json is)
 
 The component should be under src/components/ui

@@ -1,5 +1,5 @@
 export type ProjectSet = {
-    id: number
-    name: string
-    numProjects: number
-}
+  id: number;
+  name: string;
+  numProjects: number;
+};

@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import LoginImage from "@public/login-image.webp"
-
+import { Icons } from "@/components/icons"
 
 export default function LoginPage() {
+  const isLoading = false
+
   return (
     <div className="w-full lg:grid lg:grid-cols-2 h-full">
       <div className="flex items-center justify-center py-12">
@@ -43,12 +45,17 @@ export default function LoginPage() {
               Login
             </Button>
             <Button variant="outline" className="w-full">
+              {isLoading ? (
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Icons.googleColored className="mr-2 h-4 w-4" />
+              )}{" "}
               Login with Google
             </Button>
           </div>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
-            <Link href="#" className="underline">
+            <Link href="/accounts/signup" className="underline">
               Sign up
             </Link>
           </div>
