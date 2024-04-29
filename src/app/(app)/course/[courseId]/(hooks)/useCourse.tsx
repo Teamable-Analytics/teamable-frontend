@@ -4,12 +4,12 @@ import { useParams } from "next/navigation"
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react"
 
 type CourseContextType = {
-    courseId: number
+    courseId: number | null
     courseName: string
 }
 
 const CourseContext = createContext<CourseContextType>({
-  courseId: 0,
+  courseId: null,
   courseName: '',
 })
 
@@ -20,18 +20,20 @@ const useCourseProvider = (): CourseContextType => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const courseResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/courses/?id=${courseId}`,)
+        const courseResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/courses/${courseId}`,)
         const courseData = await courseResponse.json()
-        setCourseName(courseData[0].name)
+        setCourseName(courseData.name)
       } catch (e) {
         console.error(e)
       }
     }
-    fetchCourse()
-  }, [courseId])
+    if (courseId && !isNaN(Number(courseId))) {
+      fetchCourse()
+    }
+  }, [courseId, setCourseName])
 
   return {
-    courseId: parseInt(courseId),
+    courseId: !isNaN(Number(courseId)) ? Number(courseId) : null,
     courseName,
   }
 }
