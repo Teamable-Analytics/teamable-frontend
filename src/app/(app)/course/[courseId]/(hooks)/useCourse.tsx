@@ -1,5 +1,6 @@
 "use client"
 
+import Custom404 from "@/app/not-found"
 import { useParams } from "next/navigation"
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react"
 
@@ -40,6 +41,10 @@ const useCourseProvider = (): CourseContextType => {
 
 export const CourseProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const courseContext = useCourseProvider()
+  if (!courseContext.courseId) {
+    return Custom404({ errorMessage: "Course not found" })
+  }
+
   return (
     <CourseContext.Provider value={courseContext}>
       {children}
