@@ -27,13 +27,13 @@ const useCourseProvider = (): CourseContextType => {
         console.error(e)
       }
     }
-    if (courseId && !isNaN(Number(courseId))) {
+    if (courseId && !isNaN(Number(courseId)) && Number(courseId) > 0) {
       fetchCourse()
     }
   }, [courseId, setCourseName])
 
   return {
-    courseId: !isNaN(Number(courseId)) ? Number(courseId) : null,
+    courseId: !isNaN(Number(courseId)) && Number(courseId) > 0 ? Number(courseId) : null,
     courseName,
   }
 }
