@@ -42,7 +42,7 @@ const useCourseProvider = (): CourseContextType => {
 export const CourseProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const courseContext = useCourseProvider()
   if (!courseContext.courseId) {
-    return Custom404({ errorMessage: "Course not found" })
+    return <Custom404 errorMessage="Course not found" />
   }
 
   return (
