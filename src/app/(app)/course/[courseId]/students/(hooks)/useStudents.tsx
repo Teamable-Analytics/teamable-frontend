@@ -9,8 +9,9 @@ import React, {
   useCallback,
 } from "react"
 import { Student } from "@/_temp_types/student"
-import { useSearchParams, usePathname, useParams } from "next/navigation"
+import { useSearchParams, usePathname } from "next/navigation"
 import { PaginationState } from "@tanstack/react-table"
+import { useCourse } from "../../(hooks)/useCourse"
 
 type QueryParams = {
   page: number;
@@ -60,7 +61,7 @@ const createQueryString = (params: Record<string, string | number | undefined>,)
 }
 
 const useStudentsProvider = (): StudentsContextType => {
-  const { courseId } = useParams<{ courseId: string }>()
+  const { courseId } = useCourse()
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
@@ -122,9 +123,7 @@ const useStudentsProvider = (): StudentsContextType => {
         setIsLoadingData(false)
       }
     }
-    if (courseId && !isNaN(Number(courseId)) && Number(courseId) > 0) {
-      fetchStudents()
-    }
+    fetchStudents()
   }, [
     courseId,
     queryStringParams,
@@ -149,9 +148,7 @@ const useStudentsProvider = (): StudentsContextType => {
       }),)
       setAllSections(sectionsToDisplay)
     }
-    if (courseId && !isNaN(Number(courseId)) && Number(courseId) > 0) {
-      fetchSections()
-    }
+    fetchSections()
   }, [courseId, setAllSections])
 
   return {
