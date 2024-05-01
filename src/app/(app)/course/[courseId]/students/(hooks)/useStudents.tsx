@@ -11,6 +11,7 @@ import React, {
 import { Student } from "@/_temp_types/student"
 import { useSearchParams, usePathname } from "next/navigation"
 import { PaginationState } from "@tanstack/react-table"
+import { useCourse } from "../../(hooks)/useCourse"
 
 type QueryParams = {
   page: number;
@@ -58,9 +59,9 @@ const createQueryString = (params: Record<string, string | number | undefined>,)
   })
   return searchParams.toString()
 }
-const FIXED_COURSE_NUM = 10
 
 const useStudentsProvider = (): StudentsContextType => {
+  const { courseId } = useCourse()
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
@@ -106,7 +107,7 @@ const useStudentsProvider = (): StudentsContextType => {
     const queryString = createQueryString(queryStringParams)
     const fetchStudents = async () => {
       try {
-        const courseMemberResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/course-members/course/${FIXED_COURSE_NUM}/?${queryString}`,)
+        const courseMemberResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/course-members/course/${courseId}/?${queryString}`,)
         const courseMemberData = await courseMemberResponse.json()
         const studentsToDisplay: Student[] = courseMemberData.results.map((member: any) => ({
           id: member.user.id,
@@ -124,6 +125,7 @@ const useStudentsProvider = (): StudentsContextType => {
     }
     fetchStudents()
   }, [
+    courseId,
     queryStringParams,
     setDisplayStudents,
     setTotalStudents,
@@ -138,7 +140,7 @@ const useStudentsProvider = (): StudentsContextType => {
 
   useEffect(() => {
     const fetchSections = async () => {
-      const sectionsResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/course/${FIXED_COURSE_NUM}/sections`,)
+      const sectionsResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/course/${courseId}/sections`,)
       const sectionsData = await sectionsResponse.json()
       const sectionsToDisplay: DropdownOption[] = sectionsData.map((section: any) => ({
         label: section.name,
@@ -147,7 +149,7 @@ const useStudentsProvider = (): StudentsContextType => {
       setAllSections(sectionsToDisplay)
     }
     fetchSections()
-  }, [setAllSections])
+  }, [courseId, setAllSections])
 
   return {
     displayStudents,
