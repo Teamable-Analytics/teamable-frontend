@@ -5,6 +5,15 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Text } from "@/components/ui/text"
 import { Badge } from "@/components/ui/badge"
 import { DataTableColumnHeader } from "@/components/ui/table-column-header"
+import { MoreHorizontal } from "lucide-react"
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 type SectionFilterValue = string[];
 
@@ -67,6 +76,7 @@ export const columns: ColumnDef<Student>[] = [
     ),
     cell: ({ row }) => (
       <div className="flex flex-row gap-2">
+        {/* TODO: convert this to use and render a fancy multiselect component */}
         {(row.getValue("sections") as string[])?.map((section) => (
           <Badge key={section} variant="secondary" className="rounded-sm">
             <Text element="p" as="mutedText">
@@ -81,5 +91,26 @@ export const columns: ColumnDef<Student>[] = [
       return filterValues.some((filterValue) =>
         rowSections.includes(filterValue),)
     },
+  },
+  {
+    id: "actions",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Actions"
+        hasDropDownMenu={true}
+      />
+    ),
+    cell: ({ row }) => (
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <MoreHorizontal size={20} />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem>Edit Sections</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ),
   },
 ]
