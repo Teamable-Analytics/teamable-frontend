@@ -4,6 +4,7 @@ import "./globals.css"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import { Separator } from "@/components/ui/separator"
+import {Toaster} from "@/components/ui/toaster"
 
 const manrope = Manrope({ subsets: ["latin"] })
 
@@ -26,6 +27,7 @@ export default function RootLayout({
         {children}
         <Separator />
         <Footer />
+        <Toaster />
       </body>
     </html>
   )
