@@ -7,7 +7,7 @@ import { redirect } from "next/navigation"
 import { columns } from "./columns"
 
 async function getProjectSetsData(): Promise<ProjectSet[]> {
-  const response = await fetch(process.env.BACKEND_URL + "/api/v1/teamset-templates",)
+  const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/v1/teamset-templates",)
   if (!response.ok) {
     throw new Error("Unable to fetch project sets from API.")
   }
