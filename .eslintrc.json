@@ -2,7 +2,7 @@
   "extends": "next/core-web-vitals",
   "rules": {
     "semi": ["error", "never"],
-    "indent": ["error", 4],
+    "indent": ["error", 2],
     "jsx-quotes": ["error", "prefer-double"],
     "comma-dangle": ["error", "always-multiline"],
     "comma-spacing": "error",
@@ -15,5 +15,6 @@
     "brace-style": ["error", "1tbs"],
     "space-infix-ops": "error",
     "space-unary-ops": "error"
-  }
+  },
+  "ignorePatterns": ["next-env.d.ts"]
 }

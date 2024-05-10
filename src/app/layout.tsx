@@ -1,33 +1,34 @@
-import type {Metadata} from 'next'
-import {Manrope} from 'next/font/google'
-import './globals.css'
+import type { Metadata } from "next"
+import { Manrope } from "next/font/google"
+import "./globals.css"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import {Separator} from "@/components/ui/separator"
 import {Toaster} from "@/components/ui/toaster"
 
-const manrope = Manrope({ subsets: ['latin'] })
+const manrope = Manrope({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-    title: 'Teamable Analytics',
-    description: 'A team formation and analytics tool for students and educators.',
+  title: "Teamable Analytics",
+  description:
+    "A team formation and analytics tool for students and educators.",
 }
 
 export default function RootLayout({
-    children,
+  children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-    return (
-        <html lang="en">
-            <body className={`${manrope.className}`}>
-                <Navbar/>
-                <Separator/>
-                {children}
-                <Separator/>
-                <Footer />
-                <Toaster />
-            </body>
-        </html>
-    )
+  return (
+    <html lang="en">
+      <body className={`${manrope.className}`}>
+        <Navbar />
+        <Separator />
+        {children}
+        <Separator />
+        <Footer />
+        <Toaster />
+      </body>
+    </html>
+  )
 }

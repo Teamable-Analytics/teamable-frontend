@@ -18,7 +18,7 @@ export function NumProjectsSubtitle({project, projectSetId}: NumProjectsSubtitle
     const {isEditMode} = useContext(ProjectSetDetailContext)
 
     async function handleUpdateNumTeamsPerProject(numOfTeams: number) {
-        const updateURL = new URL(`/api/v1/teamset-templates/${projectSetId}/team-templates/${project.id}/`, process.env.BACKEND_URL as string)
+        const updateURL = new URL(`/api/v1/teamset-templates/${projectSetId}/team-templates/${project.id}/`, process.env.BACKEND_BASE_URI as string)
         console.log(updateURL)
         return fetch(updateURL, {
             method: 'PATCH',

@@ -7,45 +7,45 @@ import {redirect} from "next/navigation"
 import {type ProjectSet} from "@/_temp_types/projects"
 
 async function getProjectSetsData(): Promise<ProjectSet[]> {
-    const projectSetsURL = new URL('/api/v1/teamset-templates', process.env.BACKEND_URL as string)
-    const response = await fetch(projectSetsURL)
-    if (!response.ok) {
-        throw new Error('Unable to fetch project sets from API.')
-    }
-    const teamSets = await response.json()
-    return teamSets.map(({id, name, teams}: ApiTeamSetTemplate) => ({
-        id,
-        name,
-        numProjects: teams.length,
-    } as ProjectSet))
+  const projectSetsURL = new URL('/api/v1/teamset-templates', process.env.BACKEND_URL as string)
+  const response = await fetch(projectSetsURL)
+  if (!response.ok) {
+    throw new Error('Unable to fetch project sets from API.')
+  }
+  const teamSets = await response.json()
+  return teamSets.map(({id, name, teams}: ApiTeamSetTemplate) => ({
+    id,
+    name,
+    numProjects: teams.length,
+  } as ProjectSet))
 }
 
 async function ProjectSetsPage() {
 
-    const handleRowClick = async (row: ProjectSet) => {
-        "use server"
-        redirect(`/project-sets/${row.id}`)
-    }
+  const handleRowClick = async (row: ProjectSet) => {
+    "use server"
+    redirect(`/project-sets/${row.id}`)
+  }
 
-    return (
-        <PageView
-            title="Project Sets"
-            breadcrumbs={[
-                {title: 'Home', href: '/'},
-                {title: 'Project Sets', href: '/project-sets'},
-            ]}
-        >
-            <DataTable<ProjectSet>
-                columns={columns}
-                data={await getProjectSetsData()}
-                searchBarOptions={{
-                    placeholder: "Search for a project set",
-                    searchColumn: "name",
-                }}
-                rowAction={handleRowClick}
-            />
-        </PageView>
-    )
+  return (
+    <PageView
+      title="Project Sets"
+      breadcrumbs={[
+        {title: 'Home', href: '/'},
+        {title: 'Project Sets', href: '/project-sets'},
+      ]}
+    >
+      <DataTable<ProjectSet>
+        columns={columns}
+        data={await getProjectSetsData()}
+        searchBarOptions={{
+          placeholder: "Search for a project set",
+          searchColumn: "name",
+        }}
+        rowAction={handleRowClick}
+      />
+    </PageView>
+  )
 }
 
 export default ProjectSetsPage
