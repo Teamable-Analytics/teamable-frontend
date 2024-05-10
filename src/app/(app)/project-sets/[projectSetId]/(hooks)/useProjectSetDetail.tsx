@@ -1,10 +1,12 @@
-import {useParams} from "next/navigation";
-import {useEffect} from "react";
-import {OutlinedTeamSetTemplate} from "@/_temp_types/api/teams";
-import {toast} from "@/components/ui/use-toast";
+import {useParams} from "next/navigation"
+import {useEffect, useState} from "react"
+import {type OutlinedTeamSetTemplate} from "@/_temp_types/api/teams"
+import {toast} from "@/components/ui/use-toast"
 
 type ProjectSetDetailContextType = {
-  projectSetId: number
+  projectSetId: number | null
+  outlinedProjectSets: OutlinedTeamSetTemplate[]
+  projectSetIdx: number
 }
 
 
@@ -25,12 +27,14 @@ async function getRawOutlinedProjectSetsData(): Promise<OutlinedTeamSetTemplate[
 
 const useProjectSetDetailProvider = (): ProjectSetDetailContextType => {
   const { projectSetId } = useParams<{ projectSetId: string }>()
+  const [outlinedProjectSets, setOutlinedProjectSets] = useState<OutlinedTeamSetTemplate[]>([])
+  const [projectSetIdx, setProjectSetIdx] = useState<number>(-1)
 
   useEffect(() => {
     const fetchProjectSetDetail = async () => {
       try {
-        const projectSetURL = new URL('/api/v1/teamset-templates', process.env.NEXT_PUBLIC_BACKEND_URL)
-        const projectSet
+        const projectSetURL = new URL('/api/v1/teamset-templates/outlined', process.env.NEXT_PUBLIC_BACKEND_URL)
+        const projectSet = await fetch(projectSetURL)
       } catch (e) {
         toast({
           title: "There was an error fetching the project set.",
@@ -40,4 +44,8 @@ const useProjectSetDetailProvider = (): ProjectSetDetailContextType => {
       }
     }
   }, [projectSetId])
+
+  return {
+    projectSetId: !isNaN(Number(projectSetId)) && Number(projectSetId) > 0 ? Number(projectSetId) : null,
+  }
 }
