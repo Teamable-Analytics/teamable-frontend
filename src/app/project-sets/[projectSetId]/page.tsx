@@ -6,14 +6,18 @@ import {DataTable} from "@/components/ui/data-table"
 import {mutableColumnDefs, persistedColumnDefs} from "@/app/project-sets/[projectSetId]/columns"
 import {redirect} from "next/navigation"
 import {ApiTeamSetTemplate} from "@/_temp_types/api/teams"
-import {toast} from "@/components/ui/use-toast"
-import {ProjectSetSelect} from "@/app/project-sets/[projectSetId]/(components)/projectSetSelect"
-import {SidebarProjectsDisplay} from "@/app/project-sets/[projectSetId]/(components)/sidebarProjectsDisplay"
-import {EditModeButton} from "@/app/project-sets/[projectSetId]/(components)/editModeButton"
-import {NumProjectsSubtitle} from "@/app/project-sets/[projectSetId]/(components)/numProjectsSubtitle"
+import {
+    EditModeButton,
+    ProjectSetSelect,
+    SidebarProjectsDisplay,
+    NumProjectsSubtitle,
+    ProjectSetDetailContextProvider,
+} from "./(components)"
 
 async function getRawProjectSetsData(): Promise<ApiTeamSetTemplate[]> {
-    const response = await fetch(process.env.BACKEND_URL + '/api/v1/teamset-templates',
+    const projectSetsURL = new URL('/api/v1/teamset-templates', process.env.BACKEND_URL as string)
+    console.log(projectSetsURL)
+    const response = await fetch(projectSetsURL,
         {
             // The data needs to be fetched from the API because it is dynamically patched
             cache: 'no-cache',
@@ -26,9 +30,11 @@ async function getRawProjectSetsData(): Promise<ApiTeamSetTemplate[]> {
 
 type ProjectPageParams = {
     params: {
-        projectSetId: string
+        projectSetId: number
     },
-    searchParams?: { [key: string]: string | undefined }
+    searchParams?: {
+        [key: string]: string | undefined
+    }
 }
 
 async function ProjectPage({params, searchParams}: ProjectPageParams) {
@@ -37,13 +43,13 @@ async function ProjectPage({params, searchParams}: ProjectPageParams) {
     const sidebarSearchTerm = searchParams?.search ?? ''
 
     const rawProjectSets = await getRawProjectSetsData()
-    const currentProjectSetIndex = rawProjectSets.findIndex((projectSet) => projectSet.id.toString() === projectSetId)
+    const currentProjectSetIndex = rawProjectSets.findIndex((projectSet) => projectSet.id === projectSetId)
 
     if (currentProjectSetIndex === -1) {
-        toast({
-            title: "Project set not found.",
-            variant: "destructive",
-        })
+        // toast({
+        //     title: "Project set not found.",
+        //     variant: "destructive",
+        // })
         redirect('/project-sets')
     }
 
@@ -77,86 +83,78 @@ async function ProjectPage({params, searchParams}: ProjectPageParams) {
     const columns = isEditMode ? mutableColumnDefs : persistedColumnDefs
 
     return (
-        <div className="container mx-auto py-10">
-            <div className="flex w-full gap-10">
-                {/* Left side */}
-                <div className="max-w-96 min-w-60">
-                    <div className="flex flex-col w-full">
-                        <div>
-                            <Text element="h5" as="h5" className="pb-2">
-                                Project Set
-                            </Text>
-                            <div className="pr-4">
-                                <ProjectSetSelect
-                                    allProjectSets={allProjectSets}
-                                    currentProjectSetId={parseInt(projectSetId)}
-                                />
-                            </div>
-                        </div>
-                        <div className="mt-4 w-full">
-                            <Text element="h5" as="h5" className="pb-2">
-                                Projects
-                            </Text>
-                            <div className="w-full">
-                                <SidebarProjectsDisplay
-                                    projects={displayProjects}
-                                    currentProjectId={currentProjectId}
-                                    currentSearchTerm={sidebarSearchTerm}
-                                    currentEditMode={isEditMode}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* Vertical Separator */}
-                <div className="border-r border-gray-300 h-[85vh]"/>
-
-                {/* Right side */}
-                <div className="w-full">
-                    {currentProject ? <>
+        <ProjectSetDetailContextProvider>
+            <div className="container mx-auto py-10">
+                <div className="flex w-full gap-10">
+                    {/* Left side */}
+                    <div className="max-w-96 min-w-60">
                         <div className="flex flex-col w-full">
-                            <div className="flex justify-between items-center">
-                                <Text as="h3" element="h3">
-                                    {currentProject.name}
+                            <div>
+                                <Text element="h5" as="h5" className="pb-2">
+                                    Project Set
                                 </Text>
-                                <div className="flex items-center gap-2">
-                                    <EditModeButton
-                                        currentEditMode={isEditMode}
-                                        currentProjectId={currentProjectId}
-                                        currentSearchTerm={sidebarSearchTerm}
+                                <div className="pr-4">
+                                    <ProjectSetSelect
+                                        allProjectSets={allProjectSets}
+                                        currentProjectSetId={projectSetId}
                                     />
                                 </div>
                             </div>
-                            <div className="flex items-center mt-2">
-                                <NumProjectsSubtitle
-                                    project={currentProject}
-                                    isEditMode={isEditMode}
-                                    projectSetId={currentProjectSet.id}
-                                />
-                            </div>
-                        </div>
-                        <div className="flex flex-col mt-5">
-                            <div className="flex justify-between items-end">
-                                <Text as="p" element="p" className="font-bold">
-                                    Requirements
+                            <div className="mt-4 w-full">
+                                <Text element="h5" as="h5" className="pb-2">
+                                    Projects
                                 </Text>
-                                <Button size="sm">Add requirements</Button>
+                                <div className="w-full">
+                                    <SidebarProjectsDisplay
+                                        projects={displayProjects}
+                                        currentProjectId={currentProjectId}
+                                    />
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                    {/* Vertical Separator */}
+                    <div className="border-r border-gray-300 h-[85vh]"/>
+
+                    {/* Right side */}
+                    <div className="w-full">
+                        {currentProject ? <>
+                            <div className="flex flex-col w-full">
+                                <div className="flex justify-between items-center">
+                                    <Text as="h3" element="h3">
+                                        {currentProject.name}
+                                    </Text>
+                                    <div className="flex items-center gap-2">
+                                        <EditModeButton/>
+                                    </div>
+                                </div>
+                                <div className="flex items-center mt-2">
+                                    <NumProjectsSubtitle project={currentProject} projectSetId={projectSetId}/>
+                                </div>
+                            </div>
+                            <div className="flex flex-col mt-5">
+                                <div className="flex justify-between items-end">
+                                    <Text as="p" element="p" className="font-bold">
+                                        Requirements
+                                    </Text>
+                                    <Button size="sm">Add requirements</Button>
+                                </div>
+                                <div>
+                                    <DataTable<ProjectRequirement>
+                                        columns={columns}
+                                        data={currentProject?.requirements ?? []}
+                                    />
+                                </div>
+                            </div>
+                        </> : (
                             <div>
-                                <DataTable<ProjectRequirement>
-                                    columns={columns}
-                                    data={currentProject?.requirements ?? []}
-                                />
+                                No project found.
                             </div>
-                        </div>
-                    </> : (
-                        <div>
-                            No project found.
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </ProjectSetDetailContextProvider>
     )
 }
 

@@ -4,19 +4,23 @@ import {Text} from "@/components/ui/text"
 import {Input} from "@/components/ui/input"
 import * as React from "react"
 import {type Project} from "@/_temp_types/projects"
+import {useContext} from "react"
+import {ProjectSetDetailContext} from "@/app/project-sets/[projectSetId]/(components)/ProjectSetDetailContextProvider"
 import {useRouter} from "next/navigation"
 
 export type NumProjectsSubtitleProps = {
     project: Project
-    isEditMode: boolean
     projectSetId: number
 }
 
-export function NumProjectsSubtitle({project, isEditMode, projectSetId}: NumProjectsSubtitleProps) {
+export function NumProjectsSubtitle({project, projectSetId}: NumProjectsSubtitleProps) {
     const router = useRouter()
+    const {isEditMode} = useContext(ProjectSetDetailContext)
 
     async function handleUpdateNumTeamsPerProject(numOfTeams: number) {
-        return fetch(process.env.BACKEND_URL + '/api/v1/teamset-templates/' + projectSetId + '/team-templates/' + project.id + '/', {
+        const updateURL = new URL(`/api/v1/teamset-templates/${projectSetId}/team-templates/${project.id}/`, process.env.BACKEND_URL as string)
+        console.log(updateURL)
+        return fetch(updateURL, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

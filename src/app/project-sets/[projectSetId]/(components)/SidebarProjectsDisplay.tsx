@@ -6,28 +6,28 @@ import {SearchBar} from "@/components/SearchBar"
 import {Button} from "@/components/ui/button"
 import {type Project} from "@/_temp_types/projects"
 import {useRouter} from "next/navigation"
+import {useContext} from "react"
+import {ProjectSetDetailContext} from "@/app/project-sets/[projectSetId]/(components)/ProjectSetDetailContextProvider"
 
 export type SidebarProjectsDisplayProps = {
     projects: Project[]
-    currentSearchTerm: string
     currentProjectId: number
-    currentEditMode: boolean
 }
 
-export function SidebarProjectsDisplay({projects, currentSearchTerm, currentProjectId, currentEditMode}: SidebarProjectsDisplayProps) {
+export function SidebarProjectsDisplay({projects, currentProjectId}: SidebarProjectsDisplayProps) {
     const router = useRouter()
+    const {searchTerm, setSearchTerm} = useContext(ProjectSetDetailContext)
 
     const updateSearchTerm = (newSearchTerm: string) => {
-        router.push(`?isEdit=${currentEditMode}&projectId=${currentProjectId}&search=${newSearchTerm}`)
+        setSearchTerm(newSearchTerm)
     }
 
-    const updateProjectIdx = (newProjectId: number) => {
-        router.push(`?isEdit=${currentEditMode}&projectId=${newProjectId}&search=${currentSearchTerm}`)
+    const updateProjectId = (newProjectId: number) => {
+        router.push(`?projectId=${newProjectId}`)
     }
 
     const handleProjectChanged = (project: Project) => {
-        updateProjectIdx(project.id)
-        // TODO: shoot update api
+        updateProjectId(project.id)
     }
 
     return (
@@ -35,13 +35,8 @@ export function SidebarProjectsDisplay({projects, currentSearchTerm, currentProj
             <SearchBar
                 className="ml-0"
                 placeholder="Search Projects"
-                defaultValue={currentSearchTerm}
-                onBlur={(e) => updateSearchTerm(e.target.value)}
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                        updateSearchTerm(e.currentTarget.value)
-                    }
-                }}
+                defaultValue={searchTerm}
+                onChange={(e) => updateSearchTerm(e.target.value)}
             />
             <div className="flex flex-col w-full mt-2 gap-1 pr-4">
                 {projects.map((project) => (
