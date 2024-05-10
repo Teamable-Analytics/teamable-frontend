@@ -9,9 +9,14 @@ export type ProjectRequirement = {
 };
 
 export enum RequirementOperator {
-  EXACTLY = "exactly",
-  LESS_THAN = "less than",
-  MORE_THAN = "more than",
+    GT = "Greater Than",
+    GTE = "Greater Than or Equal",
+    LT = "Less Than",
+    LTE = "Less Than or Equal",
+    IN = "In",
+    NOT_IN = "Not In",
+    CONTAINS = "Contains",
+    EQ = "Equal",
 }
 
 /**
@@ -19,8 +24,14 @@ export enum RequirementOperator {
  */
 export type Project = {
   id: number;
-  name?: string;
+  name: string;
   // Specifies the number of teams that can work on this project
   numberOfTeams: number;
   requirements?: ProjectRequirement[];
+};
+
+export type ProjectSet = {
+  id: number;
+  name: string;
+  numProjects: number;
 };

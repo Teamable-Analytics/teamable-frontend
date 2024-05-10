@@ -13,6 +13,7 @@ export type ApiTeamTemplate = {
   updatedAt: string;
   slug: string;
   requirements: ApiProjectRequirement[];
+  number_of_teams: number;
   max_people: number;
   min_people: number;
 };
