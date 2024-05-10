@@ -34,6 +34,7 @@ type DataTableSearchBarProps = {
 type DataTableProps<TData> = {
   columns: ColumnDef<TData>[];
   data: TData[];
+  // If not provided, the search bar will not be rendered
   searchBarOptions?: DataTableSearchBarProps;
   // Items controlling the action in the table (located in the top right corner of the table)
   actionItems?: (table: TableType<TData>) => React.ReactNode;
