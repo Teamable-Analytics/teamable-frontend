@@ -34,13 +34,16 @@ type DataTableSearchBarProps = {
 type DataTableProps<TData> = {
   columns: ColumnDef<TData>[];
   data: TData[];
-  searchBarOptions: DataTableSearchBarProps;
+  // If not provided, the search bar will not be rendered
+  searchBarOptions?: DataTableSearchBarProps;
   // Items controlling the action in the table (located in the top right corner of the table)
   actionItems?: (table: TableType<TData>) => React.ReactNode;
   // Buttons group for bulk actions
   bulkActionItems?: (selectedRowModels: RowModel<TData>) => React.ReactNode;
   // Function Controlling the action when a row is clicked
   rowAction?: (row: TData) => void;
+  // Toggle pagination
+  isPaginated?: boolean
 };
 
 const DataTable = <TData, >({
@@ -50,6 +53,7 @@ const DataTable = <TData, >({
   bulkActionItems,
   actionItems,
   rowAction,
+  isPaginated,
 }: DataTableProps<TData>) => {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([],)
@@ -77,7 +81,7 @@ const DataTable = <TData, >({
       <div className="flex items-center justify-between">
         <div className="flex items-center py-4 w-[25vw]">
           {/* make the search bar work on multiple columns of table: firstName, lastName, id */}
-          <SearchBar
+          {searchBarOptions && <SearchBar
             placeholder={searchBarOptions.placeholder}
             value={
               (table
@@ -89,7 +93,7 @@ const DataTable = <TData, >({
                 .getColumn(searchBarOptions.searchColumn)
                 ?.setFilterValue(event.target.value)
             }}
-          />
+          />}
         </div>
         <div className="space-x-2 flex-1">
           {!!bulkActionItems && bulkActionItems(table.getRowModel())}
@@ -144,9 +148,9 @@ const DataTable = <TData, >({
           </TableBody>
         </Table>
       </div>
-      <div className="mt-2">
+      {isPaginated && <div className="mt-2">
         <DataTablePagination table={table as TableType<TData>} />
-      </div>
+      </div>}
     </>
   )
 }
