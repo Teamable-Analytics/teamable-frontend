@@ -12,7 +12,7 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchProps>(({ className, 
     <div className="flex items-center w-full -ml-4">
       <MagnifyingGlassIcon className="relative left-6" />
       <Input
-        type={type || "search"}
+        type={type || "Search"}
         ref={ref}
         placeholder={props.placeholder || "Search"}
         className={cn("pl-8 w-full", className)}
