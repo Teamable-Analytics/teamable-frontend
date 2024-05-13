@@ -1,7 +1,7 @@
 import {useParams} from "next/navigation"
 import {useEffect, useState} from "react"
 import {type OutlinedTeamSetTemplate} from "@/_temp_types/api/teams"
-import {toast} from "@/components/ui/use-toast"
+import {toast} from "@/hooks/use-toast"
 
 type ProjectSetDetailContextType = {
   projectSetId: number | null
@@ -10,7 +10,7 @@ type ProjectSetDetailContextType = {
 }
 
 
-async function getRawOutlinedProjectSetsData(): Promise<OutlinedTeamSetTemplate[]> {
+async function getOutlinedProjectSetsData(): Promise<OutlinedTeamSetTemplate[]> {
   const projectSetsURL = new URL('/api/v1/teamset-templates', process.env.NEXT_PUBLIC_BACKEND_URL as string)
 
   const response = await fetch(projectSetsURL, {cache: 'no-cache'})
@@ -47,5 +47,7 @@ const useProjectSetDetailProvider = (): ProjectSetDetailContextType => {
 
   return {
     projectSetId: !isNaN(Number(projectSetId)) && Number(projectSetId) > 0 ? Number(projectSetId) : null,
+    outlinedProjectSets,
+    projectSetIdx,
   }
 }
