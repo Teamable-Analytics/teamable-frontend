@@ -6,7 +6,7 @@ import {type ProjectSet} from "@/_temp_types/projectSet"
 import {redirect} from "next/navigation"
 import {columns} from "./columns"
 
-async function getProjectSetsData(): Promise<ProjectSet[]> {
+const getProjectSetsData = async (): Promise<ProjectSet[]> => {
   const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/v1/teamset-templates")
   if (!response.ok) {
     throw new Error("Unable to fetch project sets from API.")
@@ -17,13 +17,13 @@ async function getProjectSetsData(): Promise<ProjectSet[]> {
       id,
       name,
       numProjects: teams.length,
-    }) as ProjectSet)
+    }) as ProjectSet,)
 }
 
 async function ProjectSetsPage() {
   const handleRowClick = async (row: ProjectSet) => {
     "use server"
-    redirect(`/project-sets/${row.id}`)
+    redirect(`project-sets/${row.id}`)
   }
 
   return (
@@ -31,7 +31,7 @@ async function ProjectSetsPage() {
       title="Project Sets"
       breadcrumbs={[
         {title: "Home", href: "/"},
-        {title: "Project Sets", href: "/project-sets"},
+        {title: "Project Sets", href: `/project-sets`},
       ]}
     >
       <DataTable<ProjectSet>
