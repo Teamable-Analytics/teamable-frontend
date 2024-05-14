@@ -4,6 +4,9 @@ import {DataTable} from "@/components/ui/data-table"
 import {ProjectRequirement} from "@/_temp_types/projects"
 import {ColumnDef} from "@tanstack/react-table"
 import {DataTableColumnHeader} from "@/components/ui/data-table-column-header"
+import {
+  useProjectsContext,
+} from "@/app/(app)/course/[courseId]/project-sets/[projectSetId]/(hooks)"
 
 const persistedColumnDefs: ColumnDef<ProjectRequirement>[] = [
   {
@@ -23,7 +26,9 @@ const persistedColumnDefs: ColumnDef<ProjectRequirement>[] = [
 ]
 
 export const ProjectRequirementsTable = () => {
-  const columns = []
+  const columns = persistedColumnDefs
+
+  const {currentProject} = useProjectsContext()
 
   return <DataTable<ProjectRequirement>
     columns={columns}
