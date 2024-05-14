@@ -9,8 +9,8 @@ interface SearchProps extends InputProps {}
 
 const SearchBar = React.forwardRef<HTMLInputElement, SearchProps>(({ className, type, ...props }, ref) => {
   return (
-    <div className="flex items-center w-full -ml-4">
-      <MagnifyingGlassIcon className="relative left-6" />
+    <div className="flex items-center w-full">
+      <MagnifyingGlassIcon className="absolute ml-3" />
       <Input
         type={type || "Search"}
         ref={ref}

@@ -19,7 +19,7 @@ export const SidebarProjectList = () => {
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
       />
-      <div className="flex flex-col w-full mt-2 gap-1 pr-4">
+      <div className="flex flex-col w-full mt-2 gap-1">
         {currentProject && displayProjects.map((project) => (
           <Button
             className="justify-start"
