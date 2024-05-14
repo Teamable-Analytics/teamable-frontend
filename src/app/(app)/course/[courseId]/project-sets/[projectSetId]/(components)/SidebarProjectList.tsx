@@ -8,8 +8,8 @@ import {SearchBar} from "@/components/SearchBar"
 import {Button} from "@/components/ui/button"
 
 export const SidebarProjectList = () => {
-  const {currentProjectId, setCurrentProjectId} = useProjectsContext()
-  const {displayProjects, searchText, setSearchText} = useProjectSearchContext()
+  const {displayProjects, currentProject, setCurrentProject} = useProjectsContext()
+  const {searchText, setSearchText} = useProjectSearchContext()
 
   return (
     <>
@@ -20,12 +20,12 @@ export const SidebarProjectList = () => {
         onChange={(e) => setSearchText(e.target.value)}
       />
       <div className="flex flex-col w-full mt-2 gap-1 pr-4">
-        {displayProjects.map((project) => (
+        {currentProject && displayProjects.map((project) => (
           <Button
             className="justify-start"
-            variant={project.id.toString() === currentProjectId ? "secondary" : "ghost"}
+            variant={project.id === currentProject.id ? "secondary" : "ghost"}
             key={project.id}
-            onClick={() => setCurrentProjectId(project.id.toString())}
+            onClick={() => setCurrentProject(project)}
           >
             {project.name}
           </Button>
