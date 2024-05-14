@@ -6,11 +6,6 @@ export type ApiTeamSetTemplate = {
   updatedAt: string;
 };
 
-export type OutlinedTeamSetTemplate = {
-  id: number;
-  name: string;
-}
-
 export type ApiTeamTemplate = {
   id: number;
   name: string;
