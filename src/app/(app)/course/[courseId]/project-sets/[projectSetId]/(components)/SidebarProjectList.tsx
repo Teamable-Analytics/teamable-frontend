@@ -2,22 +2,22 @@
 
 import {
   useProjectsContext,
-  useSearchTermContext,
+  useProjectSearchContext,
 } from "../(hooks)"
 import {SearchBar} from "@/components/SearchBar"
 import {Button} from "@/components/ui/button"
 
 export const SidebarProjectList = () => {
   const {currentProjectId, setCurrentProjectId} = useProjectsContext()
-  const {displayProjects, searchTerm, setSearchTerm} = useSearchTermContext()
+  const {displayProjects, searchText, setSearchText} = useProjectSearchContext()
 
   return (
     <>
       <SearchBar
         className="ml-0"
         placeholder="Search Projects"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
       />
       <div className="flex flex-col w-full mt-2 gap-1 pr-4">
         {displayProjects.map((project) => (

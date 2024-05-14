@@ -1,2 +1,2 @@
-export {useSearchTermContext, SearchTermProvider} from './useSearchTerm'
+export {useProjectSearchContext, ProjectSearchProvider} from './useProjectSearch'
 export {useProjectsContext, ProjectsProvider} from './useProjects'

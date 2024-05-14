@@ -4,7 +4,7 @@ import PageView from "@/components/views/Page"
 import {
   ProjectSetSidebar,
 } from "./(components)"
-import {ProjectsProvider, SearchTermProvider} from "./(hooks)"
+import {ProjectsProvider, ProjectSearchProvider} from "./(hooks)"
 
 const getOutlinedProjectSetsData = async (): Promise<ApiTeamSetTemplate[]> => {
   const projectSetsURL = new URL('/api/v1/teamset-templates', process.env.NEXT_PUBLIC_BACKEND_URL)
@@ -37,9 +37,9 @@ const ProjectSetPage = async ({params: {courseId, projectSetId}}: ProjectPageTyp
     ]}
   >
     <ProjectsProvider>
-      <SearchTermProvider>
+      <ProjectSearchProvider>
         <ProjectSetSidebar allProjectSets={await getOutlinedProjectSetsData()}/>
-      </SearchTermProvider>
+      </ProjectSearchProvider>
     </ProjectsProvider>
   </PageView>
 }
