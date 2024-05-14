@@ -8,21 +8,26 @@ import {toast} from "@/hooks/use-toast"
 type ProjectSetContextType = {
   projectSetId: string
   projects: Project[]
-  currentProjectId: string
-  setCurrentProjectId: (projectId: string) => void
+  displayProjects: Project[]
+  setDisplayProjects: (projects: Project[]) => void
+  currentProject: Project | undefined
+  setCurrentProject: (project: Project) => void
 }
 
 const ProjectSetContext = createContext<ProjectSetContextType>({
   projectSetId: "",
   projects: [],
-  currentProjectId: "",
-  setCurrentProjectId: () => {},
+  displayProjects: [],
+  setDisplayProjects: () => {},
+  currentProject: undefined,
+  setCurrentProject: () => {},
 })
 
 const useProjects = () => {
   const {projectSetId} = useParams<{ projectSetId: string }>()
   const [projects, setProjects] = useState<Project[]>([])
-  const [currentProjectId, setCurrentProjectId] = useState<string>("")
+  const [displayProjects, setDisplayProjects] = useState<Project[]>([])
+  const [currentProject, setCurrentProject] = useState<Project>()
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -43,8 +48,10 @@ const useProjects = () => {
   return {
     projectSetId,
     projects,
-    currentProjectId,
-    setCurrentProjectId,
+    displayProjects,
+    setDisplayProjects,
+    currentProject,
+    setCurrentProject,
   }
 }
 

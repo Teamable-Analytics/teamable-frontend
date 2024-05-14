@@ -1,46 +1,41 @@
 'use client'
 
 import {createContext, useContext, useEffect, useState, type PropsWithChildren, type FC} from "react"
-import {type Project} from "@/_temp_types/projects"
 import {useProjectsContext} from "@/app/(app)/course/[courseId]/project-sets/[projectSetId]/(hooks)/useProjects"
 
 type ProjectSearchContextType = {
-  displayProjects: Project[]
   searchText: string
   setSearchText: (searchText: string) => void
 }
 
 const ProjectSearchContext = createContext<ProjectSearchContextType>({
-  displayProjects: [],
   searchText: '',
   setSearchText: () => {},
 })
 
 const useProjectSearch = () => {
-  const { projects: allProjects, currentProjectId, setCurrentProjectId } = useProjectsContext()
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>([])
+  const {projects: allProjects, setDisplayProjects, currentProject, setCurrentProject} = useProjectsContext()
   const [searchText, setSearchText] = useState('')
 
   useEffect(() => {
     const filteredProjects = allProjects.filter(project => project.name.toLowerCase().includes(searchText.toLowerCase()))
-    setFilteredProjects(filteredProjects)
+    setDisplayProjects(filteredProjects)
     setSearchText(searchText)
 
     // If the current project is not in the filtered projects, set the current project to the first filtered project
-    const isCurrentProjectInFilteredProjects = filteredProjects.some(project => project.id.toString() === currentProjectId)
+    const isCurrentProjectInFilteredProjects = !!currentProject && filteredProjects.some(project => project.id === currentProject.id)
     if (!isCurrentProjectInFilteredProjects && filteredProjects.length > 0) {
-      setCurrentProjectId(filteredProjects[0].id.toString())
+      setCurrentProject(filteredProjects[0])
     }
-  }, [allProjects, searchText, currentProjectId, setCurrentProjectId])
+  }, [allProjects, currentProject, searchText, setCurrentProject, setDisplayProjects])
 
   return {
-    displayProjects: filteredProjects,
     searchText,
     setSearchText,
   }
 }
 
-export const ProjectSearchProvider: FC<PropsWithChildren> = ({ children }) => {
+export const ProjectSearchProvider: FC<PropsWithChildren> = ({children}) => {
   const projectSearch = useProjectSearch()
 
   return (
