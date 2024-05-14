@@ -5,7 +5,7 @@ export type ProjectRequirement = {
   attribute: number;
   operator: RequirementOperator;
   // The number of students with this attribute required as described by the RequirementOperator
-  value: number;
+  subject: number;
 };
 
 export enum RequirementOperator {
@@ -25,8 +25,7 @@ export enum RequirementOperator {
 export type Project = {
   id: number;
   name: string;
-  // Specifies the number of teams that can work on this project
-  numberOfTeams: number;
+  number_of_teams: number; // Specifies the number of teams that can work on this project
   requirements?: ProjectRequirement[];
 };
 
