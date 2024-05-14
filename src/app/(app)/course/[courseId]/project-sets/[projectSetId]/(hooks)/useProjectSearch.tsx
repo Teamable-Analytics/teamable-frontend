@@ -4,13 +4,13 @@ import {createContext, useContext, useEffect, useState, type PropsWithChildren, 
 import {type Project} from "@/_temp_types/projects"
 import {useProjectsContext} from "@/app/(app)/course/[courseId]/project-sets/[projectSetId]/(hooks)/useProjects"
 
-type SearchTermContextType = {
+type ProjectSearchContextType = {
   displayProjects: Project[]
   searchText: string
-  setSearchText: (searchTerm: string) => void
+  setSearchText: (searchText: string) => void
 }
 
-const SearchTermContext = createContext<SearchTermContextType>({
+const ProjectSearchContext = createContext<ProjectSearchContextType>({
   displayProjects: [],
   searchText: '',
   setSearchText: () => {},
@@ -41,13 +41,13 @@ const useProjectSearch = () => {
 }
 
 export const ProjectSearchProvider: FC<PropsWithChildren> = ({ children }) => {
-  const searchTerm = useProjectSearch()
+  const projectSearch = useProjectSearch()
 
   return (
-    <SearchTermContext.Provider value={searchTerm}>
+    <ProjectSearchContext.Provider value={projectSearch}>
       {children}
-    </SearchTermContext.Provider>
+    </ProjectSearchContext.Provider>
   )
 }
 
-export const useProjectSearchContext = () => useContext(SearchTermContext)
+export const useProjectSearchContext = () => useContext(ProjectSearchContext)
