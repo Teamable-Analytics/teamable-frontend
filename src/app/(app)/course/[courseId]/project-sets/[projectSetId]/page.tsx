@@ -2,6 +2,7 @@ import {toast} from "@/hooks/use-toast"
 import {type ApiTeamSetTemplate} from "@/_temp_types/api/teams"
 import PageView from "@/components/views/Page"
 import {
+  ProjectRequirementsTable,
   ProjectSetSidebar,
 } from "./(components)"
 import {ProjectsProvider, ProjectSearchProvider} from "./(hooks)"
@@ -38,7 +39,13 @@ const ProjectSetPage = async ({params: {courseId, projectSetId}}: ProjectPageTyp
   >
     <ProjectsProvider>
       <ProjectSearchProvider>
-        <ProjectSetSidebar allProjectSets={await getOutlinedProjectSetsData()}/>
+        <div className="container mx-auto p-0">
+          <div className="flex w-full gap-10">
+            <ProjectSetSidebar allProjectSets={await getOutlinedProjectSetsData()}/>
+            <div className="border-r border-gray-300 h-[55vh]"/>
+            <ProjectRequirementsTable />
+          </div>
+        </div>
       </ProjectSearchProvider>
     </ProjectsProvider>
   </PageView>
