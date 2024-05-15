@@ -29,6 +29,7 @@ import { DataTablePagination } from "@/components/ui/data-table-pagination"
 import { DataTableToolbar } from "../(table)/student-table-toolbar"
 import { useStudents } from "../(hooks)/useStudents"
 import { columns } from "../(table)/columns"
+import { StudentRowProvider, useStudentRow } from "../(hooks)/useStudentSections"
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -96,17 +97,18 @@ const DataTable = <TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell,
-                        cell.getContext(),)}
-                    </TableCell>
-                  ))}
-                </TableRow>
+                <StudentRowProvider key={row.id}>
+                  <TableRow
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(cell.column.columnDef.cell,
+                          cell.getContext(),)}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </StudentRowProvider>
               ))
             ) : (
               <TableRow>
@@ -128,5 +130,6 @@ const DataTable = <TData, TValue>({
 
 export const StudentTable = () => {
   const { displayStudents } = useStudents() ?? {}
+  const { isEditable, setEditable } = useStudentRow()
   return <DataTable data={displayStudents ?? []} columns={columns} />
 }
