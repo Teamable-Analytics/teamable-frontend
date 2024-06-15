@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -5,9 +7,18 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import LoginImage from "@public/login-image.webp"
 import { Icons } from "@/components/icons"
+import { useLogin } from "@/hooks/use-login"
 
 export default function LoginPage() {
-  const isLoading = false
+  const {loginAsync, isPending} = useLogin()
+
+  const handleLogin = async () => {
+    loginAsync({
+      username: "TODO",
+      password: "TODO",
+    }).then(() => console.log("Logged in"))
+      .catch((error) => console.error(error))
+  }
 
   return (
     <div className="w-full lg:grid lg:grid-cols-2 h-full">
@@ -41,11 +52,11 @@ export default function LoginPage() {
               </div>
               <Input id="password" type="password" required />
             </div>
-            <Button type="submit" className="w-full">
+            <Button type="button" className="w-full" onClick={handleLogin}>
               Login
             </Button>
             <Button variant="outline" className="w-full">
-              {isLoading ? (
+              {isPending ? (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               ) : (
                 <Icons.googleColored className="mr-2 h-4 w-4" />

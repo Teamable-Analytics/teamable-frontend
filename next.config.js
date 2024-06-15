@@ -11,8 +11,10 @@ const nextConfig = {
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     })
-
     return config
+  },
+  env: {
+    BACKEND_BASE_URI: process.env.BACKEND_BASE_URI,
   },
 }
 

@@ -4,7 +4,8 @@ import "./globals.css"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import { Separator } from "@/components/ui/separator"
-import {Toaster} from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster"
+import { QueryClientProvider } from "./providers/query-client-provider"
 
 const manrope = Manrope({ subsets: ["latin"] })
 
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
     "A team formation and analytics tool for students and educators.",
 }
 
+
 export default function RootLayout({
   children,
 }: {
@@ -22,12 +24,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${manrope.className}`}>
-        <Navbar />
-        <Separator />
-        {children}
-        <Separator />
-        <Footer />
-        <Toaster />
+        <QueryClientProvider>
+          <Navbar />
+          <Separator />
+          {children}
+          <Separator />
+          <Footer />
+          <Toaster />
+        </QueryClientProvider>
       </body>
     </html>
   )

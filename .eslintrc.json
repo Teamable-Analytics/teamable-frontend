@@ -1,20 +1,46 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@tanstack/eslint-plugin-query/recommended"
+  ],
   "rules": {
-    "semi": ["error", "never"],
-    "indent": ["error", 2],
-    "jsx-quotes": ["error", "prefer-double"],
-    "comma-dangle": ["error", "always-multiline"],
+    "semi": [
+      "error",
+      "never"
+    ],
+    "indent": [
+      "error",
+      2
+    ],
+    "jsx-quotes": [
+      "error",
+      "prefer-double"
+    ],
+    "comma-dangle": [
+      "error",
+      "always-multiline"
+    ],
     "comma-spacing": "error",
     "no-trailing-spaces": "error",
     "eol-last": "error",
     "key-spacing": "error",
-    "space-before-blocks": ["error", "always"],
-    "function-paren-newline": ["error", "never"],
+    "space-before-blocks": [
+      "error",
+      "always"
+    ],
+    "function-paren-newline": [
+      "error",
+      "never"
+    ],
     "spaced-comment": "error",
-    "brace-style": ["error", "1tbs"],
+    "brace-style": [
+      "error",
+      "1tbs"
+    ],
     "space-infix-ops": "error",
     "space-unary-ops": "error"
   },
-  "ignorePatterns": ["next-env.d.ts"]
+  "ignorePatterns": [
+    "next-env.d.ts"
+  ]
 }
