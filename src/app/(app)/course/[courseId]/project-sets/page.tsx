@@ -7,7 +7,8 @@ import {redirect} from "next/navigation"
 import {columns} from "./columns"
 
 const getProjectSetsData = async (): Promise<ProjectSet[]> => {
-  const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/v1/teamset-templates")
+  const projectSetsURL = new URL('/api/v1/teamset-templates', process.env.NEXT_PUBLIC_BACKEND_URL) + "?detailed=true"
+  const response = await fetch(projectSetsURL)
   if (!response.ok) {
     throw new Error("Unable to fetch project sets from API.")
   }
@@ -20,18 +21,24 @@ const getProjectSetsData = async (): Promise<ProjectSet[]> => {
     }) as ProjectSet,)
 }
 
-async function ProjectSetsPage() {
+type ProjectPageType = {
+  params: {
+    courseId: string,
+  },
+}
+
+async function ProjectSetsPage({params: {courseId}}: ProjectPageType) {
   const handleRowClick = async (row: ProjectSet) => {
     "use server"
-    redirect(`project-sets/${row.id}`)
+    redirect(`/course/${courseId}/project-sets/${row.id}`)
   }
 
   return (
     <PageView
       title="Project Sets"
       breadcrumbs={[
-        {title: "Home", href: "/"},
-        {title: "Project Sets", href: `/project-sets`},
+        {title: "Home", href: `/course/${courseId}}`},
+        {title: "Project Sets", href: `/course/${courseId}/project-sets`},
       ]}
     >
       <DataTable<ProjectSet>
