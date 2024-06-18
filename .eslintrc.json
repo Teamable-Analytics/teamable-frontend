@@ -10,7 +10,7 @@
     "eol-last": "error",
     "key-spacing": "error",
     "space-before-blocks": ["error", "always"],
-    "function-paren-newline": ["error", "never"],
+    "function-paren-newline": ["error", "consistent"],
     "spaced-comment": "error",
     "brace-style": ["error", "1tbs"],
     "space-infix-ops": "error",
