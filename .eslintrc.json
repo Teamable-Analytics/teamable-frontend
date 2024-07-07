@@ -30,7 +30,7 @@
     ],
     "function-paren-newline": [
       "error",
-      "never"
+      "consistent"
     ],
     "spaced-comment": "error",
     "brace-style": [
