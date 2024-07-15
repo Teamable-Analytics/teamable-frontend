@@ -2,71 +2,24 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import LoginImage from "@public/login-image.webp"
-import { Icons } from "@/components/icons"
-import { useLogin } from "@/hooks/use-login"
+import { LogInForm } from "@/app/(accounts)/accounts/login/(components)/LogInForm"
 
 export default function LoginPage() {
-  const {loginAsync, isPending} = useLogin()
-
-  const handleLogin = async () => {
-    loginAsync({
-      username: "TODO",
-      password: "TODO",
-    }).then(() => console.log("Logged in"))
-      .catch((error) => console.error(error))
-  }
-
   return (
-    <div className="w-full lg:grid lg:grid-cols-2 h-screen">
+    <div className="w-full lg:grid lg:grid-cols-2 h-screen px-6 sm:px-0">
       <div className="flex items-center justify-center py-12 h-screen">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
-            <h1 className="text-3xl font-bold">Login</h1>
+            <h1 className="text-3xl font-bold">Welcome back</h1>
             <p className="text-balance text-muted-foreground">
-              Enter your email below to login to your account
+              Enter your details below to access your account
             </p>
           </div>
-          <div className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-              />
-            </div>
-            <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  href="/forgot-password"
-                  className="ml-auto inline-block text-sm underline"
-                >
-                  Forgot your password?
-                </Link>
-              </div>
-              <Input id="password" type="password" required />
-            </div>
-            <Button type="button" className="w-full" onClick={handleLogin}>
-              Login
-            </Button>
-            <Button variant="outline" className="w-full">
-              {isPending ? (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Icons.googleColored className="mr-2 h-4 w-4" />
-              )}{" "}
-              Login with Google
-            </Button>
-          </div>
+          <LogInForm />
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
-            <Link href="/accounts/signup" className="underline">
+            <Link href={"/accounts/signup"} className="underline">
               Sign up
             </Link>
           </div>

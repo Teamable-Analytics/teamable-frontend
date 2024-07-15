@@ -11,50 +11,37 @@ import { Formik, useFormikContext } from "formik"
 import * as Yup from "yup"
 import { InputErrorMessage } from "@/components/InputErrorMessage"
 import { useLogin } from "@/hooks/use-login"
-import { useSignUp } from "@/hooks/use-sign-up"
 
-interface SignUpFormValues {
-  email: string;
+interface LogInFormValues {
+  username: string;
   password: string;
 }
 
-export const SignupForm = () => {
+export const LogInForm = () => {
   const { loginAsync } = useLogin()
-  const { signUpAsync } = useSignUp()
 
-  const onSubmit = async (values: SignUpFormValues) => {
-    const signUpResponse = await signUpAsync({
-      email: values.email,
-      password: values.password,
-    })
-
-    if (!("success" in signUpResponse)) return
-
+  const onSubmit = async (values: LogInFormValues) => {
     await loginAsync({
-      username: values.email,
+      username: values.username,
       password: values.password,
     })
   }
 
   return (
     <Formik
-      initialValues={{ email: "", password: "" }}
+      initialValues={{ username: "", password: "" }}
       onSubmit={onSubmit}
       validationSchema={Yup.object({
-        email: Yup.string()
-          .email("Please enter a valid email address.")
-          .required("Required."),
-        password: Yup.string()
-          .min(8, "Password must be longer than 8 characters.")
-          .required("Required."),
+        username: Yup.string().required("Required."),
+        password: Yup.string().required("Required."),
       })}
     >
-      <SignUpFormFields />
+      <LogInFormFields />
     </Formik>
   )
 }
 
-const SignUpFormFields = () => {
+const LogInFormFields = () => {
   const {
     isValid,
     isValidating,
@@ -70,10 +57,10 @@ const SignUpFormFields = () => {
     <form className={cn("grid gap-6")} onSubmit={handleSubmit}>
       <div className="grid gap-2">
         <div className="grid gap-1">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="username">Email</Label>
           <Input
-            id="email"
-            name="email"
+            id="username"
+            name="username"
             placeholder="name@example.com"
             type="email"
             autoCapitalize="none"
@@ -82,9 +69,9 @@ const SignUpFormFields = () => {
             onChange={handleChange}
             onBlur={handleBlur}
             disabled={isSubmitting || isValidating}
-            value={values.email}
+            value={values.username}
           />
-          <InputErrorMessage id="email" name="email" />
+          <InputErrorMessage id="username" name="username" />
         </div>
         <div className="grid gap-1">
           <Label htmlFor="password">Password</Label>
@@ -110,7 +97,7 @@ const SignUpFormFields = () => {
           {(isSubmitting || isValidating) && (
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           )}
-          Sign up with email
+          Login
         </Button>
       </div>
     </form>
