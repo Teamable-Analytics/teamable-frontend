@@ -25,5 +25,6 @@ export interface SignUpErrorResponse {
 export interface SignUpArgs {
     email: string
     password: string
+    token?: string | null
 }
 

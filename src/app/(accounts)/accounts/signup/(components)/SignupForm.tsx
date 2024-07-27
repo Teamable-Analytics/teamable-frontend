@@ -10,8 +10,8 @@ import { Label } from "@/components/ui/label"
 import { Formik, useFormikContext } from "formik"
 import * as Yup from "yup"
 import { InputErrorMessage } from "@/components/InputErrorMessage"
-import { useLogin } from "@/hooks/use-login"
 import { useSignUp } from "@/hooks/use-sign-up"
+import { useSearchParams } from "next/navigation"
 
 interface SignUpFormValues {
   email: string;
@@ -19,20 +19,14 @@ interface SignUpFormValues {
 }
 
 export const SignupForm = () => {
-  const { loginAsync } = useLogin()
   const { signUpAsync } = useSignUp()
+  const token = useSearchParams().get("token")
 
   const onSubmit = async (values: SignUpFormValues) => {
-    const signUpResponse = await signUpAsync({
+    await signUpAsync({
       email: values.email,
       password: values.password,
-    })
-
-    if (!("success" in signUpResponse)) return
-
-    await loginAsync({
-      username: values.email,
-      password: values.password,
+      token,
     })
   }
 
@@ -64,7 +58,7 @@ const SignUpFormFields = () => {
     handleChange,
     handleBlur,
     handleSubmit,
-  } = useFormikContext()
+  } = useFormikContext<SignUpFormValues>()
 
   return (
     <form className={cn("grid gap-6")} onSubmit={handleSubmit}>
