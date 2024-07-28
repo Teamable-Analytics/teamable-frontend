@@ -1,9 +1,10 @@
 import Link from "next/link"
 
-import {cn} from "@/lib/utils"
-import {buttonVariants} from "@/components/ui/button"
-import {SignupForm} from "./(components)/SignupForm"
-import {Icons} from "@/components/icons"
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
+import { SignupForm } from "./(components)/SignupForm"
+import { Icons } from "@/components/icons"
+import * as React from "react"
 
 export default function AuthenticationPage() {
   return (
@@ -11,8 +12,10 @@ export default function AuthenticationPage() {
       <div className="container relative h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <Link
           href="/accounts/login"
-          className={cn(buttonVariants({ variant: "ghost" }),
-            "absolute right-4 top-4 md:right-8 md:top-8",)}
+          className={cn(
+            buttonVariants({ variant: "ghost" }),
+            "absolute right-4 top-4 md:right-8 md:top-8",
+          )}
         >
           Login
         </Link>
@@ -25,7 +28,8 @@ export default function AuthenticationPage() {
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <p className="text-lg">
-                &ldquo;This website saved me so much time doing manual work.&rdquo;
+                &ldquo;This website saved me so much time doing manual
+                work.&rdquo;
               </p>
               <footer className="text-sm">Bowen Hui, UBC</footer>
             </blockquote>
