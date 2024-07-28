@@ -11,7 +11,7 @@ import { Formik, FormikHelpers, useFormikContext } from "formik"
 import * as Yup from "yup"
 import { InputErrorMessage } from "@/components/InputErrorMessage"
 import { useLogin } from "@/hooks/use-login"
-import {LoginErrorResponse, SignUpErrorResponse} from "@/_temp_types/accounts"
+import { LoginErrorResponse } from "@/_temp_types/accounts"
 
 interface LogInFormValues {
   email: string;
@@ -46,6 +46,7 @@ export const LogInForm = () => {
         email: Yup.string().required("Required."),
         password: Yup.string().required("Required."),
       })}
+      validateOnChange={false}
     >
       <LogInFormFields />
     </Formik>

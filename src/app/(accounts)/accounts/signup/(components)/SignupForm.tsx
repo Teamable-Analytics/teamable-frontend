@@ -53,6 +53,7 @@ export const SignupForm = () => {
           .min(8, "Password must be longer than 8 characters.")
           .required("Required."),
       })}
+      validateOnChange={false}
     >
       <SignUpFormFields />
     </Formik>
