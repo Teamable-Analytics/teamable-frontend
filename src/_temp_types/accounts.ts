@@ -1,30 +1,24 @@
+import { DjangoErrorResponse } from "@/_temp_types/django"
 
-export interface LoginSuccessResponse {
-    token: string
+export interface LoginResponse {
+  token: string;
 }
 
-export interface LoginErrorResponse {
-    non_field_errors?: string[]
-}
+export type LoginErrorResponse = DjangoErrorResponse<"email" | "password">;
 
 export interface LoginArgs {
-    username: string
-    password: string
+  email: string;
+  password: string;
 }
 
-export interface SignUpSuccessResponse {
-    success: true
-    email: string;
+export interface SignUpResponse {
+  email: string;
 }
 
-export interface SignUpErrorResponse {
-    email?: string[];
-    password?: string[];
-}
+export type SignUpErrorResponse = DjangoErrorResponse<"email" | "password" | "token">;
 
 export interface SignUpArgs {
-    email: string
-    password: string
-    token?: string | null
+  email: string;
+  password: string;
+  token?: string | null;
 }
-

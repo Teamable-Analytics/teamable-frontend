@@ -7,32 +7,43 @@ import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Formik, useFormikContext } from "formik"
+import { Formik, FormikHelpers, useFormikContext } from "formik"
 import * as Yup from "yup"
 import { InputErrorMessage } from "@/components/InputErrorMessage"
 import { useLogin } from "@/hooks/use-login"
+import {LoginErrorResponse, SignUpErrorResponse} from "@/_temp_types/accounts"
 
 interface LogInFormValues {
-  username: string;
+  email: string;
   password: string;
 }
 
 export const LogInForm = () => {
   const { loginAsync } = useLogin()
 
-  const onSubmit = async (values: LogInFormValues) => {
-    await loginAsync({
-      username: values.username,
-      password: values.password,
-    })
+  const onSubmit = async (
+    values: LogInFormValues,
+    formikHelpers: FormikHelpers<LogInFormValues>,
+  ) => {
+    try {
+      await loginAsync({
+        email: values.email,
+        password: values.password,
+      })
+    } catch (error: LoginErrorResponse) {
+      "email" in error &&
+        formikHelpers.setFieldError("email", error.email.join(", "))
+      "password" in error &&
+        formikHelpers.setFieldError("password", error.password.join(", "))
+    }
   }
 
   return (
     <Formik
-      initialValues={{ username: "", password: "" }}
+      initialValues={{ email: "", password: "" }}
       onSubmit={onSubmit}
       validationSchema={Yup.object({
-        username: Yup.string().required("Required."),
+        email: Yup.string().required("Required."),
         password: Yup.string().required("Required."),
       })}
     >
@@ -55,12 +66,12 @@ const LogInFormFields = () => {
 
   return (
     <form className={cn("grid gap-6")} onSubmit={handleSubmit}>
-      <div className="grid gap-2">
+      <div className="grid gap-3">
         <div className="grid gap-1">
-          <Label htmlFor="username">Email</Label>
+          <Label htmlFor="email">Email</Label>
           <Input
-            id="username"
-            name="username"
+            id="email"
+            name="email"
             placeholder="name@example.com"
             type="email"
             autoCapitalize="none"
@@ -69,9 +80,9 @@ const LogInFormFields = () => {
             onChange={handleChange}
             onBlur={handleBlur}
             disabled={isSubmitting || isValidating}
-            value={values.username}
+            value={values.email}
           />
-          <InputErrorMessage id="username" name="username" />
+          <InputErrorMessage id="email" name="email" />
         </div>
         <div className="grid gap-1">
           <Label htmlFor="password">Password</Label>
