@@ -7,11 +7,12 @@ import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Formik, useFormikContext } from "formik"
+import { Formik, FormikHelpers, useFormikContext } from "formik"
 import * as Yup from "yup"
 import { InputErrorMessage } from "@/components/InputErrorMessage"
 import { useSignUp } from "@/hooks/use-sign-up"
 import { useSearchParams } from "next/navigation"
+import { SignUpErrorResponse } from "@/_temp_types/accounts"
 
 interface SignUpFormValues {
   email: string;
@@ -22,12 +23,22 @@ export const SignupForm = () => {
   const { signUpAsync } = useSignUp()
   const token = useSearchParams().get("token")
 
-  const onSubmit = async (values: SignUpFormValues) => {
-    await signUpAsync({
-      email: values.email,
-      password: values.password,
-      token,
-    })
+  const onSubmit = async (
+    values: SignUpFormValues,
+    formikHelpers: FormikHelpers<SignUpFormValues>,
+  ) => {
+    try {
+      await signUpAsync({
+        email: values.email,
+        password: values.password,
+        token,
+      })
+    } catch (error: SignUpErrorResponse) {
+      "email" in error &&
+        formikHelpers.setFieldError("email", error.email.join(", "))
+      "password" in error &&
+        formikHelpers.setFieldError("password", error.password.join(", "))
+    }
   }
 
   return (
@@ -62,7 +73,7 @@ const SignUpFormFields = () => {
 
   return (
     <form className={cn("grid gap-6")} onSubmit={handleSubmit}>
-      <div className="grid gap-2">
+      <div className="grid gap-3">
         <div className="grid gap-1">
           <Label htmlFor="email">Email</Label>
           <Input
