@@ -1,0 +1,11 @@
+services:
+  web:
+    build: .
+    image: teamable-frontend:latest
+    env_file:
+      - ./.env
+    command: ["yarn", "start"]
+    privileged: true
+    restart: always
+    ports:
+      - 3000:3000
