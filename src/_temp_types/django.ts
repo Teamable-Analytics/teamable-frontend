@@ -1,5 +1,5 @@
 export type DjangoFieldError = string[];
-export type DjangoErrorResponse<FieldNames extends string = undefined> = Record<
+export type DjangoErrorResponse<FieldNames extends string = never> = Record<
   FieldNames,
   DjangoFieldError
 > & {

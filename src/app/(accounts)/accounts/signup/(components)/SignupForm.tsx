@@ -33,7 +33,7 @@ export const SignupForm = () => {
         password: values.password,
         token,
       })
-    } catch (error: SignUpErrorResponse) {
+    } catch (error: any) {
       "email" in error &&
         formikHelpers.setFieldError("email", error.email.join(", "))
       "password" in error &&

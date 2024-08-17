@@ -30,7 +30,7 @@ export const LogInForm = () => {
         email: values.email,
         password: values.password,
       })
-    } catch (error: LoginErrorResponse) {
+    } catch (error: any) {
       "email" in error &&
         formikHelpers.setFieldError("email", error.email.join(", "))
       "password" in error &&
@@ -63,7 +63,7 @@ const LogInFormFields = () => {
     handleChange,
     handleBlur,
     handleSubmit,
-  } = useFormikContext()
+  } = useFormikContext<LogInFormValues>()
 
   return (
     <form className={cn("grid gap-6")} onSubmit={handleSubmit}>
