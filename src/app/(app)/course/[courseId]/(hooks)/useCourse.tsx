@@ -21,7 +21,7 @@ const useCourseProvider = (): CourseContextType => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const courseResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/courses/${courseId}`,)
+        const courseResponse = await fetch(`${process.env.BACKEND_BASE_URI}/api/v1/courses/${courseId}`,)
         const courseData = await courseResponse.json()
         setCourseName(courseData.name)
       } catch (e) {

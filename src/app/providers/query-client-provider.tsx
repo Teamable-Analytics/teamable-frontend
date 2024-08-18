@@ -1,17 +1,59 @@
 "use client"
 
-import { QueryClient, QueryClientProvider as TSQueryClientProvider } from '@tanstack/react-query'
+import {
+  QueryClient,
+  QueryClientProvider as TSQueryClientProvider,
+} from "@tanstack/react-query"
 
+export async function defaultMutationFn<TArgs>(
+  path: string,
+  args?: TArgs,
+  options?: { allowEmptyResponse?: boolean },
+) {
+  const res = await fetch(`${process.env.BACKEND_BASE_URI}/api/v1/${path}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(args),
+  })
 
-const queryClient = new QueryClient()
+  if (
+    options?.allowEmptyResponse &&
+    res.headers.get("Content-Length") === "0"
+  ) {
+    if (!res.ok) throw Error
+    return
+  }
+
+  const data = await res.json()
+
+  if (!res.ok) {
+    throw data
+  }
+  return data
+}
+
+async function defaultQueryFn({ queryKey }: { queryKey: readonly any[] }) {
+  const res = await fetch(
+    `${process.env.BACKEND_BASE_URI}/api/v1/${queryKey[0] as string}`,
+  )
+  return res.json()
+}
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { queryFn: defaultQueryFn },
+  },
+})
 
 interface QueryClientProviderProps {
-    children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export const QueryClientProvider = ({ children }: QueryClientProviderProps) => {
   return (
-    <TSQueryClientProvider client={queryClient} >
+    <TSQueryClientProvider client={queryClient}>
       {children}
     </TSQueryClientProvider>
   )

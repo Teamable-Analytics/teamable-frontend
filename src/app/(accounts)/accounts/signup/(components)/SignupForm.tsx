@@ -12,7 +12,6 @@ import * as Yup from "yup"
 import { InputErrorMessage } from "@/components/InputErrorMessage"
 import { useSignUp } from "@/hooks/use-sign-up"
 import { useSearchParams } from "next/navigation"
-import { SignUpErrorResponse } from "@/_temp_types/accounts"
 
 interface SignUpFormValues {
   email: string;

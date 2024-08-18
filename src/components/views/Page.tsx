@@ -13,11 +13,11 @@ type PageViewProps = {
 const PageView = ({ children, title, breadcrumbs }: PageViewProps) => {
   return (
     <main className="container flex-col min-h-screen">
-      <div className="flex flex-col gap-6 py-10">
+      <div className="flex flex-col gap-3 pt-12 pb-8">
         {breadcrumbs && (
           <div className="flex gap-1">
             {breadcrumbs.map((breadcrumb, index) => (
-              <div key={index} className="flex flex-row">
+              <div key={index} className="flex flex-row gap-1">
                 <Link href={breadcrumb.href}>
                   <Text element="p" as={"smallText"}>
                     {breadcrumb.title}
@@ -30,7 +30,7 @@ const PageView = ({ children, title, breadcrumbs }: PageViewProps) => {
             ))}
           </div>
         )}
-        <Text element={"h1"} as={"h2"} className="border-0">
+        <Text element={"h1"} as={"h2"} className="text-2xl lg:text-3xl border-0">
           {title}
         </Text>
       </div>

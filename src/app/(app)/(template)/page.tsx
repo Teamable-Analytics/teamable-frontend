@@ -1,9 +1,4 @@
-import PageView from "@/components/views/Page"
-import { DataTable } from "@/components/ui/data-table"
-import { DummyData, columns } from "./columns"
-import Navbar from "@/components/Navbar"
-import {Separator} from "@/components/ui/separator"
-import Footer from "@/components/Footer"
+import { redirect } from "next/navigation"
 
 const getFakeData = async () => {
   return [
@@ -14,30 +9,5 @@ const getFakeData = async () => {
 }
 
 export default async function Home() {
-  const data = await getFakeData()
-
-  return (
-    <>
-      <Navbar />
-      <Separator />
-      <PageView
-        title={"Default Page"}
-        breadcrumbs={[
-          { title: "Home", href: "/" },
-          { title: "Students", href: "/students" },
-        ]}
-      >
-        <DataTable<DummyData>
-          columns={columns}
-          data={data}
-          searchBarOptions={{
-            placeholder: "Search a thing",
-            searchColumn: "name",
-          }}
-        />
-      </PageView>
-      <Separator />
-      <Footer />
-    </>
-  )
+  redirect(`/course/31084/setup`)
 }
