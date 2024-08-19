@@ -7,6 +7,7 @@ import {
 import { useMutation } from "@tanstack/react-query"
 import { useToast } from "@/hooks/use-toast"
 import { useLogin } from "./use-login"
+import { defaultMutationFn } from "@/app/providers/query-client-provider"
 
 export const useSignUp = () => {
   const { toast } = useToast()
@@ -14,23 +15,7 @@ export const useSignUp = () => {
 
   const mutation = useMutation<SignUpResponse, SignUpErrorResponse, SignUpArgs>(
     {
-      mutationFn: async (args) => {
-        const res = await fetch(
-          `${process.env.BACKEND_BASE_URI}/api/v1/accounts/sign-up/`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(args),
-          },
-        )
-        const data = await res.json()
-        if (!res.ok) {
-          throw data
-        }
-        return data
-      },
+      mutationFn: async (args) => defaultMutationFn(`accounts/sign-up/`, args),
       onSuccess: async (data, variables) => {
         toast({
           title: "Thank you!",

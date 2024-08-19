@@ -110,7 +110,10 @@ const SignUpFormFields = () => {
         </div>
         <Button
           disabled={isSubmitting || isValidating || !isValid}
-          onClick={submitForm}
+          onClick={(e) => {
+            e.preventDefault()
+            void submitForm()
+          }}
         >
           {(isSubmitting || isValidating) && (
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

@@ -11,7 +11,6 @@ import { Formik, FormikHelpers, useFormikContext } from "formik"
 import * as Yup from "yup"
 import { InputErrorMessage } from "@/components/InputErrorMessage"
 import { useLogin } from "@/hooks/use-login"
-import { LoginErrorResponse } from "@/_temp_types/accounts"
 
 interface LogInFormValues {
   email: string;
@@ -104,7 +103,10 @@ const LogInFormFields = () => {
         </div>
         <Button
           disabled={isSubmitting || isValidating || !isValid}
-          onClick={submitForm}
+          onClick={(e) => {
+            e.preventDefault()
+            void submitForm()
+          }}
         >
           {(isSubmitting || isValidating) && (
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
