@@ -107,7 +107,7 @@ const useStudentsProvider = (): StudentsContextType => {
     const queryString = createQueryString(queryStringParams)
     const fetchStudents = async () => {
       try {
-        const courseMemberResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/course-members/course/${courseId}/?${queryString}`,)
+        const courseMemberResponse = await fetch(`${process.env.BACKEND_BASE_URI}/api/v1/course-members/course/${courseId}/?${queryString}`,)
         const courseMemberData = await courseMemberResponse.json()
         const studentsToDisplay: Student[] = courseMemberData.results.map((member: any) => ({
           id: member.user.id,
@@ -140,7 +140,7 @@ const useStudentsProvider = (): StudentsContextType => {
 
   useEffect(() => {
     const fetchSections = async () => {
-      const sectionsResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/course/${courseId}/sections`,)
+      const sectionsResponse = await fetch(`${process.env.BACKEND_BASE_URI}/api/v1/course/${courseId}/sections`,)
       const sectionsData = await sectionsResponse.json()
       const sectionsToDisplay: DropdownOption[] = sectionsData.map((section: any) => ({
         label: section.name,
