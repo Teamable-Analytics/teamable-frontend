@@ -1,7 +1,7 @@
 import { useToast } from "@/hooks/use-toast"
 import { useMutation } from "@tanstack/react-query"
 import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
-import { defaultMutationFn } from "@/app/providers/query-client-provider"
+import { defaultMutationFn } from "@/app/(providers)/query-client-provider"
 
 export const useCreateOptInQuiz = () => {
   const { toast } = useToast()

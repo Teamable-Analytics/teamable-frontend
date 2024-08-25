@@ -4,19 +4,31 @@ import {
   QueryClient,
   QueryClientProvider as TSQueryClientProvider,
 } from "@tanstack/react-query"
+import { getTokenAuthHeader } from "../../../utils/auth"
+
+function appendTrailingSlashIfNeeded(path: string) {
+  if (path.endsWith("/")) return path
+  return `${path}/`
+}
 
 export async function defaultMutationFn<TArgs>(
   path: string,
   args?: TArgs,
   options?: { allowEmptyResponse?: boolean },
 ) {
-  const res = await fetch(`${process.env.BACKEND_BASE_URI}/api/v1/${path}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  const res = await fetch(
+    appendTrailingSlashIfNeeded(
+      `${process.env.BACKEND_BASE_URI}/api/v1/${path}`,
+    ),
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(getTokenAuthHeader() ?? {}),
+      },
+      body: JSON.stringify(args),
     },
-    body: JSON.stringify(args),
-  })
+  )
 
   if (
     options?.allowEmptyResponse &&
@@ -36,7 +48,14 @@ export async function defaultMutationFn<TArgs>(
 
 async function defaultQueryFn({ queryKey }: { queryKey: readonly any[] }) {
   const res = await fetch(
-    `${process.env.BACKEND_BASE_URI}/api/v1/${queryKey[0] as string}`,
+    appendTrailingSlashIfNeeded(
+      `${process.env.BACKEND_BASE_URI}/api/v1/${queryKey[0] as string}`,
+    ),
+    {
+      headers: {
+        ...(getTokenAuthHeader() ?? {}),
+      },
+    },
   )
   return res.json()
 }

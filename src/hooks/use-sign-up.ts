@@ -7,7 +7,7 @@ import {
 import { useMutation } from "@tanstack/react-query"
 import { useToast } from "@/hooks/use-toast"
 import { useLogin } from "./use-login"
-import { defaultMutationFn } from "@/app/providers/query-client-provider"
+import { defaultMutationFn } from "@/app/(providers)/query-client-provider"
 
 export const useSignUp = () => {
   const { toast } = useToast()

@@ -6,32 +6,19 @@ import {
 } from "@/_temp_types/accounts"
 import { useMutation } from "@tanstack/react-query"
 import { useToast } from "@/hooks/use-toast"
+import { defaultMutationFn } from "@/app/(providers)/query-client-provider"
+import { setCookie } from "cookies-next"
+import { useRouter } from "next/navigation"
+import { ROUTES } from "@/routes"
 
 export const useLogin = () => {
+  const router = useRouter()
   const { toast } = useToast()
   const mutation = useMutation<LoginResponse, LoginErrorResponse, LoginArgs>({
-    mutationFn: async (args) => {
-      const res = await fetch(
-        `${process.env.BACKEND_BASE_URI}/api/v1/accounts/log-in/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(args),
-        },
-      )
-
-      const data = await res.json()
-
-      if (!res.ok) {
-        throw data
-      }
-      return data
-    },
-    onSuccess: (data) => {
-      // todo: redirect the user somewhere
-      document.cookie = `token=${data.token}`
+    mutationFn: async (args) => defaultMutationFn(`accounts/log-in/`, args),
+    onSuccess: async (data) => {
+      setCookie("token", data.token, { path: "/" })
+      router.push(ROUTES.BASE)
     },
     onError: (error) => {
       if ("non_field_errors" in error) {
