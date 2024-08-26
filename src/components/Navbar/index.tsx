@@ -24,22 +24,22 @@ const Navbar = () => {
             Students
           </NavigationMenuLink>
         </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink
-            href={`/course/${courseId}/profiles`}
-            className={navigationMenuTriggerStyle()}
-          >
-            Profiles
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink
-            href={`/course/${courseId}/project-sets`}
-            className={navigationMenuTriggerStyle()}
-          >
-            Projects
-          </NavigationMenuLink>
-        </NavigationMenuItem>
+        {/* <NavigationMenuItem>*/}
+        {/*  <NavigationMenuLink*/}
+        {/*    href={`/course/${courseId}/profiles`}*/}
+        {/*    className={navigationMenuTriggerStyle()}*/}
+        {/*  >*/}
+        {/*    Profiles*/}
+        {/*  </NavigationMenuLink>*/}
+        {/* </NavigationMenuItem>*/}
+        {/* <NavigationMenuItem>*/}
+        {/*  <NavigationMenuLink*/}
+        {/*    href={`/course/${courseId}/project-sets`}*/}
+        {/*    className={navigationMenuTriggerStyle()}*/}
+        {/*  >*/}
+        {/*    Projects*/}
+        {/*  </NavigationMenuLink>*/}
+        {/* </NavigationMenuItem>*/}
         <NavigationMenuItem>
           <NavigationMenuLink
             href={`/course/${courseId}/teams`}
