@@ -9,6 +9,7 @@ import { useImportStudentsFromLms } from "@/hooks/use-import-students-from-lms"
 import { useImportStudentGradebookData } from "@/hooks/use-import-student-gradebook-data"
 import { GenerateOptInQuiz } from "@/app/(app)/course/[courseId]/setup/(components)/GenerateOptInQuiz"
 import { useOnboardingProgress } from "@/hooks/use-onboarding-progress"
+import { useGenerateTeams } from "@/hooks/use-generate-teams"
 
 interface UseSetupStepsReturnType {
   steps: NonEmptyArray<StepDefinition>;
@@ -21,12 +22,13 @@ export const useSetupSteps = (): UseSetupStepsReturnType => {
 
   const { importStudentsFromLmsAsync } = useImportStudentsFromLms()
   const { importStudentGradebookData } = useImportStudentGradebookData()
-
-  // todo: generate teams mutation
+  const { generateTeamsAsync } = useGenerateTeams()
 
   if (!data || isLoading) {
     return {
-      steps: ORDERED_STEPS.map((step) => BASE_STEPS[step]) as NonEmptyArray<StepDefinition>,
+      steps: ORDERED_STEPS.map(
+        (step) => BASE_STEPS[step],
+      ) as NonEmptyArray<StepDefinition>,
       isLoading,
       onboardingProgress: data,
     }
@@ -40,6 +42,10 @@ export const useSetupSteps = (): UseSetupStepsReturnType => {
     STUDENT_DATA: {
       content: "Import gradebook data",
       onClick: () => importStudentGradebookData(undefined),
+    },
+    GENERATE_TEAMS: {
+      content: "Generate teams",
+      onClick: () => generateTeamsAsync(undefined),
     },
   }
 
