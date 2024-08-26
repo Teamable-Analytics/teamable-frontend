@@ -1,4 +1,4 @@
-name: Lint & Check
+name: Lint & type check
 
 on: push
 jobs:
@@ -12,7 +12,7 @@ jobs:
       - name: Run ESLint
         run: yarn lint
   type-check:
-    name: Type check
+    name: types
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
