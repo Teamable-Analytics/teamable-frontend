@@ -18,11 +18,18 @@ interface UseSetupStepsReturnType {
 }
 
 export const useSetupSteps = (): UseSetupStepsReturnType => {
-  const { data, isLoading } = useOnboardingProgress()
+  const { data, isLoading, refetch } = useOnboardingProgress()
 
-  const { importStudentsFromLmsAsync } = useImportStudentsFromLms()
-  const { importStudentGradebookData } = useImportStudentGradebookData()
-  const { generateTeamsAsync } = useGenerateTeams()
+  const {
+    importStudentsFromLmsAsync,
+    isPending: importStudentsFromLmsPending,
+  } = useImportStudentsFromLms()
+  const {
+    importStudentGradebookDataAsync,
+    isPending: importStudentGradebookDataPending,
+  } = useImportStudentGradebookData()
+  const { generateTeamsAsync, isPending: generateTeamsPending } =
+    useGenerateTeams()
 
   if (!data || isLoading) {
     return {
@@ -37,15 +44,27 @@ export const useSetupSteps = (): UseSetupStepsReturnType => {
   const actions: Partial<Record<StepKey, Action>> = {
     IMPORT_STUDENTS: {
       content: "Import students",
-      onClick: () => importStudentsFromLmsAsync(undefined),
+      onClick: async () => {
+        await importStudentsFromLmsAsync(undefined)
+        await refetch()
+      },
+      loading: importStudentsFromLmsPending,
     },
     STUDENT_DATA: {
       content: "Import gradebook data",
-      onClick: () => importStudentGradebookData(undefined),
+      onClick: async () => {
+        await importStudentGradebookDataAsync(undefined)
+        await refetch()
+      },
+      loading: importStudentGradebookDataPending,
     },
     GENERATE_TEAMS: {
       content: "Generate teams",
-      onClick: () => generateTeamsAsync(undefined),
+      onClick: async () => {
+        await generateTeamsAsync(undefined)
+        await refetch()
+      },
+      loading: generateTeamsPending,
     },
   }
 

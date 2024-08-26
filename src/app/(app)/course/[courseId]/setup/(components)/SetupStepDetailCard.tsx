@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 export interface Action {
   onClick: () => void;
   content: ReactNode;
+  loading: boolean;
 }
 
 export interface StepDefinition {
@@ -46,7 +47,7 @@ export const SetupStepDetailCard = ({ steps }: StepDetailCardProps) => {
         </div>
         <div className="flex gap-2 flex-wrap">
           {selectedStep.action && (
-            <Button onClick={selectedStep.action.onClick}>
+            <Button onClick={selectedStep.action.onClick} disabled={selectedStep.action.loading}>
               {selectedStep.action.content}
             </Button>
           )}
