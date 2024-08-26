@@ -32,7 +32,7 @@ export const useImportStudentGradebookData = () => {
   })
 
   return {
-    importStudentGradebookData: mutation.mutateAsync,
+    importStudentGradebookDataAsync: mutation.mutateAsync,
     ...mutation,
   }
 }

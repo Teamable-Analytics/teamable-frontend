@@ -107,7 +107,7 @@ const useStudentsProvider = (): StudentsContextType => {
     const queryString = createQueryString(queryStringParams)
     const fetchStudents = async () => {
       try {
-        const courseMemberResponse = await fetch(`${process.env.BACKEND_BASE_URI}/api/v1/course-members/course/${courseId}/?${queryString}`,)
+        const courseMemberResponse = await fetch(`${process.env.BACKEND_BASE_URI}/api/v1/course/${courseId}/students?${queryString}`,)
         const courseMemberData = await courseMemberResponse.json()
         const studentsToDisplay: Student[] = courseMemberData.results.map((member: any) => ({
           id: member.user.id,
