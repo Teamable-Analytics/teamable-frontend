@@ -42,7 +42,7 @@ export const AuthUserContextProvider = ({ children }: { children: ReactNode }) =
       value={{
         isAuthenticated: Boolean(authUser),
         authUser: authUser ?? null,
-        refetch,
+        refetch: refetch as QueryRefetchFn<AuthUser, never>,
       }}
     >
       {children}

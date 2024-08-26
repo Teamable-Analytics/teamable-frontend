@@ -6,7 +6,7 @@ import { defaultMutationFn } from "@/app/(providers)/query-client-provider"
 export const useImportStudentsFromLms = () => {
   const { toast } = useToast()
   const { courseId } = useCourse()
-  const mutation = useMutation<never, unknown, never>({
+  const mutation = useMutation<undefined, unknown, undefined>({
     mutationFn: async () => {
       return defaultMutationFn(`courses/${courseId}/import_students_from_lms/`, undefined, {allowEmptyResponse: true})
     },
