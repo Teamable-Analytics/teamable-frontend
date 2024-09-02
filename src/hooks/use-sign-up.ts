@@ -25,7 +25,6 @@ export const useSignUp = () => {
           email: data.email,
           password: variables.password,
         })
-        // todo: route to setup page
       },
       onError: (error) => {
         if ("token" in error) {
