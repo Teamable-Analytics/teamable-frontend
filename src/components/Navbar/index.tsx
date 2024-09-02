@@ -17,10 +17,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useLogout } from "@/hooks/use-logout"
-import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
+import { useParams } from "next/navigation"
 
 const Navbar = () => {
-  const { courseId } = useCourse()
+  const { courseId } = useParams<{ courseId: string }>()
   const { authUser } = useAuthUser()
   const { logoutSync } = useLogout()
 
