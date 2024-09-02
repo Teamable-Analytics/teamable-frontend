@@ -1,27 +1,35 @@
 "use client"
 
 import Custom404 from "@/app/not-found"
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react"
 import { useParams } from "next/navigation"
-import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react"
 
 type CourseContextType = {
-    courseId: number | null
-    courseName: string
-}
+  courseId: number | null;
+  courseName: string;
+};
 
 const CourseContext = createContext<CourseContextType>({
   courseId: null,
-  courseName: '',
+  courseName: "",
 })
 
 const useCourseProvider = (): CourseContextType => {
   const { courseId } = useParams<{ courseId: string }>()
-  const [courseName, setCourseName] = useState<string>('')
+  const [courseName, setCourseName] = useState<string>("")
 
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const courseResponse = await fetch(`${process.env.BACKEND_BASE_URI}/api/v1/courses/${courseId}`,)
+        const courseResponse = await fetch(
+          `${process.env.BACKEND_BASE_URI}/api/v1/courses/${courseId}`,
+        )
         const courseData = await courseResponse.json()
         setCourseName(courseData.name)
       } catch (e) {
@@ -34,7 +42,10 @@ const useCourseProvider = (): CourseContextType => {
   }, [courseId, setCourseName])
 
   return {
-    courseId: !isNaN(Number(courseId)) && Number(courseId) > 0 ? Number(courseId) : null,
+    courseId:
+      !isNaN(Number(courseId)) && Number(courseId) > 0
+        ? Number(courseId)
+        : null,
     courseName,
   }
 }
