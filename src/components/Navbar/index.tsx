@@ -31,6 +31,14 @@ const Navbar = () => {
         <NavigationMenuList className="flex justify-between">
           <NavigationMenuItem>
             <NavigationMenuLink
+              href={`/course/${courseId}/setup`}
+              className={navigationMenuTriggerStyle()}
+            >
+              Onboarding
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink
               href={`/course/${courseId}/students`}
               className={navigationMenuTriggerStyle()}
             >
@@ -46,20 +54,24 @@ const Navbar = () => {
             </NavigationMenuLink>
           </NavigationMenuItem>
         </NavigationMenuList>
-        {authUser && (
-          <DropdownMenu>
-            <DropdownMenuTrigger>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            {authUser ? (
               <Avatar>
                 <AvatarFallback>
                   {authUser.username[0].toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={logoutSync}>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
+            ) : (
+              <Avatar className="animate-pulse">
+                <AvatarFallback></AvatarFallback>
+              </Avatar>
+            )}
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onClick={logoutSync}>Logout</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </NavigationMenu>
   )
