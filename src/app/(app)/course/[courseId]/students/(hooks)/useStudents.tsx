@@ -110,8 +110,8 @@ const useStudentsProvider = (): StudentsContextType => {
         const courseMemberResponse = await fetch(`${process.env.BACKEND_BASE_URI}/api/v1/course/${courseId}/students?${queryString}`,)
         const courseMemberData = await courseMemberResponse.json()
         const studentsToDisplay: Student[] = courseMemberData.results.map((member: any) => ({
-          id: member.user.id,
-          name: `${member.user.last_name}, ${member.user.first_name}`,
+          id: member.id,
+          name: member.name.split(" ").join(", "),
           sections: member.sections.map((section: any) => section.name),
         }),)
         setDisplayStudents(studentsToDisplay)

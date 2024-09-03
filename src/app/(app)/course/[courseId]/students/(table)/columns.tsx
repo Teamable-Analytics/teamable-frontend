@@ -18,7 +18,7 @@ export const columns: ColumnDef<Student>[] = [
         hasDropDownMenu={false}
       />
     ),
-    accessorFn: (row) => row.name.split(",")[1],
+    accessorFn: (row) => row.name.split(",")[0],
     cell: ({ getValue }) => (
       <Text element="p" as="smallText">
         {String(getValue())}
@@ -34,7 +34,8 @@ export const columns: ColumnDef<Student>[] = [
         hasDropDownMenu={false}
       />
     ),
-    accessorFn: (row) => row.name.split(",")[0],
+    // fixme: this is gross and should be handled better
+    accessorFn: (row) => row.name.split(",").slice(1).join(" "),
     cell: ({ getValue }) => (
       <Text element="p" as="smallText">
         {String(getValue())}
