@@ -34,7 +34,6 @@ export function DataTableToolbar<TData>({
       </div>
       <div className="flex items-center space-x-2">
         <DataTableViewOptions table={table} />
-        <Button className="h-8 px-2 lg:px-3"> Insert students </Button>
       </div>
     </div>
   )
