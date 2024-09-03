@@ -7,7 +7,6 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-import { useParams } from "next/navigation"
 import Logo from "@/components/Logo"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { useAuthUser } from "@/app/(providers)/auth-user-provider"
@@ -18,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useLogout } from "@/hooks/use-logout"
+import { useParams } from "next/navigation"
 
 const Navbar = () => {
   const { courseId } = useParams<{ courseId: string }>()
