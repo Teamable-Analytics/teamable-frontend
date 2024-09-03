@@ -1,15 +1,8 @@
 "use client"
 import React, { ReactNode, useEffect, useState } from "react"
-import { NonEmptyArray } from "@/types"
+import { Action, NonEmptyArray } from "@/types"
 import Check from "@public/check.svg"
 import { Button } from "@/components/ui/button"
-
-export interface Action {
-  onClick: () => void;
-  content: ReactNode;
-  loading: boolean;
-}
-
 export interface StepDefinition {
   enabled: boolean;
   current: boolean;
@@ -47,7 +40,10 @@ export const SetupStepDetailCard = ({ steps }: StepDetailCardProps) => {
         </div>
         <div className="flex gap-2 flex-wrap">
           {selectedStep.action && (
-            <Button onClick={selectedStep.action.onClick} disabled={selectedStep.action.loading}>
+            <Button
+              onClick={selectedStep.action.onClick}
+              disabled={selectedStep.action.loading}
+            >
               {selectedStep.action.content}
             </Button>
           )}
@@ -78,7 +74,11 @@ export const SetupStepDetailCard = ({ steps }: StepDetailCardProps) => {
                   ${step.enabled ? "opacity-100" : "opacity-20"}
                 `}
               >
-                {step.enabled && step.completed ? <Check className="w-5 fill-current"/> : index + 1}
+                {step.enabled && step.completed ? (
+                  <Check className="w-5 fill-current" />
+                ) : (
+                  index + 1
+                )}
               </div>
               <div className="flex gap-2 items-center justify-between w-full">
                 <p

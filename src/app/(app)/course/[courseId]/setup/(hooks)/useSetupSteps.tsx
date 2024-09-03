@@ -1,8 +1,7 @@
 import React from "react"
 import { OnboardingProgress } from "@/_temp_types/onboarding"
-import { NonEmptyArray } from "@/types"
+import {Action, NonEmptyArray} from "@/types"
 import {
-  Action,
   StepDefinition,
 } from "@/app/(app)/course/[courseId]/setup/(components)/SetupStepDetailCard"
 import { useImportStudentsFromLms } from "@/hooks/use-import-students-from-lms"

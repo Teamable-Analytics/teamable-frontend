@@ -1,5 +1,8 @@
 import { Text } from "@/components/ui/text"
 import Link from "next/link"
+import { Action } from "@/types"
+import { Button } from "@/components/ui/button"
+import React from "react"
 
 type PageViewProps = {
   children: React.ReactNode;
@@ -8,9 +11,10 @@ type PageViewProps = {
     title: string;
     href: string;
   }>;
+  actions?: Array<Action>;
 };
 
-const PageView = ({ children, title, breadcrumbs }: PageViewProps) => {
+const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
   return (
     <main className="container flex-col min-h-screen">
       <div className="flex flex-col gap-3 pt-12 pb-8">
@@ -30,9 +34,28 @@ const PageView = ({ children, title, breadcrumbs }: PageViewProps) => {
             ))}
           </div>
         )}
-        <Text element={"h1"} as={"h2"} className="text-2xl lg:text-3xl border-0">
-          {title}
-        </Text>
+        <div className="flex justify-between">
+          <Text
+            element={"h1"}
+            as={"h2"}
+            className="text-2xl lg:text-3xl border-0"
+          >
+            {title}
+          </Text>
+          {actions && (
+            <div>
+              {actions.map((action, index) => (
+                <Button
+                  key={`action-${index}`}
+                  onClick={action.onClick}
+                  disabled={action.loading}
+                >
+                  {action.content}
+                </Button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
       {children}
     </main>

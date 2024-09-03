@@ -43,7 +43,7 @@ type DataTableProps<TData> = {
   // Function Controlling the action when a row is clicked
   rowAction?: (row: TData) => void;
   // Toggle pagination
-  isPaginated?: boolean
+  isPaginated?: boolean;
 };
 
 const DataTable = <TData, >({
@@ -56,14 +56,16 @@ const DataTable = <TData, >({
   isPaginated,
 }: DataTableProps<TData>) => {
   const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([],)
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    [],
+  )
   const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable<TData>({
     data,
     columns: columns as ColumnDef<TData>[],
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    getPaginationRowModel: isPaginated ? getPaginationRowModel() : undefined,
     onSortingChange: setSorting,
     onRowSelectionChange: setRowSelection,
     onColumnFiltersChange: setColumnFilters,
@@ -79,21 +81,24 @@ const DataTable = <TData, >({
   return (
     <>
       <div className="flex items-center justify-between">
-        <div className="flex items-center py-4 w-[25vw]">
+        <div className="flex items-center py-4 min-w-[25vw]">
           {/* make the search bar work on multiple columns of table: firstName, lastName, id */}
-          {searchBarOptions && <SearchBar
-            placeholder={searchBarOptions.placeholder}
-            value={
-              (table
-                .getColumn(searchBarOptions.searchColumn)
-                ?.getFilterValue() as string) ?? ""
-            }
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              table
-                .getColumn(searchBarOptions.searchColumn)
-                ?.setFilterValue(event.target.value)
-            }}
-          />}
+          {searchBarOptions && (
+            <SearchBar
+              placeholder={searchBarOptions.placeholder}
+              value={
+                (table
+                  .getColumn(searchBarOptions.searchColumn)
+                  ?.getFilterValue() as string) ?? ""
+              }
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                if (!searchBarOptions?.searchColumn) return
+                table
+                  .getColumn(searchBarOptions.searchColumn)
+                  ?.setFilterValue(event.target.value)
+              }}
+            />
+          )}
         </div>
         <div className="space-x-2 flex-1">
           {!!bulkActionItems && bulkActionItems(table.getRowModel())}
@@ -110,8 +115,10 @@ const DataTable = <TData, >({
                     <TableHead key={header.id}>
                       {header.isPlaceholder
                         ? null
-                        : flexRender(header.column.columnDef.header,
-                          header.getContext(),)}
+                        : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                     </TableHead>
                   )
                 })}
@@ -129,8 +136,10 @@ const DataTable = <TData, >({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell,
-                        cell.getContext(),)}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -148,9 +157,11 @@ const DataTable = <TData, >({
           </TableBody>
         </Table>
       </div>
-      {isPaginated && <div className="mt-2">
-        <DataTablePagination table={table as TableType<TData>} />
-      </div>}
+      {isPaginated && (
+        <div className="mt-2">
+          <DataTablePagination table={table as TableType<TData>} />
+        </div>
+      )}
     </>
   )
 }
