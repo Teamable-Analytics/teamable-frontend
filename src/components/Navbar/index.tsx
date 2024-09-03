@@ -47,7 +47,7 @@ const Navbar = () => {
           </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuLink
-              href={`/course/${courseId}/teams`}
+              href={`/course/${courseId}/team-sets`}
               className={navigationMenuTriggerStyle()}
             >
               Manage Teams

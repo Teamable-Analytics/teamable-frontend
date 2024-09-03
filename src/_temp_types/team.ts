@@ -1,10 +1,13 @@
-import { Student } from "@/_temp_types/student"
-import { ProjectRequirement } from "@/_temp_types/projects"
+import { CourseRole } from "@/_temp_types/courseMember"
 
-export type Team = {
+export interface Team {
   id: number;
-  name?: string;
-  projectId?: number;
-  requirements?: ProjectRequirement[];
-  students: Student[];
-};
+  name: string;
+  slug: string;
+  members: {
+    id: number;
+    lms_id: number | `${number}`;
+    name: string;
+    role: CourseRole;
+  }[];
+}
