@@ -1,4 +1,4 @@
-FROM node:18.20.2
+FROM node:20.16.0
 RUN mkdir /code
 WORKDIR /code
 COPY package.json /code/
