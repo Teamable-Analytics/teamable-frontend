@@ -7,6 +7,7 @@ export const useAuthUserQuery = () => {
   return useQuery<AuthUser | null, never, AuthUser | null>({
     queryKey: [`accounts/users/me/`, authHeader],
     queryFn: () => authUserQueryFn({ authHeader }),
+    enabled: Boolean(authHeader),
   })
 }
 
