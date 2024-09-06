@@ -19,8 +19,6 @@ import {
 } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 import { useStudents } from "../(hooks)/useStudents"
-import { useSearchParams } from "next/navigation"
-import { useState, useEffect } from "react"
 
 import type { DataTableFacetedFilterProps } from "@/components/ui/data-table-faceted-filter"
 
@@ -29,15 +27,24 @@ export function StudentTableSectionsFilter<TData, TValue>({
   title,
   options,
 }: DataTableFacetedFilterProps<TData, TValue>) {
-  const { setSelectedSections, selectedSections } = useStudents()
+  const { filters } = useStudents()
 
   const handleSelect = (selectedOption: string) => {
-    if (selectedSections.includes(selectedOption)) {
-      setSelectedSections((prev) =>
-        prev.filter((section) => section !== selectedOption),)
-    } else {
-      setSelectedSections((prev) => [...prev, selectedOption])
+    if (filters.selectedSections.value.includes(selectedOption)) {
+      const withoutSelectedValue = filters.selectedSections.value?.filter(
+        (v) => v !== selectedOption,
+      )
+
+      filters.selectedSections.set(
+        withoutSelectedValue as typeof filters.selectedSections.value,
+      )
+      return
     }
+
+    filters.selectedSections.set([
+      ...filters.selectedSections.value,
+      selectedOption,
+    ])
   }
 
   return (
@@ -46,26 +53,27 @@ export function StudentTableSectionsFilter<TData, TValue>({
         <Button variant="outline" size="sm" className="h-8 border-dashed">
           <PlusCircledIcon className="mr-2 h-4 w-4" />
           {title}
-          {selectedSections.length > 0 && (
+          {filters.selectedSections.value.length > 0 && (
             <>
               <Separator orientation="vertical" className="mx-2 h-4" />
               <Badge
                 variant="secondary"
                 className="rounded-sm px-1 font-normal lg:hidden"
               >
-                {selectedSections.length}
+                {filters.selectedSections.value.length}
               </Badge>
               <div className="hidden space-x-1 lg:flex">
-                {selectedSections.length > 2 ? (
+                {filters.selectedSections.value.length > 2 ? (
                   <Badge
                     variant="secondary"
                     className="rounded-sm px-1 font-normal"
                   >
-                    {selectedSections.length} selected
+                    {filters.selectedSections.value.length} selected
                   </Badge>
                 ) : (
                   options
-                    .filter((option) => selectedSections.includes(option.value))
+                    .filter((option) =>
+                      filters.selectedSections.value.includes(option.value),)
                     .map((option) => (
                       <Badge
                         variant="secondary"
@@ -93,10 +101,12 @@ export function StudentTableSectionsFilter<TData, TValue>({
                   onSelect={() => handleSelect(option.value)}
                 >
                   <div
-                    className={cn("mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
-                      selectedSections.includes(option.value)
+                    className={cn(
+                      "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                      filters.selectedSections.value?.includes(option.value)
                         ? "bg-primary text-primary-foreground"
-                        : "opacity-50 [&_svg]:invisible",)}
+                        : "opacity-50 [&_svg]:invisible",
+                    )}
                   >
                     <CheckIcon className={cn("h-4 w-4")} />
                   </div>
@@ -107,13 +117,13 @@ export function StudentTableSectionsFilter<TData, TValue>({
                 </CommandItem>
               ))}
             </CommandGroup>
-            {selectedSections.length > 0 && (
+            {filters.selectedSections.value.length > 0 && (
               <>
                 <CommandSeparator />
                 <CommandGroup>
                   <CommandItem
                     onSelect={() => {
-                      setSelectedSections([])
+                      filters.selectedSections.set([])
                     }}
                     className="justify-center text-center"
                   >

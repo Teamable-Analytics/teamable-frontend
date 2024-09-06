@@ -16,7 +16,7 @@ type PageViewProps = {
 
 const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
   return (
-    <main className="container flex-col min-h-screen">
+    <main className="container flex-col min-h-screen pb-8">
       <div className="flex flex-col gap-3 pt-12 pb-8">
         {breadcrumbs && (
           <div className="flex gap-1">

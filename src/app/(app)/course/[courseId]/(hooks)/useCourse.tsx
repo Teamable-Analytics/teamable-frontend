@@ -10,60 +10,57 @@ import {
 } from "react"
 import { useParams } from "next/navigation"
 import { Course } from "@/_temp_types/course"
+import { useQuery } from "@tanstack/react-query"
 
-type CourseContextType = {
-  courseId: number | null;
+interface CourseContextType {
+  courseId: number;
   courseName: string;
   lmsType: string;
 };
 
-const CourseContext = createContext<CourseContextType>({
-  courseId: null,
-  courseName: "",
-  lmsType: "",
-})
+const CourseContext = createContext<CourseContextType>({} as CourseContextType)
 
-const useCourseProvider = (): CourseContextType => {
-  const { courseId } = useParams<{ courseId: string }>()
-  const [courseName, setCourseName] = useState<string>("")
-  const [lmsType, setLmsType] = useState<string>("")
-
-  useEffect(() => {
-    const fetchCourse = async () => {
-      try {
-        const courseResponse = await fetch(
-          `${process.env.BACKEND_BASE_URI}/api/v1/courses/${courseId}`,
-        )
-        const courseData = (await courseResponse.json()) as Course
-        setCourseName(courseData.name)
-        setLmsType(courseData.organization.lms_type)
-      } catch (e) {
-        console.error(e)
-      }
-    }
-    if (courseId && !isNaN(Number(courseId)) && Number(courseId) > 0) {
-      fetchCourse()
-    }
-  }, [courseId, setCourseName])
+const useCourseQuery = ({ courseId }: { courseId: number }) => {
+  const courseQuery = useQuery<unknown, unknown, Course>({
+    queryKey: [`courses/${courseId}`],
+  })
 
   return {
-    courseId:
-      !isNaN(Number(courseId)) && Number(courseId) > 0
-        ? Number(courseId)
-        : null,
-    courseName,
-    lmsType,
+    getCourseAsync: courseQuery.refetch,
+    ...courseQuery,
   }
 }
 
 export const CourseProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const courseContext = useCourseProvider()
-  if (!courseContext.courseId) {
+  const { courseId } = useParams<{ courseId: string }>()
+  const {
+    data: course,
+    getCourseAsync,
+    isLoading,
+  } = useCourseQuery({ courseId: Number(courseId) })
+
+  useEffect(() => {
+    if (courseId) {
+      void getCourseAsync()
+    }
+  }, [getCourseAsync, courseId])
+
+  if (isLoading) {
+    return <main className="container flex-col min-h-screen pb-8" />
+  }
+
+  if (!course || course && !("id" in course)) {
     return <Custom404 errorMessage="Course not found" />
   }
 
   return (
-    <CourseContext.Provider value={courseContext}>
+    <CourseContext.Provider
+      value={{
+        courseId: course.id,
+        courseName: course.name,
+        lmsType: course.organization.lms_type,
+      }}
+    >
       {children}
     </CourseContext.Provider>
   )
