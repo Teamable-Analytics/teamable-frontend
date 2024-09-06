@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { DataTableViewOptions } from "@/components/ui/data-table-view-options"
 import { useStudents } from "../(hooks)/useStudents"
 import { StudentTableSectionsFilter } from "./student-table-sections-filter"
+import {DataTableFacetedFilterProps} from "@/components/ui/data-table-faceted-filter"
 
 type DataTableToolbarProps<TData> = {
   table: Table<TData>;
@@ -14,7 +15,7 @@ export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   // todo: fix
-  const allSections = []
+  const allSections = [] as DataTableFacetedFilterProps<any, any>['options']
   const { filters } = useStudents()
   return (
     <div className="flex items-center justify-between mt-2">
