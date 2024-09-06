@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-query"
 import { getTokenAuthHeader } from "../../../utils/auth"
 
-function appendTrailingSlashIfNeeded(path: string): string {
+function appendTrailingSlashIfNeeded(path: string) {
   if (path.includes("?")) {
     const [p, ...rest] = path.split("?")
     return `${appendTrailingSlashIfNeeded(p)}?${rest.join()}`
