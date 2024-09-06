@@ -19,8 +19,6 @@ import {
 } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 import { useStudents } from "../(hooks)/useStudents"
-import { useSearchParams } from "next/navigation"
-import { useState, useEffect } from "react"
 
 import type { DataTableFacetedFilterProps } from "@/components/ui/data-table-faceted-filter"
 
@@ -32,10 +30,7 @@ export function StudentTableSectionsFilter<TData, TValue>({
   const { filters } = useStudents()
 
   const handleSelect = (selectedOption: string) => {
-    if (
-      filters.selectedSections.value &&
-      filters.selectedSections.value.includes(selectedOption)
-    ) {
+    if (filters.selectedSections.value.includes(selectedOption)) {
       const withoutSelectedValue = filters.selectedSections.value?.filter(
         (v) => v !== selectedOption,
       )
@@ -47,7 +42,7 @@ export function StudentTableSectionsFilter<TData, TValue>({
     }
 
     filters.selectedSections.set([
-      ...(filters.selectedSections.value ?? []),
+      ...filters.selectedSections.value,
       selectedOption,
     ])
   }
@@ -58,8 +53,7 @@ export function StudentTableSectionsFilter<TData, TValue>({
         <Button variant="outline" size="sm" className="h-8 border-dashed">
           <PlusCircledIcon className="mr-2 h-4 w-4" />
           {title}
-          {filters.selectedSections.value &&
-            filters.selectedSections.value.length > 0 && (
+          {filters.selectedSections.value.length > 0 && (
             <>
               <Separator orientation="vertical" className="mx-2 h-4" />
               <Badge
@@ -79,7 +73,7 @@ export function StudentTableSectionsFilter<TData, TValue>({
                 ) : (
                   options
                     .filter((option) =>
-                      filters.selectedSections.value?.includes(option.value),)
+                      filters.selectedSections.value.includes(option.value),)
                     .map((option) => (
                       <Badge
                         variant="secondary"
@@ -123,8 +117,7 @@ export function StudentTableSectionsFilter<TData, TValue>({
                 </CommandItem>
               ))}
             </CommandGroup>
-            {filters.selectedSections.value &&
-              filters.selectedSections.value.length > 0 && (
+            {filters.selectedSections.value.length > 0 && (
               <>
                 <CommandSeparator />
                 <CommandGroup>
@@ -134,7 +127,7 @@ export function StudentTableSectionsFilter<TData, TValue>({
                     }}
                     className="justify-center text-center"
                   >
-                      Clear filters
+                    Clear filters
                   </CommandItem>
                 </CommandGroup>
               </>
