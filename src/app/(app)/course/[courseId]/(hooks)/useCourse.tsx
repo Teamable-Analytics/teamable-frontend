@@ -49,7 +49,7 @@ export const CourseProvider: React.FC<PropsWithChildren> = ({ children }) => {
     return <main className="container flex-col min-h-screen pb-8" />
   }
 
-  if (!("id" in course)) {
+  if (!course || course && !("id" in course)) {
     return <Custom404 errorMessage="Course not found" />
   }
 

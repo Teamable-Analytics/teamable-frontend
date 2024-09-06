@@ -14,6 +14,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  PaginationState,
 } from "@tanstack/react-table"
 
 import {
@@ -29,7 +30,8 @@ import { DataTablePagination } from "@/components/ui/data-table-pagination"
 import { DataTableToolbar } from "../(table)/student-table-toolbar"
 import { useStudents } from "../(hooks)/useStudents"
 import { columns } from "../(table)/columns"
-import {Student} from "@/_temp_types/student"
+import { Student } from "@/_temp_types/student"
+import { Updater } from "@tanstack/table-core"
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -66,10 +68,8 @@ const DataTable = <TData, TValue>({
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
-    onPaginationChange: (pagination: {
-      pageIndex: number;
-      pageSize: number
-    }) => {
+    onPaginationChange: (pagination: Updater<PaginationState>) => {
+      if (typeof pagination === "function") return
       filters.pageIndex.set(pagination.pageIndex)
       filters.pageSize.set(pagination.pageSize)
     },
@@ -93,8 +93,10 @@ const DataTable = <TData, TValue>({
                     <TableHead key={header.id} colSpan={header.colSpan}>
                       {header.isPlaceholder
                         ? null
-                        : flexRender(header.column.columnDef.header,
-                          header.getContext(),)}
+                        : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                     </TableHead>
                   )
                 })}
@@ -110,8 +112,10 @@ const DataTable = <TData, TValue>({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell,
-                        cell.getContext(),)}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -136,5 +140,5 @@ const DataTable = <TData, TValue>({
 
 export const StudentTable = () => {
   const { studentsToDisplay } = useStudents()
-  return <DataTable<Student> data={studentsToDisplay} columns={columns} />
+  return <DataTable<Student, any> data={studentsToDisplay} columns={columns} />
 }
