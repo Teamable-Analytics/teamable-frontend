@@ -46,7 +46,7 @@ export const CourseProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }, [getCourseAsync, courseId])
 
   if (isLoading) {
-    return null
+    return <main className="container flex-col min-h-screen pb-8" />
   }
 
   if (!("id" in course)) {
