@@ -29,6 +29,7 @@ import { DataTablePagination } from "@/components/ui/data-table-pagination"
 import { DataTableToolbar } from "../(table)/student-table-toolbar"
 import { useStudents } from "../(hooks)/useStudents"
 import { columns } from "../(table)/columns"
+import {Student} from "@/_temp_types/student"
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -44,37 +45,44 @@ const DataTable = <TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [sorting, setSorting] = useState<SortingState>([])
 
-  const { pagination, setPagination, pageCount, isLoadingData } = useStudents()
+  const { isLoading, filters, totalPages } = useStudents()
 
   const table = useReactTable({
     data,
-    columns,
+    columns: columns as ColumnDef<TData>[],
     state: {
       sorting,
       columnVisibility,
       rowSelection,
       columnFilters,
-      pagination,
+      pagination: {
+        pageIndex: filters.pageIndex.value,
+        pageSize: filters.pageSize.value,
+      },
     },
-    pageCount: pageCount,
+    pageCount: totalPages,
     enableRowSelection: false,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
-    onPaginationChange: setPagination,
+    onPaginationChange: (pagination: {
+      pageIndex: number;
+      pageSize: number
+    }) => {
+      filters.pageIndex.set(pagination.pageIndex)
+      filters.pageSize.set(pagination.pageSize)
+    },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
     manualPagination: true,
   })
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} />
+      <DataTableToolbar<TData> table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -114,7 +122,7 @@ const DataTable = <TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  {isLoadingData ? "Loading..." : "No results."}
+                  {isLoading ? "Loading..." : "No results."}
                 </TableCell>
               </TableRow>
             )}
@@ -127,6 +135,6 @@ const DataTable = <TData, TValue>({
 }
 
 export const StudentTable = () => {
-  const { displayStudents } = useStudents() ?? {}
-  return <DataTable data={displayStudents ?? []} columns={columns} />
+  const { studentsToDisplay } = useStudents()
+  return <DataTable<Student> data={studentsToDisplay} columns={columns} />
 }

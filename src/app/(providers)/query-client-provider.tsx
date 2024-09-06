@@ -7,6 +7,10 @@ import {
 import { getTokenAuthHeader } from "../../../utils/auth"
 
 function appendTrailingSlashIfNeeded(path: string) {
+  if (path.includes("?")) {
+    const [p, ...rest] = path.split("?")
+    return `${appendTrailingSlashIfNeeded(p)}?${rest.join()}`
+  }
   if (path.endsWith("/")) return path
   return `${path}/`
 }

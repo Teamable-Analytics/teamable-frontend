@@ -6,3 +6,8 @@ export interface Course {
   organization: Organization;
   lms_course_id: string;
 }
+
+export interface CourseSection {
+  name: string;
+  description: string;
+}
