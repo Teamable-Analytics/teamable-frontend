@@ -2,6 +2,7 @@ import { ColumnDef } from "@tanstack/table-core"
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import { Team } from "@/_temp_types/team"
 import { Badge } from "@/components/ui/badge"
+import { Text } from "@/components/ui/text"
 
 export const columns: ColumnDef<Team>[] = [
   {
@@ -10,9 +11,11 @@ export const columns: ColumnDef<Team>[] = [
       <DataTableColumnHeader column={column} title={"Name"} />
     ),
     filterFn: (row, columnId, filterValue) => {
-      const memberNames = row.original.members.map(m => m.name).join(",")
+      const memberNames = row.original.members.map((m) => m.name).join(",")
       const searchableRowContent = `${row.original.name} ${memberNames}`
-      return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase())
+      return searchableRowContent
+        .toLowerCase()
+        .includes(filterValue.toLowerCase())
     },
   },
   {
@@ -26,8 +29,10 @@ export const columns: ColumnDef<Team>[] = [
       return (
         <>
           {members.map((member) => (
-            <Badge key={member.id} variant="secondary">
-              {String(getValue())}
+            <Badge key={member.id} variant="secondary" className="rounded-sm">
+              <Text element="p">
+                {String(getValue())}
+              </Text>
             </Badge>
           ))}
         </>

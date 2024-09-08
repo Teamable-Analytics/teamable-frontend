@@ -5,12 +5,14 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Text } from "@/components/ui/text"
 import { Badge } from "@/components/ui/badge"
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
+import { CourseSection } from "@/_temp_types/course"
 
 type SectionFilterValue = string[];
 
 export const columns: ColumnDef<Student>[] = [
   {
     id: "firstName",
+    meta: { columnName: "First Name" },
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -27,6 +29,7 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     id: "lastName",
+    meta: { columnName: "Last Name" },
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -43,7 +46,8 @@ export const columns: ColumnDef<Student>[] = [
     ),
   },
   {
-    accessorKey: "id",
+    id: "id",
+    meta: { columnName: "Student ID" },
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -51,14 +55,16 @@ export const columns: ColumnDef<Student>[] = [
         hasDropDownMenu={false}
       />
     ),
-    cell: ({ row }) => (
+    accessorFn: (row) => row.lms_id ?? "",
+    cell: ({ getValue }) => (
       <Text element="p" as="smallText">
-        {row.getValue("id")}
+        {String(getValue())}
       </Text>
     ),
   },
   {
-    accessorKey: "sections",
+    id: "sections",
+    enableSorting: false,
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -66,21 +72,22 @@ export const columns: ColumnDef<Student>[] = [
         hasDropDownMenu={false}
       />
     ),
-    cell: ({ row }) => (
-      <div className="flex flex-row gap-2">
-        {(row.getValue("sections") as string[])?.map((section) => (
-          <Badge key={section} variant="secondary" className="rounded-sm">
-            <Text element="p" as="mutedText">
-              {section}
-            </Text>
-          </Badge>
-        ))}
-      </div>
-    ),
-    filterFn: (row, id, filterValues: SectionFilterValue) => {
-      const rowSections = row.getValue(id) as string[]
-      return filterValues.some((filterValue) =>
-        rowSections.includes(filterValue),)
+    accessorFn: (row) => row.sections?.map((s) => s.name) ?? [],
+    cell: ({ row, getValue }) => {
+      const sections = getValue() as string[]
+      return (
+        <div className="flex flex-row gap-2">
+          {sections?.map((section, index) => (
+            <Badge
+              key={`${row.id}-${section}-${index}`}
+              variant="secondary"
+              className="rounded-sm"
+            >
+              <Text element="p">{section}</Text>
+            </Badge>
+          ))}
+        </div>
+      )
     },
   },
 ]
