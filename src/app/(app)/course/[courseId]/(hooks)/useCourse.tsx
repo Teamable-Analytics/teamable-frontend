@@ -9,12 +9,13 @@ import {
   useState,
 } from "react"
 import { useParams } from "next/navigation"
-import { Course } from "@/_temp_types/course"
+import {Course, CourseSection} from "@/_temp_types/course"
 import { useQuery } from "@tanstack/react-query"
 
 interface CourseContextType {
   courseId: number;
   courseName: string;
+  sections: CourseSection[];
   lmsType: string;
 };
 
@@ -58,6 +59,7 @@ export const CourseProvider: React.FC<PropsWithChildren> = ({ children }) => {
       value={{
         courseId: course.id,
         courseName: course.name,
+        sections: course.sections,
         lmsType: course.organization.lms_type,
       }}
     >

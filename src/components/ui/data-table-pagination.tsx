@@ -18,19 +18,27 @@ import {
 } from "@/components/ui/select"
 import { Text } from "./text"
 
+export const PAGE_SIZE_OPTIONS = [10, 20, 30, 40, 50]
+
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
+  hasSelectableRows?: boolean;
 }
 
 export function DataTablePagination<TData>({
   table,
+  hasSelectableRows = true,
 }: DataTablePaginationProps<TData>) {
   return (
-    <div className="flex items-center justify-between px-2">
-      <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
-      </div>
+    <div
+      className={`flex items-center px-2 ${hasSelectableRows ? "justify-between" : "justify-end"}`}
+    >
+      {hasSelectableRows && (
+        <div className="flex-1 text-sm text-muted-foreground">
+          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
+        </div>
+      )}
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <Text element="p" as="mutedText">
@@ -46,7 +54,7 @@ export function DataTablePagination<TData>({
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
-              {[10, 20, 30, 40, 50].map((pageSize) => (
+              {PAGE_SIZE_OPTIONS.map((pageSize) => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
                 </SelectItem>

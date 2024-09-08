@@ -16,6 +16,10 @@ import { PaginationState } from "@tanstack/react-table"
 import { useCourse } from "../../(hooks)/useCourse"
 import { useQuery } from "@tanstack/react-query"
 import { PaginatedList } from "@/_temp_types/pagination"
+import { PAGE_SIZE_OPTIONS } from "@/components/ui/data-table-pagination"
+
+const SORTABLE_FIELDS = ["firstName", "lastName", "id"] as const
+export type SortableFieldKey = (typeof SORTABLE_FIELDS)[number];
 
 interface StudentsContextType {
   /**
@@ -33,16 +37,24 @@ interface Filter<T extends string | string[] | number | number[]> {
   set: (value: T) => void;
 }
 
-interface FilterValues {
+export interface FilterValues {
+  sort: `${SortableFieldKey}.${"asc" | "desc"}` | "";
   searchQuery: string;
   pageIndex: PaginationState["pageIndex"];
   pageSize: PaginationState["pageSize"];
   selectedSections: string[];
 }
 
-// todo: useEffect that runs only on first render - this one takes the initial query params and sets them
-// todo: useEffect that runs on every render except the first - this will take every filter and constantly update the query params
+const FILTER_QUERY_PARAMS = {
+  sort: "sort",
+  searchQuery: "search",
+  pageIndex: "page",
+  pageSize: "per_page",
+  selectedSections: "sections",
+} as const
+
 interface StudentFilters {
+  sort: Filter<FilterValues["sort"]>;
   searchQuery: Filter<FilterValues["searchQuery"]>;
   pageIndex: Filter<FilterValues["pageIndex"]>;
   pageSize: Filter<FilterValues["pageSize"]>;
@@ -57,6 +69,10 @@ const StudentsContext = createContext<StudentsContextType>({
   totalPages: 0,
   isLoading: true,
   filters: {
+    sort: {
+      value: "",
+      set: () => {},
+    },
     searchQuery: {
       value: "",
       set: () => {},
@@ -84,7 +100,6 @@ const useEffectOnce = (effect: EffectCallback) => {
 
     effect()
     stopRef.current = true
-    // fixme: maybe don't have this in the dep array though
   }, [effect])
 }
 
@@ -94,15 +109,36 @@ const useStudentsFilters = (): StudentFilters & {
 } => {
   const searchParams = useSearchParams()
   const pathname = usePathname()
+  const { sections } = useCourse()
+  const validSectionIds = sections.map((s) => s.id)
 
   const [initialFiltersLoading, setInitialFiltersLoading] = useState(true)
 
   const [filters, setFilters] = useState<FilterValues>({
+    sort: "",
     searchQuery: "",
     pageIndex: 0,
     pageSize: INITIAL_PAGE_SIZE,
     selectedSections: [],
   })
+
+  const setSort = useCallback((value: FilterValues["sort"]) => {
+    setFilters((prev) => {
+      const [key, direction] = (value ?? "").split(".")
+      let cleanValue = value
+      if (!SORTABLE_FIELDS.includes(key as SortableFieldKey)) {
+        cleanValue = ""
+      }
+      if (!["asc", "desc"].includes(direction)) {
+        cleanValue = ""
+      }
+
+      return {
+        ...prev,
+        sort: cleanValue,
+      }
+    })
+  }, [])
 
   const setSearchQuery = useCallback((value: FilterValues["searchQuery"]) => {
     setFilters((prev) => ({
@@ -124,7 +160,10 @@ const useStudentsFilters = (): StudentFilters & {
 
   const setPageSize = useCallback((value: FilterValues["pageSize"]) => {
     setFilters((prev) => {
-      const cleanValue = value > 0 ? value : 0
+      const cleanValue =
+        value > 0 && PAGE_SIZE_OPTIONS.includes(value)
+          ? value
+          : PAGE_SIZE_OPTIONS[0]
       return {
         ...prev,
         pageSize: cleanValue,
@@ -135,32 +174,45 @@ const useStudentsFilters = (): StudentFilters & {
   const setSelectedSections = useCallback(
     (value: FilterValues["selectedSections"]) => {
       setFilters((prev) => {
-        const cleanValue = value.filter((v) => !isNaN(Number(v)) && v)
+        const cleanValue = value.filter(
+          (v) => !isNaN(Number(v)) && validSectionIds.includes(Number(v)) && v,
+        )
         return {
           ...prev,
           selectedSections: cleanValue,
+          pageIndex: 0,
         }
       })
     },
-    [],
+    [validSectionIds],
   )
 
   useEffectOnce(() => {
     // Set the values of all filters to the initial query param values
-    setSearchQuery(searchParams.get("search") ?? "")
-    // todo: make sure it doesnt go below 0
-    setPageIndex(parseInt(searchParams.get("page") ?? "1") - 1)
-    setPageSize(
-      parseInt(searchParams.get("per_page") ?? `${INITIAL_PAGE_SIZE}`),
+    setSort(
+      searchParams.get(FILTER_QUERY_PARAMS["sort"]) as FilterValues["sort"],
     )
-    // fixme: type error is wack
-    setSelectedSections(searchParams.get("sections")?.split(",") ?? [])
+    setSearchQuery(searchParams.get(FILTER_QUERY_PARAMS["searchQuery"]) ?? "")
+    setPageIndex(
+      parseInt(searchParams.get(FILTER_QUERY_PARAMS["pageIndex"]) ?? "1") - 1,
+    )
+    setPageSize(
+      parseInt(
+        searchParams.get(FILTER_QUERY_PARAMS["pageSize"]) ??
+          `${INITIAL_PAGE_SIZE}`,
+      ),
+    )
+    const rawSections = searchParams.get(
+      FILTER_QUERY_PARAMS["selectedSections"],
+    )
+    setSelectedSections(rawSections ? rawSections.split(",") : [])
     setInitialFiltersLoading(false)
   })
 
   const queryString = useMemo(
     () =>
       createQueryString({
+        sort: (filters.sort as string) || undefined,
         search: filters.searchQuery || undefined,
         page: filters.pageIndex + 1, // adding one to make it appear as 1 indexed for the URL query in browser
         per_page: filters.pageSize,
@@ -170,6 +222,7 @@ const useStudentsFilters = (): StudentFilters & {
             : undefined,
       }),
     [
+      filters.sort,
       filters.searchQuery,
       filters.pageIndex,
       filters.pageSize,
@@ -185,6 +238,10 @@ const useStudentsFilters = (): StudentFilters & {
   return {
     queryString,
     initialFiltersLoading,
+    sort: {
+      value: filters.sort,
+      set: setSort,
+    },
     searchQuery: {
       value: filters.searchQuery,
       set: setSearchQuery,
@@ -205,7 +262,7 @@ const useStudentsFilters = (): StudentFilters & {
 }
 
 const createQueryString = (
-  params: Record<string, string | number | undefined>,
+  params: Record<typeof FILTER_QUERY_PARAMS[keyof typeof FILTER_QUERY_PARAMS], string | number | undefined>,
 ) => {
   const searchParams = new URLSearchParams()
   Object.entries(params).forEach(([key, value]) => {
@@ -241,6 +298,7 @@ export const StudentsProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const {
     queryString,
     initialFiltersLoading,
+    sort,
     searchQuery,
     pageIndex,
     pageSize,
@@ -269,6 +327,7 @@ export const StudentsProvider: React.FC<PropsWithChildren> = ({ children }) => {
         totalStudents,
         totalPages,
         filters: {
+          sort,
           searchQuery,
           pageIndex,
           pageSize,
