@@ -1,13 +1,8 @@
-import { CourseRole } from "@/_temp_types/courseMember"
+import { Student } from "@/_temp_types/student"
 
 export interface Team {
   id: number;
   name: string;
   slug: string;
-  members: {
-    id: number;
-    lms_id: number | `${number}`;
-    name: string;
-    role: CourseRole;
-  }[];
+  members: Student[];
 }
