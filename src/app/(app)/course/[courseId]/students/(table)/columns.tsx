@@ -57,7 +57,7 @@ export const columns: ColumnDef<Student>[] = [
       const empty = !getValue()
       return (
         <Text element="p" as={empty ? "mutedText" : "smallText"}>
-          {getValue() ?? "None"}
+          {empty ? "None" : String(getValue()) }
         </Text>
       )
     },
