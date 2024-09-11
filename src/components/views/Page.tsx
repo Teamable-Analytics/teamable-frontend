@@ -49,6 +49,7 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
                   key={`action-${index}`}
                   onClick={action.onClick}
                   disabled={action.loading}
+                  size="sm"
                 >
                   {action.content}
                 </Button>
