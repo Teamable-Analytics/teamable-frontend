@@ -6,7 +6,7 @@ import { useOnboardingProgress } from "@/hooks/use-onboarding-progress"
 import Link from "@public/link.svg"
 
 export const GenerateOptInQuiz = () => {
-  const { data } = useOnboardingProgress()
+  const { data, refetch } = useOnboardingProgress()
   const { createOptInQuizAsync, isPending } = useCreateOptInQuiz()
 
   const hasCreatedOptInQuiz = useMemo(() => {
@@ -19,9 +19,10 @@ export const GenerateOptInQuiz = () => {
         flex px-6 p-4 items-center justify-between border rounded-lg transition border-gray-300
         hover:cursor-pointer hover:bg-gray-100
       `}
-      onClick={() => {
+      onClick={async () => {
         if (!isPending && !hasCreatedOptInQuiz) {
-          void createOptInQuizAsync(undefined)
+          await createOptInQuizAsync(undefined)
+          await refetch()
         }
         if (hasCreatedOptInQuiz && data?.opt_in_quiz_link) {
           window.open(data.opt_in_quiz_link, "_blank")
