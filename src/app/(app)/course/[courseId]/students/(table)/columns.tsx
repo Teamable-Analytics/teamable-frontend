@@ -5,9 +5,6 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Text } from "@/components/ui/text"
 import { Badge } from "@/components/ui/badge"
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
-import { CourseSection } from "@/_temp_types/course"
-
-type SectionFilterValue = string[];
 
 export const columns: ColumnDef<Student>[] = [
   {
@@ -55,12 +52,15 @@ export const columns: ColumnDef<Student>[] = [
         hasDropDownMenu={false}
       />
     ),
-    accessorFn: (row) => row.lms_id ?? "",
-    cell: ({ getValue }) => (
-      <Text element="p" as="smallText">
-        {String(getValue())}
-      </Text>
-    ),
+    accessorFn: (row) => row.sis_user_id,
+    cell: ({ getValue }) => {
+      const empty = !getValue()
+      return (
+        <Text element="p" as={empty ? "mutedText" : "smallText"}>
+          {empty ? "None" : String(getValue()) }
+        </Text>
+      )
+    },
   },
   {
     id: "sections",
