@@ -34,7 +34,6 @@ import {
 import { columns } from "../(table)/columns"
 import { Student } from "@/_temp_types/student"
 import { Updater } from "@tanstack/table-core"
-import { sort } from "next/dist/build/webpack/loaders/css-loader/src/utils"
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -104,13 +103,12 @@ const DataTable = <TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     manualPagination: true,
   })
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar<TData> table={table} />
+      <DataTableToolbar table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
