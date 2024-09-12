@@ -119,7 +119,7 @@ const ORDERED_STEPS: StepKey[] = [
 type StepKey = (typeof STEP)[keyof typeof STEP];
 
 const ImportStudentsComponent = () => {
-  const { data } = useOnboardingProgress()
+  const { data, isLoading } = useOnboardingProgress()
   return (
     <div className="flex flex-col gap-4 max-w-[55ch]">
       <p className="leading-relaxed">
@@ -130,7 +130,7 @@ const ImportStudentsComponent = () => {
         can do so by creating a quiz in Canvas here. Only students who respond
         affirmatively to this will be imported.
       </p>
-      {!data.has_students && <GenerateOptInQuiz />}
+      {!isLoading && !data?.has_students && <GenerateOptInQuiz />}
     </div>
   )
 }
