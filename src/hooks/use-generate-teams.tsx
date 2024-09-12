@@ -2,10 +2,14 @@ import { useToast } from "@/hooks/use-toast"
 import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
 import { useMutation } from "@tanstack/react-query"
 import { defaultMutationFn } from "@/app/(providers)/query-client-provider"
+import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
 
 export const useGenerateTeams = () => {
   const { toast } = useToast()
   const { courseId } = useCourse()
+  const router = useRouter()
+
   const mutation = useMutation<void, any, void>({
     mutationFn: async () => {
       return defaultMutationFn(
@@ -17,6 +21,11 @@ export const useGenerateTeams = () => {
     onSuccess: () => {
       toast({
         title: "Teams generated successfully",
+        action: (
+          <Button onClick={() => router.push(`/course/${courseId}/team-sets`)}>
+            View
+          </Button>
+        ),
       })
     },
     onError: () => {
