@@ -22,6 +22,14 @@ export default function TeamSetDetailPage() {
 
   if (!teamSetId || isLoading || !teamSet) return null
 
+  // todo: do this better
+  const unassignedStudentTeam: Team = {
+    id: 1,
+    name: "Unassigned Students",
+    slug: "unassigned-students",
+    members: [...teamSet.unassigned_students],
+  }
+
   return (
     <PageView
       title={teamSet.name}
@@ -44,7 +52,7 @@ export default function TeamSetDetailPage() {
       <DataTable<Team>
         columns={columns}
         isPaginated={false}
-        data={teamSet.teams ?? []}
+        data={teamSet.teams ? [...teamSet.teams, unassignedStudentTeam] : []}
         searchBarOptions={{
           placeholder: "Search for a team or student",
           searchColumn: "name",
