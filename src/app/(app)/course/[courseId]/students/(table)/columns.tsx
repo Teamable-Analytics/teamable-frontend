@@ -3,7 +3,6 @@
 import { Student } from "@/_temp_types/student"
 import { ColumnDef } from "@tanstack/react-table"
 import { Text } from "@/components/ui/text"
-import { Badge } from "@/components/ui/badge"
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 
 export const columns: ColumnDef<Student>[] = [
