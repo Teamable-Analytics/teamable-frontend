@@ -1,14 +1,12 @@
 import React from "react"
-import { OnboardingProgress } from "@/_temp_types/onboarding"
+import {OnboardingProgress} from "@/_temp_types/onboarding"
 import {Action, NonEmptyArray} from "@/types"
-import {
-  StepDefinition,
-} from "@/app/(app)/course/[courseId]/setup/(components)/SetupStepDetailCard"
-import { useImportStudentsFromLms } from "@/hooks/use-import-students-from-lms"
-import { useImportStudentGradebookData } from "@/hooks/use-import-student-gradebook-data"
-import { GenerateOptInQuiz } from "@/app/(app)/course/[courseId]/setup/(components)/GenerateOptInQuiz"
-import { useOnboardingProgress } from "@/hooks/use-onboarding-progress"
-import { useGenerateTeams } from "@/hooks/use-generate-teams"
+import {StepDefinition} from "@/app/(app)/course/[courseId]/setup/(components)/SetupStepDetailCard"
+import {useImportStudentsFromLms} from "@/hooks/use-import-students-from-lms"
+import {useImportStudentGradebookData} from "@/hooks/use-import-student-gradebook-data"
+import {GenerateOptInQuiz} from "@/app/(app)/course/[courseId]/setup/(components)/GenerateOptInQuiz"
+import {useOnboardingProgress} from "@/hooks/use-onboarding-progress"
+import {useGenerateTeams} from "@/hooks/use-generate-teams"
 
 interface UseSetupStepsReturnType {
   steps: NonEmptyArray<StepDefinition>;
@@ -120,22 +118,27 @@ const ORDERED_STEPS: StepKey[] = [
 
 type StepKey = (typeof STEP)[keyof typeof STEP];
 
+const ImportStudentsComponent = () => {
+  const { data } = useOnboardingProgress()
+  return (
+    <div className="flex flex-col gap-4 max-w-[55ch]">
+      <p className="leading-relaxed">
+        Import all students from your connected Canvas course into Teamable.
+      </p>
+      <p className="leading-relaxed">
+        If you wish for students to opt-in to being imported into Teamable, you
+        can do so by creating a quiz in Canvas here. Only students who respond
+        affirmatively to this will be imported.
+      </p>
+      {!data.has_students && <GenerateOptInQuiz />}
+    </div>
+  )
+}
+
 const BASE_STEPS: Record<StepKey, StepDefinition> = {
   [STEP.IMPORT_STUDENTS]: {
     title: "Import students",
-    description: (
-      <div className="flex flex-col gap-4 max-w-[55ch]">
-        <p className="leading-relaxed">
-          Import all students from your connected Canvas course into Teamable.
-        </p>
-        <p className="leading-relaxed">
-          If you wish for students to opt-in to being imported into Teamable,
-          you can do so by creating a quiz in Canvas here. Only students who
-          respond affirmatively to this will be imported.
-        </p>
-        <GenerateOptInQuiz />
-      </div>
-    ),
+    description: <ImportStudentsComponent />,
     current: false,
     completed: false,
     enabled: true,
