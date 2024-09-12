@@ -62,32 +62,32 @@ export const columns: ColumnDef<Student>[] = [
       )
     },
   },
-  {
-    id: "sections",
-    enableSorting: false,
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Sections"
-        hasDropDownMenu={false}
-      />
-    ),
-    accessorFn: (row) => row.sections?.map((s) => s.name) ?? [],
-    cell: ({ row, getValue }) => {
-      const sections = getValue() as string[]
-      return (
-        <div className="flex flex-row gap-2">
-          {sections?.map((section, index) => (
-            <Badge
-              key={`${row.id}-${section}-${index}`}
-              variant="secondary"
-              className="rounded-sm"
-            >
-              <Text element="p">{section}</Text>
-            </Badge>
-          ))}
-        </div>
-      )
-    },
-  },
+  // {
+  //   id: "sections",
+  //   enableSorting: false,
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader
+  //       column={column}
+  //       title="Sections"
+  //       hasDropDownMenu={false}
+  //     />
+  //   ),
+  //   accessorFn: (row) => row.sections?.map((s) => s.name) ?? [],
+  //   cell: ({ row, getValue }) => {
+  //     const sections = getValue() as string[]
+  //     return (
+  //       <div className="flex flex-row gap-2">
+  //         {sections?.map((section, index) => (
+  //           <Badge
+  //             key={`${row.id}-${section}-${index}`}
+  //             variant="secondary"
+  //             className="rounded-sm"
+  //           >
+  //             <Text element="p">{section}</Text>
+  //           </Badge>
+  //         ))}
+  //       </div>
+  //     )
+  //   },
+  // },
 ]

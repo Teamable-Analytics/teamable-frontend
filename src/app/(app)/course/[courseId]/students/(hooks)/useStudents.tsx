@@ -26,6 +26,7 @@ interface StudentsContextType {
    * The students on the current page. Not all of them.
    */
   studentsToDisplay: Student[];
+  refetch: () => void;
   totalStudents: number;
   totalPages: number;
   isLoading: boolean;
@@ -68,6 +69,7 @@ const StudentsContext = createContext<StudentsContextType>({
   totalStudents: 0,
   totalPages: 0,
   isLoading: true,
+  refetch: () => {},
   filters: {
     sort: {
       value: "",
@@ -304,7 +306,7 @@ export const StudentsProvider: React.FC<PropsWithChildren> = ({ children }) => {
     pageSize,
     selectedSections,
   } = useStudentsFilters()
-  const { data, isLoading } = useStudentsQuery({
+  const { data, isLoading, refetch } = useStudentsQuery({
     courseId,
     queryString,
     enabled: !initialFiltersLoading,
@@ -323,6 +325,7 @@ export const StudentsProvider: React.FC<PropsWithChildren> = ({ children }) => {
     <StudentsContext.Provider
       value={{
         studentsToDisplay,
+        refetch,
         isLoading,
         totalStudents,
         totalPages,

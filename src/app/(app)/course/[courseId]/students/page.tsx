@@ -1,12 +1,21 @@
 "use client"
 
 import React from "react"
-import { StudentsProvider } from "./(hooks)/useStudents"
+import { StudentsProvider, useStudents } from "./(hooks)/useStudents"
 import PageView from "@/components/views/Page"
 import { StudentTable } from "./(table)/student-table"
 import { useImportStudentsFromLms } from "@/hooks/use-import-students-from-lms"
 
 export default function StudentsPage() {
+  return (
+    <StudentsProvider>
+      <StudentsPageView />
+    </StudentsProvider>
+  )
+}
+
+const StudentsPageView = () => {
+  const { refetch } = useStudents()
   const {
     importStudentsFromLmsAsync,
     isPending: importStudentsFromLmsPending,
@@ -22,14 +31,15 @@ export default function StudentsPage() {
       actions={[
         {
           content: "Import students",
-          onClick: () => importStudentsFromLmsAsync(undefined),
+          onClick: async () => {
+            await importStudentsFromLmsAsync(undefined)
+            await refetch()
+          },
           loading: importStudentsFromLmsPending,
         },
       ]}
     >
-      <StudentsProvider>
-        <StudentTable />
-      </StudentsProvider>
+      <StudentTable />
     </PageView>
   )
 }
