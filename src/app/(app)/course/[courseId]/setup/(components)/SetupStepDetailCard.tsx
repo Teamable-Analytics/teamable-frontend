@@ -42,7 +42,7 @@ export const SetupStepDetailCard = ({ steps }: StepDetailCardProps) => {
           {selectedStep.action && (
             <Button
               onClick={selectedStep.action.onClick}
-              disabled={selectedStep.action.loading}
+              loading={selectedStep.action.loading}
             >
               {selectedStep.action.content}
             </Button>

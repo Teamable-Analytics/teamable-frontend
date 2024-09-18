@@ -31,13 +31,13 @@ export function DataTableToolbar<TData>({
           onChange={(event) => filters.searchQuery.set(event.target.value)}
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        {table.getColumn("sections") && (
-          <StudentTableSectionsFilter
-            column={table.getColumn("sections")}
-            title="Sections"
-            options={sectionsOptions}
-          />
-        )}
+        {/* {table.getColumn("sections") && (*/}
+        {/*  <StudentTableSectionsFilter*/}
+        {/*    column={table.getColumn("sections")}*/}
+        {/*    title="Sections"*/}
+        {/*    options={sectionsOptions}*/}
+        {/*  />*/}
+        {/* )}*/}
       </div>
       <div className="flex items-center space-x-2">
         <DataTableViewOptions table={table} />

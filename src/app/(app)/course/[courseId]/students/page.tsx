@@ -5,6 +5,7 @@ import { StudentsProvider, useStudents } from "./(hooks)/useStudents"
 import PageView from "@/components/views/Page"
 import { StudentTable } from "./(table)/student-table"
 import { useImportStudentsFromLms } from "@/hooks/use-import-students-from-lms"
+import { useImportStudentGradebookData } from "@/hooks/use-import-student-gradebook-data"
 
 export default function StudentsPage() {
   return (
@@ -21,6 +22,11 @@ const StudentsPageView = () => {
     isPending: importStudentsFromLmsPending,
   } = useImportStudentsFromLms()
 
+  const {
+    importStudentGradebookDataAsync,
+    isPending: importStudentGradebookDataPending,
+  } = useImportStudentGradebookData()
+
   return (
     <PageView
       title="Students"
@@ -36,6 +42,14 @@ const StudentsPageView = () => {
             await refetch()
           },
           loading: importStudentsFromLmsPending,
+        },
+        {
+          content: "Import gradebook data",
+          onClick: async () => {
+            await importStudentGradebookDataAsync(undefined)
+            await refetch()
+          },
+          loading: importStudentGradebookDataPending,
         },
       ]}
     >

@@ -109,7 +109,8 @@ const SignUpFormFields = () => {
           </div>
         </div>
         <Button
-          disabled={isSubmitting || isValidating || !isValid}
+          loading={isSubmitting || isValidating}
+          disabled={!isValid}
           onClick={(e) => {
             e.preventDefault()
             void submitForm()

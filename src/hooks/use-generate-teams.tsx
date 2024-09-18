@@ -22,7 +22,10 @@ export const useGenerateTeams = () => {
       toast({
         title: "Teams generated successfully",
         action: (
-          <Button onClick={() => router.push(`/course/${courseId}/team-sets`)}>
+          <Button
+            onClick={() => router.push(`/course/${courseId}/team-sets`)}
+            size="sm"
+          >
             View
           </Button>
         ),

@@ -43,12 +43,12 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
             {title}
           </Text>
           {actions && (
-            <div>
+            <div className="flex gap-3">
               {actions.map((action, index) => (
                 <Button
                   key={`action-${index}`}
                   onClick={action.onClick}
-                  disabled={action.loading}
+                  loading={action.loading}
                   size="sm"
                 >
                   {action.content}
