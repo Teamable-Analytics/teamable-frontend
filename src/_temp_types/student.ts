@@ -7,6 +7,8 @@ export type Student = {
   sis_user_id: string;
   lms_link: string | null;
   name: string;
+  first_name: string;
+  last_name: string;
   sections?: CourseSection[];
   role: CourseRole;
 };

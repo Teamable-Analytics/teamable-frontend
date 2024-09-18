@@ -18,7 +18,7 @@ import { useQuery } from "@tanstack/react-query"
 import { PaginatedList } from "@/_temp_types/pagination"
 import { PAGE_SIZE_OPTIONS } from "@/components/ui/data-table-pagination"
 
-const SORTABLE_FIELDS = ["firstName", "lastName", "id"] as const
+const SORTABLE_FIELDS = ["first_name", "last_name", "id"] as const
 export type SortableFieldKey = (typeof SORTABLE_FIELDS)[number];
 
 interface StudentsContextType {

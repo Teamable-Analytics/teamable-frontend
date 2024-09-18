@@ -7,7 +7,7 @@ import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 
 export const columns: ColumnDef<Student>[] = [
   {
-    id: "firstName",
+    id: "first_name",
     meta: { columnName: "First Name" },
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -16,7 +16,7 @@ export const columns: ColumnDef<Student>[] = [
         hasDropDownMenu={false}
       />
     ),
-    accessorFn: (row) => row.name.split(" ")[0],
+    accessorFn: (row) => row.first_name,
     cell: ({ getValue }) => (
       <Text element="p" as="smallText">
         {String(getValue())}
@@ -24,7 +24,7 @@ export const columns: ColumnDef<Student>[] = [
     ),
   },
   {
-    id: "lastName",
+    id: "last_name",
     meta: { columnName: "Last Name" },
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -33,8 +33,7 @@ export const columns: ColumnDef<Student>[] = [
         hasDropDownMenu={false}
       />
     ),
-    // fixme: this is gross and should be handled better
-    accessorFn: (row) => row.name.split(" ").slice(1).join(" "),
+    accessorFn: (row) => row.last_name,
     cell: ({ getValue }) => (
       <Text element="p" as="smallText">
         {String(getValue())}
