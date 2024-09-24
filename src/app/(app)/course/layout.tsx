@@ -9,8 +9,6 @@ export default function CourseLayout({
 }) {
   return (
     <>
-      <Navbar />
-      <Separator />
       {children}
       <Separator />
       <Footer />

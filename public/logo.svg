@@ -1,0 +1,11 @@
+<svg viewBox="0 0 785 785" xmlns="http://www.w3.org/2000/svg">
+<circle cx="392.051" cy="281.049" r="75" fill="currentColor"/>
+<circle cx="295.922" cy="447.549" r="75" transform="rotate(-120 295.922 447.549)" fill="currentColor"/>
+<circle cx="488.18" cy="447.549" r="75" transform="rotate(120 488.18 447.549)" fill="currentColor"/>
+<path d="M442.515 109.521C508.365 121.283 568.039 155.677 611.225 206.761" stroke="currentColor" stroke-width="60" stroke-linecap="round"/>
+<path d="M661.959 294.489C684.698 357.397 684.749 426.273 662.102 489.215" stroke="currentColor" stroke-width="60" stroke-linecap="round"/>
+<path d="M611.495 577.017C568.384 628.164 508.761 662.645 442.928 674.504" stroke="currentColor" stroke-width="60" stroke-linecap="round"/>
+<path d="M341.585 674.578C275.735 662.816 216.062 628.422 172.876 577.338" stroke="currentColor" stroke-width="60" stroke-linecap="round"/>
+<path d="M122.14 489.61C99.4012 426.701 99.3509 357.825 121.998 294.883" stroke="currentColor" stroke-width="60" stroke-linecap="round"/>
+<path d="M172.605 207.082C215.716 155.935 275.339 121.453 341.172 109.595" stroke="currentColor" stroke-width="60" stroke-linecap="round"/>
+</svg>
