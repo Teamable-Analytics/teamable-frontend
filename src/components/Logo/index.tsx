@@ -1,9 +1,10 @@
 import React from "react"
+import TeamableLogo from "@public/logo.svg"
 
 const Logo = () => {
   return (
     <div>
-      <h1 className="whitespace-nowrap font-semibold">Teamable Analytics</h1>
+      <TeamableLogo className="h-8" />
     </div>
   )
 }
