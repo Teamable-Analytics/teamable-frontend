@@ -1,45 +1,54 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Teamable: Frontend
 
 ## Getting Started
+Prerequisites:
+- Node Version Manager (NVM)
+  - See [https://github.com/nvm-sh/nvm](https://github.com/nvm-sh/nvm)
+- Node.js v20.16.0
+- `Note:` Docker is not needed for local development
 
-First, run the development server:
+Installation:
+1. Clone this project.
+   ```bash
+    git clone git@github.com:Teamable-Analytics/teamable-frontend.git
+   ```
+2. Create local environment file from sample.
+   ```bash
+   cp sample.env .env
+   ```
+3. Switch to the correct version of Node.js used in this project.
+   ```bash
+   nvm use
+   ```
+4. Start the development server.
+   ```bash
+   yarn dev
+   ```
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+Project setup:
+1. Follow the steps from [Teamable Backend](https://github.com/Teamable-Analytics/teamable-backend) until you have an instructor signup token.
+2. Navigate to `http://localhost:3000/accounts/signup?token={{INSTRUCTOR_SIGNUP_TOKEN}}`, replacing `{{INSTRUCTOR_SIGNUP_TOKEN}}` with the token from Step 1.
+3. Signup with an email and password.
+   - Use a good password, the signup will fail if the password is weak.
+4. Once signed up, you will be redirected to the course's onboarding dashboard.
+
+### Useful commands
+
+Loading components from shadcn/ui
+_(Run this in root directory, where package.json is)_. Component names can be found [here](https://ui.shadcn.com/docs/components).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npx shadcn-ui@latest add component-name
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Loading components from shadcn/ui
-
-Run `npx shadcn-ui@latest add component-name`
-(run this in root directory, where package.json is)
-
-The component should be under src/components/ui
-
-To find the ![list of components](https://ui.shadcn.com/docs/components)
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
+### Resources
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [shadcn/ui](https://ui.shadcn.com) - learn about shadcn/ui.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Appendix
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
