@@ -31,11 +31,10 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
                     {breadcrumb.title}
                   </Text>
                 ) : (
-                  <Link href={breadcrumb.href}>
+                  <Link href={breadcrumb.href} className="hover:underline cursor-pointer">
                     <Text
                       element="p"
                       as={"smallText"}
-                      className="hover:underline cursor-pointer"
                     >
                       {breadcrumb.title}
                     </Text>
