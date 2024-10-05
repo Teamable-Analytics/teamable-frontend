@@ -1,17 +1,19 @@
-import React from "react"
-import {OnboardingProgress} from "@/_temp_types/onboarding"
-import {Action, NonEmptyArray} from "@/types"
-import {StepDefinition} from "@/app/(app)/course/[courseId]/setup/(components)/SetupStepDetailCard"
-import {useImportStudentsFromLms} from "@/hooks/use-import-students-from-lms"
-import {useImportStudentGradebookData} from "@/hooks/use-import-student-gradebook-data"
-import {GenerateOptInQuiz} from "@/app/(app)/course/[courseId]/setup/(components)/GenerateOptInQuiz"
-import {useOnboardingProgress} from "@/hooks/use-onboarding-progress"
-import {useGenerateTeams} from "@/hooks/use-generate-teams"
+import React, { ReactNode, useState } from "react"
+import { OnboardingProgress } from "@/_temp_types/onboarding"
+import { Action, NonEmptyArray } from "@/types"
+import { StepDefinition } from "@/app/(app)/course/[courseId]/setup/(components)/SetupStepDetailCard"
+import { useImportStudentsFromLms } from "@/hooks/use-import-students-from-lms"
+import { useImportStudentGradebookData } from "@/hooks/use-import-student-gradebook-data"
+import { GenerateOptInQuiz } from "@/app/(app)/course/[courseId]/setup/(components)/GenerateOptInQuiz"
+import { useOnboardingProgress } from "@/hooks/use-onboarding-progress"
+import { useGenerateTeams } from "@/hooks/use-generate-teams"
+import { GenerateTeamsAttributeSelector } from "@/app/(app)/course/[courseId]/components/GenerateTeamsAttributeSelector"
 
 interface UseSetupStepsReturnType {
   steps: NonEmptyArray<StepDefinition>;
   isLoading: boolean;
   onboardingProgress?: OnboardingProgress;
+  addedComponents: ReactNode;
 }
 
 export const useSetupSteps = (): UseSetupStepsReturnType => {
@@ -28,6 +30,9 @@ export const useSetupSteps = (): UseSetupStepsReturnType => {
   const { generateTeamsAsync, isPending: generateTeamsPending } =
     useGenerateTeams()
 
+  const [selectGradeSourceDialogOpen, setSelectGradeSourceDialogOpen] =
+    useState(false)
+
   if (!data || isLoading) {
     return {
       steps: ORDERED_STEPS.map(
@@ -35,6 +40,7 @@ export const useSetupSteps = (): UseSetupStepsReturnType => {
       ) as NonEmptyArray<StepDefinition>,
       isLoading,
       onboardingProgress: data,
+      addedComponents: null,
     }
   }
 
@@ -58,8 +64,7 @@ export const useSetupSteps = (): UseSetupStepsReturnType => {
     GENERATE_TEAMS: {
       content: "Generate teams",
       onClick: async () => {
-        await generateTeamsAsync(undefined)
-        await refetch()
+        setSelectGradeSourceDialogOpen(true)
       },
       loading: generateTeamsPending,
     },
@@ -75,10 +80,23 @@ export const useSetupSteps = (): UseSetupStepsReturnType => {
     }
   })
 
+  const addedComponents = (
+    <GenerateTeamsAttributeSelector
+      open={selectGradeSourceDialogOpen}
+      setOpen={setSelectGradeSourceDialogOpen}
+      isPending={generateTeamsPending}
+      onSubmit={async ({ attribute }) => {
+        await generateTeamsAsync({ attribute })
+        void refetch()
+      }}
+    />
+  )
+
   return {
     steps: steps as NonEmptyArray<StepDefinition>,
     isLoading,
     onboardingProgress: data,
+    addedComponents,
   }
 }
 

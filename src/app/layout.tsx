@@ -8,7 +8,7 @@ import { AuthUserContextProvider } from "@/app/(providers)/auth-user-provider"
 const manrope = Manrope({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Teamable Analytics",
+  title: "Teamable",
   description:
     "A team formation and analytics tool for students and educators.",
 }

@@ -5,25 +5,33 @@ import { defaultMutationFn } from "@/app/(providers)/query-client-provider"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 
+interface GenerateTeamsParams {
+  attribute: number;
+}
+
+interface GenerateTeamsResponse {
+  team_set_id: number;
+}
+
 export const useGenerateTeams = () => {
   const { toast } = useToast()
   const { courseId } = useCourse()
   const router = useRouter()
 
-  const mutation = useMutation<void, any, void>({
-    mutationFn: async () => {
+  const mutation = useMutation<GenerateTeamsResponse, any, GenerateTeamsParams>({
+    mutationFn: async ({ attribute }) => {
       return defaultMutationFn(
         `courses/${courseId}/generate_teams/`,
-        undefined,
+        { attribute },
         { allowEmptyResponse: true },
       )
     },
-    onSuccess: () => {
+    onSuccess: ({ team_set_id }) => {
       toast({
         title: "Teams generated successfully",
         action: (
           <Button
-            onClick={() => router.push(`/course/${courseId}/team-sets`)}
+            onClick={() => router.push(`/course/${courseId}/team-sets/${team_set_id}`)}
             size="sm"
           >
             View

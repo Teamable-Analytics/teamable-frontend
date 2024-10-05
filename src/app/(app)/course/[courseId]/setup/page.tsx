@@ -7,7 +7,7 @@ import { useSetupSteps } from "@/app/(app)/course/[courseId]/setup/(hooks)/useSe
 import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
 
 const SetupPage = () => {
-  const { steps } = useSetupSteps()
+  const { steps, addedComponents } = useSetupSteps()
   const { courseId } = useCourse()
   return (
     <PageView
@@ -18,6 +18,7 @@ const SetupPage = () => {
       ]}
     >
       <SetupStepDetailCard steps={steps} />
+      {addedComponents}
       <div className="min-h-[3rem]" />
     </PageView>
   )
