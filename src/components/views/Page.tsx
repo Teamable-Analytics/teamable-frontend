@@ -18,37 +18,38 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
   return (
     <main className="container flex-col min-h-screen pb-8">
       <div className="flex flex-col gap-3 pt-12 pb-4">
-        {breadcrumbs && (
-          <div className="flex gap-1">
-            {breadcrumbs.map((breadcrumb, index) => (
-              <div key={index} className="flex flex-row gap-1">
-                {breadcrumb.title === title ? (
+      {breadcrumbs && (
+        <div className="flex gap-1">
+          {breadcrumbs.map((breadcrumb, index) => (
+            <div key={index} className="flex flex-row gap-1">
+              {index === breadcrumbs.length - 1 ? (
+                <Text
+                  element="p"
+                  as={"smallText"}
+                  className="font-bold"
+                >
+                  {breadcrumb.title}
+                </Text>
+              ) : (
+                <Link href={breadcrumb.href} className="hover:underline">
                   <Text
                     element="p"
                     as={"smallText"}
-                    className="font-bold"
                   >
                     {breadcrumb.title}
                   </Text>
-                ) : (
-                  <Link href={breadcrumb.href} className="hover:underline">
-                    <Text
-                      element="p"
-                      as={"smallText"}
-                    >
-                      {breadcrumb.title}
-                    </Text>
-                  </Link>
-                )}
-                {index < breadcrumbs.length - 1 && (
-                  <Text element="p" as={"smallText"}>
-                    &gt;
-                  </Text>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+                </Link>
+              )}
+              {index < breadcrumbs.length - 1 && (
+                <Text element="p" as={"smallText"}>
+                  &gt;
+                </Text>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
         <div className="flex justify-between">
           <Text
             element={"h1"}
