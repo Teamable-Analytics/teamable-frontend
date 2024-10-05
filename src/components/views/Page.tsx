@@ -49,7 +49,6 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
             ))}
           </div>
         )}
-
         <div className="flex justify-between">
           <Text
             element={"h1"}
