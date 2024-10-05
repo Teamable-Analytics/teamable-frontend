@@ -9,16 +9,7 @@ import { TeamSet } from "@/_temp_types/teamSet"
 import { columns } from "@/app/(app)/course/[courseId]/team-sets/columns"
 import { useRouter } from "next/navigation"
 import { useGenerateTeams } from "@/hooks/use-generate-teams"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
-import { GradeSourceAttributeSelector } from "@/components/GradeSourceAttributeSelector"
-import { Button } from "@/components/ui/button"
+import { GenerateTeamsAttributeSelector } from "@/app/(app)/course/[courseId]/components/GenerateTeamsAttributeSelector"
 
 export default function TeamSetListPage() {
   const { courseId } = useCourse()
@@ -33,9 +24,6 @@ export default function TeamSetListPage() {
 
   const [selectGradeSourceDialogOpen, setSelectGradeSourceDialogOpen] =
     useState(false)
-  const [selectedGradeAttribute, setSelectedGradeAttribute] = useState<
-    { id: number; name: string } | undefined
-  >()
 
   return (
     <PageView
@@ -64,38 +52,15 @@ export default function TeamSetListPage() {
         }}
         rowAction={rowAction}
       />
-      <Dialog open={selectGradeSourceDialogOpen} onOpenChange={setSelectGradeSourceDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Select a grade source</DialogTitle>
-            <DialogDescription>
-              Please select a grade attribute to use for team generation.
-            </DialogDescription>
-          </DialogHeader>
-          <GradeSourceAttributeSelector
-            onSelect={async ({ gradeAttribute }) => {
-              setSelectedGradeAttribute(gradeAttribute)
-            }}
-          />
-          <DialogFooter>
-            <Button
-              type="submit"
-              disabled={!selectedGradeAttribute}
-              loading={isPending}
-              onClick={async () => {
-                if (!selectedGradeAttribute) return
-                await generateTeamsAsync({
-                  attribute: selectedGradeAttribute.id,
-                })
-                void refetch()
-                setSelectGradeSourceDialogOpen(false)
-              }}
-            >
-              Generate teams
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <GenerateTeamsAttributeSelector
+        open={selectGradeSourceDialogOpen}
+        setOpen={setSelectGradeSourceDialogOpen}
+        isPending={isPending}
+        onSubmit={async ({ attribute }) => {
+          await generateTeamsAsync({ attribute })
+          void refetch()
+        }}
+      />
     </PageView>
   )
 }
