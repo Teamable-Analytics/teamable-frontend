@@ -7,7 +7,3 @@ export interface TeamSet {
   teams: Team[];
   unassigned_students: Student[];
 }
-
-export interface CourseTeamSets {
-  team_sets: Omit<TeamSet, "teams">[];
-}
