@@ -33,6 +33,7 @@ Project setup:
    - Use a good password, the signup will fail if the password is weak.
 4. Once signed up, you will be redirected to the course's onboarding dashboard.
 
+
 ### Useful commands
 
 Loading components from shadcn/ui

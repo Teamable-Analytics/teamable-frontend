@@ -1,7 +1,7 @@
-import { Text } from "@/components/ui/text"
-import Link from "next/link"
-import { Action } from "@/types"
 import { Button } from "@/components/ui/button"
+import { Text } from "@/components/ui/text"
+import { Action } from "@/types"
+import Link from "next/link"
 import React from "react"
 
 type PageViewProps = {
@@ -22,14 +22,29 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
           <div className="flex gap-1">
             {breadcrumbs.map((breadcrumb, index) => (
               <div key={index} className="flex flex-row gap-1">
-                <Link href={breadcrumb.href}>
-                  <Text element="p" as={"smallText"}>
+                {index === breadcrumbs.length - 1 ? (
+                  <Text
+                    element="p"
+                    as={"smallText"}
+                    className="font-bold"
+                  >
                     {breadcrumb.title}
                   </Text>
-                </Link>
-                <Text element="p" as={"smallText"}>
-                  /
-                </Text>
+                ) : (
+                  <Link href={breadcrumb.href} className="hover:underline">
+                    <Text
+                      element="p"
+                      as={"smallText"}
+                    >
+                      {breadcrumb.title}
+                    </Text>
+                  </Link>
+                )}
+                {index < breadcrumbs.length - 1 && (
+                  <Text element="p" as={"smallText"}>
+                    &gt;
+                  </Text>
+                )}
               </div>
             ))}
           </div>
