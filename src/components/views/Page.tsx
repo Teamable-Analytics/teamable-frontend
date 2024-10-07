@@ -1,8 +1,15 @@
 import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu"
 import { Text } from "@/components/ui/text"
 import { Action } from "@/types"
 import Link from "next/link"
-import React from "react"
+import React, { useEffect, useState } from "react"
+
 
 type PageViewProps = {
   children: React.ReactNode;
@@ -15,6 +22,22 @@ type PageViewProps = {
 };
 
 const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
+
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    handleResize()
+
+    window.addEventListener("resize", handleResize)
+
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
   return (
     <main className="container flex-col min-h-screen pb-8">
       <div className="flex flex-col gap-3 pt-12 pb-4">
@@ -59,16 +82,29 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
           </Text>
           {actions && (
             <div className="flex gap-3">
-              {actions.map((action, index) => (
-                <Button
-                  key={`action-${index}`}
-                  onClick={action.onClick}
-                  loading={action.loading}
-                  size="sm"
-                >
-                  {action.content}
-                </Button>
-              ))}
+              {isMobile ?(
+                <DropdownMenu>
+                <DropdownMenuTrigger>Import data...</DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {actions.map((action, index) => (
+                    <DropdownMenuItem key={`action-${index}`} onClick={action.onClick}>
+                        {action.content}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              ):(
+                actions.map((action, index) => (
+                  <Button
+                    key={`action-${index}`}
+                    onClick={action.onClick}
+                    loading={action.loading}
+                    size="sm"
+                  >
+                    {action.content}
+                  </Button>
+                ))
+              )}
             </div>
           )}
         </div>
