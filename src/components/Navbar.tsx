@@ -78,7 +78,7 @@ const Navbar = () => {
               </Avatar>
             )}
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
+          <DropdownMenuContent align="end" sideOffset={8}>
             <DropdownMenuItem onClick={logoutSync}>Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
