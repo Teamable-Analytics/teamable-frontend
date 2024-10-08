@@ -109,9 +109,6 @@ const LogInFormFields = () => {
             void submitForm()
           }}
         >
-          {(isSubmitting || isValidating) && (
-            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-          )}
           Login
         </Button>
       </div>
