@@ -9,20 +9,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { DndContext, DragEndEvent, closestCenter } from "@dnd-kit/core"
 import {
   SortableContext,
-  verticalListSortingStrategy,
-  useSortable,
   arrayMove,
+  useSortable,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable"
-import { DndContext, DragEndEvent, closestCenter } from "@dnd-kit/core"
 import { CSS } from "@dnd-kit/utilities"
-import { Formik, Form, useFormikContext } from "formik"
-import Trash from "@public/trash-icon.svg"
-import Drag from "@public/drag-icon.svg"
-import { Input } from "@/components/ui/input"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { DragHandleDots2Icon, TrashIcon } from '@radix-ui/react-icons'
+import { Form, Formik, useFormikContext } from "formik"
 
 type Answer = {
   id: number;
@@ -63,7 +62,7 @@ const SortableInput = ({ index }: { index: number }) => {
                   values.answers.filter((_, i: number) => i !== index),)
               }
             >
-              <Trash />
+              <TrashIcon />
             </Button>
             <button
               type="button"
@@ -71,7 +70,7 @@ const SortableInput = ({ index }: { index: number }) => {
               ref={setNodeRef}
               {...listeners}
             >
-              <Drag />
+              <DragHandleDots2Icon />
             </button>
           </>
         ) : (
