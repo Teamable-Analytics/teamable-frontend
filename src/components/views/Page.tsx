@@ -1,14 +1,18 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu"
-import { Text } from "@/components/ui/text"
-import { Action } from "@/types"
-import Link from "next/link"
-import React, { useEffect, useState } from "react"
+} from "@/components/ui/dropdown-menu";
+import { Text } from "@/components/ui/text";
+import { Action } from "@/types";
+import { UploadIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+
 
 
 type PageViewProps = {
@@ -83,16 +87,29 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
           {actions && (
             <div className="flex gap-3">
               {isMobile ?(
-                <DropdownMenu>
-                <DropdownMenuTrigger>Import data...</DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  {actions.map((action, index) => (
-                    <DropdownMenuItem key={`action-${index}`} onClick={action.onClick}>
-                        {action.content}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+                <div className="relative">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline">
+                        Import...
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                    side="bottom" 
+                    align="start"
+                    className="absolute z-50 min-w-[200px]"
+                    >
+                      <DropdownMenuLabel>Import Data</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      {actions.map((action, index) => (
+                        <DropdownMenuItem key={`action-${index}`} onClick={action.onClick}>
+                          <UploadIcon style={{ marginRight: '8px' }}/>
+                          {action.content}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               ):(
                 actions.map((action, index) => (
                   <Button
