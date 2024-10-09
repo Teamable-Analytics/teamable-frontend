@@ -96,8 +96,8 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
                     side="bottom" 
-                    align="start"
-                    className="absolute z-50 min-w-[200px]"
+                    align="end"
+                    className="absolute right-0 z-50 min-w-[200px]"
                     >
                       <DropdownMenuLabel>Import Data</DropdownMenuLabel>
                       <DropdownMenuSeparator />
