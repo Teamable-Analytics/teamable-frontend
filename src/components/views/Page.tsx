@@ -11,7 +11,7 @@ import { Text } from "@/components/ui/text"
 import { Action } from "@/types"
 import { UploadIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
-import React, { useEffect, useState } from "react"
+import React from "react"
 
 
 
@@ -26,22 +26,6 @@ type PageViewProps = {
 };
 
 const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
-
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-
-    handleResize()
-
-    window.addEventListener("resize", handleResize)
-
-    return () => {
-      window.removeEventListener("resize", handleResize)
-    }
-  }, [])
   return (
     <main className="container flex-col min-h-screen pb-8">
       <div className="flex flex-col gap-3 pt-12 pb-4">
@@ -86,37 +70,36 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
           </Text>
           {actions && (
             <div className="flex gap-3">
-              {isMobile ? (
-                <div className="relative">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="outline" className="gap-2">
-                        Import data
+              <div className="md:hidden relative">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="gap-2">
+                      Import data
+                      <UploadIcon/>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    side="bottom"
+                    align="end"
+                    className="absolute right-0 z-50 min-w-[200px]"
+                  >
+                    <DropdownMenuLabel>Data import options</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    {actions.map((action, index) => (
+                      <DropdownMenuItem
+                        key={`action-${index}`}
+                        onClick={action.onClick}
+                        className="gap-2"
+                      >
                         <UploadIcon/>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      side="bottom"
-                      align="end"
-                      className="absolute right-0 z-50 min-w-[200px]"
-                    >
-                      <DropdownMenuLabel>Data import options</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      {actions.map((action, index) => (
-                        <DropdownMenuItem
-                          key={`action-${index}`}
-                          onClick={action.onClick}
-                          className="gap-2"
-                        >
-                          <UploadIcon/>
-                          {action.content}
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              ) : (
-                actions.map((action, index) => (
+                        {action.content}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              <div className="hidden md:flex">
+                {actions.map((action, index) => (
                   <Button
                     key={`action-${index}`}
                     onClick={action.onClick}
@@ -125,8 +108,8 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
                   >
                     {action.content}
                   </Button>
-                ))
-              )}
+                ))}
+              </div>
             </div>
           )}
         </div>
