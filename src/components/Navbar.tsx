@@ -10,6 +10,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -21,16 +23,13 @@ import {
 } from "@/components/ui/navigation-menu"
 import { Text } from "@/components/ui/text"
 import { useLogout } from "@/hooks/use-logout"
-import { Cross1Icon, HamburgerMenuIcon } from "@radix-ui/react-icons"
+import { HamburgerMenuIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
-import { useState } from 'react'
 
 const Navbar = () => {
   const { authUser } = useAuthUser()
   const { logoutSync } = useLogout()
   const { courseId, courseName } = useCourse()
-  const [menuOpen, setMenuOpen] = useState(false)
-  const toggleMenu = () => setMenuOpen(!menuOpen)
 
   return (
     <NavigationMenu className="container my-4 mx-0 min-w-full flex justify-between gap-4 sticky">
@@ -44,55 +43,58 @@ const Navbar = () => {
 
       <div className="flex md:hidden">
         <DropdownMenu>
-            <DropdownMenuTrigger>
-              <button
-                onClick={toggleMenu}
-                aria-label="Toggle navigation"
-                className="focus:outline-none"
-              >
-                {menuOpen ? <Cross1Icon className="w-6 h-6" /> : <HamburgerMenuIcon className="w-6 h-6" />}
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="flex flex-col items-center gap-4">
-                <NavigationMenuLink
-                  href={`/course/${courseId}/setup`}
-                  className={navigationMenuTriggerStyle()}
-                >
+          <DropdownMenuTrigger>
+            <button
+              aria-label="Toggle navigation"
+              className="focus:outline-none"
+            >
+              <HamburgerMenuIcon className="w-6 h-6"/>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="flex flex-col gap-4">
+            <DropdownMenuLabel className="flex justify-center">
+              {authUser ? (
+                <Avatar>
+                  <AvatarFallback>
+                    {authUser.username[0].toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              ) : (
+                <Avatar className="animate-pulse">
+                  <AvatarFallback></AvatarFallback>
+                </Avatar>
+              )}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <NavigationMenuLink
+              href={`/course/${courseId}/setup`}
+              className={navigationMenuTriggerStyle()}
+            >
                   Onboarding
-                </NavigationMenuLink>
-                <NavigationMenuLink
-                  href={`/course/${courseId}/team-sets`}
-                  className={navigationMenuTriggerStyle()}
-                >
+            </NavigationMenuLink>
+            <NavigationMenuLink
+              href={`/course/${courseId}/students`}
+              className={navigationMenuTriggerStyle()}
+            >
+                  Students
+            </NavigationMenuLink>
+            <NavigationMenuLink
+              href={`/course/${courseId}/team-sets`}
+              className={navigationMenuTriggerStyle()}
+            >
                   Manage Teams
-                </NavigationMenuLink>
-                <NavigationMenuLink
-                  href={`/course/${courseId}/team-sets`}
-                  className={navigationMenuTriggerStyle()}
-                >
-                  Manage Teams
-                </NavigationMenuLink>
-                <DropdownMenuItem className="gap-2">
-                    {authUser ? (
-                      <Avatar>
-                        <AvatarFallback>
-                          {authUser.username[0].toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                    ) : (
-                      <Avatar className="animate-pulse">
-                        <AvatarFallback></AvatarFallback>
-                      </Avatar>
-                    )}
-                    <Button 
-                      variant="outline"
-                      onClick={logoutSync}
-                    >
+            </NavigationMenuLink>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="flex justify-center">
+              <Button
+                variant="outline"
+                onClick={logoutSync}
+              >
                       Logout
-                    </Button>
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              </Button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <div className="flex gap-2 hidden md:flex">
