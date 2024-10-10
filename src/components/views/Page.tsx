@@ -1,8 +1,17 @@
 import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Text } from "@/components/ui/text"
 import { Action } from "@/types"
+import { UploadIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
 import React from "react"
+
+
 
 type PageViewProps = {
   children: React.ReactNode;
@@ -59,16 +68,44 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
           </Text>
           {actions && (
             <div className="flex gap-3">
-              {actions.map((action, index) => (
-                <Button
-                  key={`action-${index}`}
-                  onClick={action.onClick}
-                  loading={action.loading}
-                  size="sm"
-                >
-                  {action.content}
-                </Button>
-              ))}
+              <div className="md:hidden relative">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button className="gap-2">
+                      Import data
+                      <UploadIcon/>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    side="bottom"
+                    align="end"
+                    className="absolute right-0 z-50 min-w-[200px] space-y-3"
+                  >
+                    {actions.map((action, index) => (
+                      <DropdownMenuItem
+                        key={`action-${index}`}
+                        onClick={action.onClick}
+                        className="gap-2"
+                      >
+                        <UploadIcon/>
+                        {action.content}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              <div className="hidden md:flex gap-3">
+                {actions.map((action, index) => (
+                  <Button
+                    key={`action-${index}`}
+                    onClick={action.onClick}
+                    loading={action.loading}
+                    size="sm"
+                  >
+                    {action.content}
+                  </Button>
+                ))}
+              </div>
             </div>
           )}
         </div>
