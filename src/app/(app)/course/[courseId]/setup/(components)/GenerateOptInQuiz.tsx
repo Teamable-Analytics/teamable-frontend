@@ -1,9 +1,10 @@
 "use client"
 
-import React, { useMemo } from "react"
 import { useCreateOptInQuiz } from "@/hooks/use-create-opt-in-quiz"
 import { useOnboardingProgress } from "@/hooks/use-onboarding-progress"
-import Link from "@public/link.svg"
+import { useMemo } from "react"
+
+import { Link1Icon } from "@radix-ui/react-icons"
 
 export const GenerateOptInQuiz = () => {
   const { data, refetch } = useOnboardingProgress()
@@ -37,7 +38,7 @@ export const GenerateOptInQuiz = () => {
           hover:cursor-pointer
         `}
       >
-        {hasCreatedOptInQuiz ? <Link className="w-5 fill-current" /> : "->"}
+        {hasCreatedOptInQuiz ? <Link1Icon className="w-5 fill-current" /> : "->"}
       </div>
     </div>
   )

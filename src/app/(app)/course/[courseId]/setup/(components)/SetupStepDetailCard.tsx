@@ -1,8 +1,8 @@
 "use client"
-import React, { ReactNode, useEffect, useState } from "react"
-import { Action, NonEmptyArray } from "@/types"
-import Check from "@public/check.svg"
 import { Button } from "@/components/ui/button"
+import { Action, NonEmptyArray } from "@/types"
+import { CheckIcon } from "lucide-react"
+import { ReactNode, useEffect, useState } from "react"
 export interface StepDefinition {
   enabled: boolean;
   current: boolean;
@@ -75,7 +75,7 @@ export const SetupStepDetailCard = ({ steps }: StepDetailCardProps) => {
                 `}
               >
                 {step.enabled && step.completed ? (
-                  <Check className="w-5 fill-current" />
+                  <CheckIcon className="w-5 fill-current" />
                 ) : (
                   index + 1
                 )}
