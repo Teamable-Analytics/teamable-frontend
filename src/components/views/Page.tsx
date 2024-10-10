@@ -3,8 +3,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Text } from "@/components/ui/text"
@@ -73,7 +71,7 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
               <div className="md:hidden relative">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="gap-2">
+                    <Button className="gap-2">
                       Import data
                       <UploadIcon/>
                     </Button>
@@ -81,10 +79,8 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
                   <DropdownMenuContent
                     side="bottom"
                     align="end"
-                    className="absolute right-0 z-50 min-w-[200px]"
+                    className="absolute right-0 z-50 min-w-[200px] space-y-3"
                   >
-                    <DropdownMenuLabel>Data import options</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
                     {actions.map((action, index) => (
                       <DropdownMenuItem
                         key={`action-${index}`}
@@ -98,7 +94,7 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-              <div className="hidden md:flex">
+              <div className="hidden md:flex gap-3">
                 {actions.map((action, index) => (
                   <Button
                     key={`action-${index}`}
