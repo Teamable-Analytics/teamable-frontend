@@ -5,14 +5,12 @@ import { useAuthUser } from "@/app/(providers)/auth-user-provider"
 import Logo from "@/components/Logo"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import {
   NavigationMenu,
@@ -51,7 +49,7 @@ const Navbar = () => {
               <HamburgerMenuIcon className="w-6 h-6"/>
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="flex flex-col gap-4">
+          <DropdownMenuContent className="flex flex-col">
             <DropdownMenuLabel className="flex justify-center">
               {authUser ? (
                 <Avatar>
@@ -65,7 +63,6 @@ const Navbar = () => {
                 </Avatar>
               )}
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
             <NavigationMenuLink
               href={`/course/${courseId}/setup`}
               className={navigationMenuTriggerStyle()}
@@ -84,14 +81,8 @@ const Navbar = () => {
             >
                   Manage Teams
             </NavigationMenuLink>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="flex justify-center">
-              <Button
-                variant="outline"
-                onClick={logoutSync}
-              >
-                      Logout
-              </Button>
+            <DropdownMenuItem className={navigationMenuTriggerStyle()}>
+              Logout
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
