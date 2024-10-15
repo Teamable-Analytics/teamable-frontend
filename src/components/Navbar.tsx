@@ -9,8 +9,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
   NavigationMenu,
@@ -50,19 +49,6 @@ const Navbar = () => {
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="flex flex-col">
-            <DropdownMenuLabel className="flex justify-center">
-              {authUser ? (
-                <Avatar>
-                  <AvatarFallback>
-                    {authUser.username[0].toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-              ) : (
-                <Avatar className="animate-pulse">
-                  <AvatarFallback></AvatarFallback>
-                </Avatar>
-              )}
-            </DropdownMenuLabel>
             <NavigationMenuLink
               href={`/course/${courseId}/setup`}
               className={navigationMenuTriggerStyle()}

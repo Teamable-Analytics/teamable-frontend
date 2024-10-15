@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Text } from "@/components/ui/text"
 import { Action } from "@/types"
-import { UploadIcon } from "@radix-ui/react-icons"
+import { DotsVerticalIcon, UploadIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
 import React from "react"
 
@@ -71,10 +71,9 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
               <div className="md:hidden relative">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button className="gap-2">
-                      Import data
-                      <UploadIcon/>
-                    </Button>
+                    <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md focus-visible:outline-none border h-8 w-8 p-0">
+                      <DotsVerticalIcon/>
+                    </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
                     side="bottom"
@@ -94,7 +93,7 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-              <div className="hidden md:flex gap-3">
+              <div className="hidden md:flex gap-3 ">
                 {actions.map((action, index) => (
                   <Button
                     key={`action-${index}`}
