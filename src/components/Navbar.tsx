@@ -9,6 +9,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -41,12 +42,7 @@ const Navbar = () => {
       <div className="flex md:hidden">
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <button
-              aria-label="Toggle navigation"
-              className="focus:outline-none"
-            >
-              <HamburgerMenuIcon className="w-6 h-6"/>
-            </button>
+            <HamburgerMenuIcon className="w-6 h-6"/>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="flex flex-col">
             <NavigationMenuLink
@@ -67,7 +63,11 @@ const Navbar = () => {
             >
                   Manage Teams
             </NavigationMenuLink>
-            <DropdownMenuItem className={navigationMenuTriggerStyle()}>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={logoutSync}
+              className={navigationMenuTriggerStyle()}
+            >
               Logout
             </DropdownMenuItem>
           </DropdownMenuContent>

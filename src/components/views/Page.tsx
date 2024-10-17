@@ -71,9 +71,9 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
               <div className="md:hidden relative">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md focus-visible:outline-none border h-8 w-8 p-0">
+                    <div className="inline-flex items-center justify-center whitespace-nowrap rounded-md focus-visible:outline-none border h-8 w-8 p-0">
                       <DotsVerticalIcon/>
-                    </button>
+                    </div>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
                     side="bottom"
@@ -86,7 +86,6 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
                         onClick={action.onClick}
                         className="gap-2"
                       >
-                        <UploadIcon/>
                         {action.content}
                       </DropdownMenuItem>
                     ))}
