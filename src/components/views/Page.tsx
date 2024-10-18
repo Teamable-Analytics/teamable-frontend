@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Text } from "@/components/ui/text"
 import { Action } from "@/types"
-import { DotsVerticalIcon, UploadIcon } from "@radix-ui/react-icons"
+import { DotsVerticalIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
 import React from "react"
 
@@ -22,6 +22,8 @@ type PageViewProps = {
   }>;
   actions?: Array<Action>;
 };
+
+
 
 const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
   return (
@@ -71,9 +73,12 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
               <div className="md:hidden relative">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <div className="inline-flex items-center justify-center whitespace-nowrap rounded-md focus-visible:outline-none border h-8 w-8 p-0">
+                    <Button
+                      className="inline-flex items-center justify-center whitespace-nowrap rounded-md focus-visible:outline-none border h-8 w-8 p-0"
+                      variant="ghost"
+                    >
                       <DotsVerticalIcon/>
-                    </div>
+                    </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
                     side="bottom"
@@ -81,18 +86,22 @@ const PageView = ({ children, title, breadcrumbs, actions }: PageViewProps) => {
                     className="absolute right-0 z-50 min-w-[200px] space-y-3"
                   >
                     {actions.map((action, index) => (
-                      <DropdownMenuItem
-                        key={`action-${index}`}
-                        onClick={action.onClick}
-                        className="gap-2"
-                      >
-                        {action.content}
+                      <DropdownMenuItem key={`action-${index}`}>
+                        <Button
+                          onClick={action.onClick}
+                          loading={action.loading}
+                          variant="ghost"
+                          size="sm"
+                          className="gap-0"
+                        >
+                          {action.content}
+                        </Button>
                       </DropdownMenuItem>
                     ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-              <div className="hidden md:flex gap-3 ">
+              <div className="hidden md:flex gap-1 ">
                 {actions.map((action, index) => (
                   <Button
                     key={`action-${index}`}
