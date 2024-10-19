@@ -75,7 +75,7 @@ export const SetupStepDetailCard = ({ steps }: StepDetailCardProps) => {
                 `}
               >
                 {step.enabled && step.completed ? (
-                  <CheckIcon className="w-5 fill-current" />
+                  <CheckIcon className="w-5" />
                 ) : (
                   index + 1
                 )}
