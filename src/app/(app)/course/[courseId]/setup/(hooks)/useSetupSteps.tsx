@@ -1,13 +1,13 @@
-import React, { ReactNode, useState } from "react"
 import { OnboardingProgress } from "@/_temp_types/onboarding"
-import { Action, NonEmptyArray } from "@/types"
-import { StepDefinition } from "@/app/(app)/course/[courseId]/setup/(components)/SetupStepDetailCard"
-import { useImportStudentsFromLms } from "@/hooks/use-import-students-from-lms"
-import { useImportStudentGradebookData } from "@/hooks/use-import-student-gradebook-data"
-import { GenerateOptInQuiz } from "@/app/(app)/course/[courseId]/setup/(components)/GenerateOptInQuiz"
-import { useOnboardingProgress } from "@/hooks/use-onboarding-progress"
-import { useGenerateTeams } from "@/hooks/use-generate-teams"
 import { GenerateTeamsAttributeSelector } from "@/app/(app)/course/[courseId]/components/GenerateTeamsAttributeSelector"
+import { GenerateOptInQuiz } from "@/app/(app)/course/[courseId]/setup/(components)/GenerateOptInQuiz"
+import { StepDefinition } from "@/app/(app)/course/[courseId]/setup/(components)/SetupStepDetailCard"
+import { useGenerateTeams } from "@/hooks/use-generate-teams"
+import { useImportStudentGradebookData } from "@/hooks/use-import-student-gradebook-data"
+import { useImportStudentsFromLms } from "@/hooks/use-import-students-from-lms"
+import { useOnboardingProgress } from "@/hooks/use-onboarding-progress"
+import { Action, NonEmptyArray } from "@/types"
+import { ReactNode, useState } from "react"
 
 interface UseSetupStepsReturnType {
   steps: NonEmptyArray<StepDefinition>;
@@ -20,11 +20,11 @@ export const useSetupSteps = (): UseSetupStepsReturnType => {
   const { data, isLoading, refetch } = useOnboardingProgress()
 
   const {
-    importStudentsFromLmsAsync,
+    importStudentsWithToast,
     isPending: importStudentsFromLmsPending,
   } = useImportStudentsFromLms()
   const {
-    importStudentGradebookDataAsync,
+    importGradebookDataWithToast,
     isPending: importStudentGradebookDataPending,
   } = useImportStudentGradebookData()
   const { generateTeamsAsync, isPending: generateTeamsPending } =
@@ -48,7 +48,7 @@ export const useSetupSteps = (): UseSetupStepsReturnType => {
     IMPORT_STUDENTS: {
       content: "Import students",
       onClick: async () => {
-        await importStudentsFromLmsAsync(undefined)
+        await importStudentsWithToast()
         await refetch()
       },
       loading: importStudentsFromLmsPending,
@@ -56,7 +56,7 @@ export const useSetupSteps = (): UseSetupStepsReturnType => {
     STUDENT_DATA: {
       content: "Import gradebook data",
       onClick: async () => {
-        await importStudentGradebookDataAsync(undefined)
+        await importGradebookDataWithToast()
         await refetch()
       },
       loading: importStudentGradebookDataPending,
