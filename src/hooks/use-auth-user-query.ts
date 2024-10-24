@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query"
 import { AuthUser } from "@/_temp_types/user"
+import { useQuery } from "@tanstack/react-query"
 import { getTokenAuthHeader } from "../../utils/auth"
 
 export const useAuthUserQuery = () => {
@@ -25,8 +25,10 @@ export const authUserQueryFn = async ({
       },
     },
   )
+
   if (res.status === 401) return null
   const data = await res.json()
   if (!res.ok) throw data
+  console.log(data)
   return data
 }
