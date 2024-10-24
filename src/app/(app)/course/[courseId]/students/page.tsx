@@ -18,12 +18,12 @@ const StudentsPageView = () => {
   const { refetch } = useStudents()
 
   const {
-    importStudentsWithToast,
+    importStudentsAsync,
     isPending: importStudentsFromLmsPending,
   } = useImportStudentsFromLms()
 
   const {
-    importGradebookDataWithToast,
+    importGradebookDataAsync,
     isPending: importStudentGradebookDataPending,
   } = useImportStudentGradebookData()
 
@@ -39,7 +39,7 @@ const StudentsPageView = () => {
         {
           content: "Import students",
           onClick: async () => {
-            await importStudentsWithToast()
+            await importStudentsAsync()
             await refetch()
           },
           loading: importStudentsFromLmsPending,
@@ -47,7 +47,7 @@ const StudentsPageView = () => {
         {
           content: "Import gradebook data",
           onClick: async () => {
-            await importGradebookDataWithToast()
+            await importGradebookDataAsync()
             await refetch()
           },
           loading: importStudentGradebookDataPending,

@@ -6,6 +6,15 @@ import { useMutation } from "@tanstack/react-query"
 export const useImportStudentGradebookData = () => {
   const { toast } = useToast()
   const { courseId } = useCourse()
+
+  const importGradebookDataAsync = async() => {
+    toast({
+      title: "Importing student gradebook data",
+      description: "Please wait while we import student gradebook data from your LMS.",
+    })
+    await mutation.mutateAsync()
+  }
+
   const mutation = useMutation<void, unknown, void>({
     mutationFn: async () => {
       return defaultMutationFn(
@@ -31,16 +40,8 @@ export const useImportStudentGradebookData = () => {
     },
   })
 
-  const importGradebookDataWithToast = async() => {
-    toast({
-      title: "Importing student gradebook data",
-      description: "Please wait while we import student gradebook data from your LMS.",
-    })
-    await mutation.mutateAsync()
-  }
-
   return {
-    importGradebookDataWithToast,
+    importGradebookDataAsync,
     ...mutation,
   }
 }
