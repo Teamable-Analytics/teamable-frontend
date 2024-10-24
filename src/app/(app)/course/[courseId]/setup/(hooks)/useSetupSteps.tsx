@@ -20,11 +20,11 @@ export const useSetupSteps = (): UseSetupStepsReturnType => {
   const { data, isLoading, refetch } = useOnboardingProgress()
 
   const {
-    importStudentsWithToast,
+    importStudentsAsync,
     isPending: importStudentsFromLmsPending,
   } = useImportStudentsFromLms()
   const {
-    importGradebookDataWithToast,
+    importGradebookDataAsync,
     isPending: importStudentGradebookDataPending,
   } = useImportStudentGradebookData()
   const { generateTeamsAsync, isPending: generateTeamsPending } =
@@ -48,7 +48,7 @@ export const useSetupSteps = (): UseSetupStepsReturnType => {
     IMPORT_STUDENTS: {
       content: "Import students",
       onClick: async () => {
-        await importStudentsWithToast()
+        await importStudentsAsync()
         await refetch()
       },
       loading: importStudentsFromLmsPending,
@@ -56,7 +56,7 @@ export const useSetupSteps = (): UseSetupStepsReturnType => {
     STUDENT_DATA: {
       content: "Import gradebook data",
       onClick: async () => {
-        await importGradebookDataWithToast()
+        await importGradebookDataAsync()
         await refetch()
       },
       loading: importStudentGradebookDataPending,
