@@ -1,11 +1,20 @@
-import { useToast } from "@/hooks/use-toast"
-import { useMutation } from "@tanstack/react-query"
 import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
 import { defaultMutationFn } from "@/app/(providers)/query-client-provider"
+import { useToast } from "@/hooks/use-toast"
+import { useMutation } from "@tanstack/react-query"
 
 export const useImportStudentsFromLms = () => {
   const { toast } = useToast()
   const { courseId } = useCourse()
+
+  const importStudentsAsync = async () => {
+    toast({
+      title: "Importing students",
+      description: "Please wait while we import students from your LMS.",
+    })
+    await mutation.mutateAsync()
+  }
+
   const mutation = useMutation<void, unknown, void>({
     mutationFn: async () => {
       return defaultMutationFn(`courses/${courseId}/import_students_from_lms/`, undefined, {allowEmptyResponse: true})
@@ -28,7 +37,7 @@ export const useImportStudentsFromLms = () => {
   })
 
   return {
-    importStudentsFromLmsAsync: mutation.mutateAsync,
+    importStudentsAsync,
     ...mutation,
   }
 }
