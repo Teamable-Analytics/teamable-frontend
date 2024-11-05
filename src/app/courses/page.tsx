@@ -75,9 +75,9 @@ export default function CoursesPage() {
             {error && <p>Failed to load courses</p>}
             <div className="flex flex-wrap space-y-4">
               {userData?.course_memberships && userData.course_memberships.map((membership) => (
-                <Card 
-                  key={membership.course.id} 
-                  className="w-full cursor-pointer hover:bg-gray-100 transition" 
+                <Card
+                  key={membership.course.id}
+                  className="w-full cursor-pointer hover:bg-gray-100 transition"
                   onClick={() => openCourseHomePageRouter(membership.course.id)}
                 >
                   <CardHeader>
@@ -97,9 +97,9 @@ export default function CoursesPage() {
           {error && <p>Failed to load courses</p>}
           <div className="w-full flex flex-col items-center">
             {userData?.course_memberships && userData.course_memberships.map((membership) => (
-              <Card 
-                key={membership.course.id} 
-                className="w-[350px] mb-4 cursor-pointer hover:bg-gray-100 transition" 
+              <Card
+                key={membership.course.id}
+                className="w-[350px] mb-4 cursor-pointer hover:bg-gray-100 transition"
                 onClick={() => openCourseHomePageRouter(membership.course.id)}
               >
                 <CardHeader>
