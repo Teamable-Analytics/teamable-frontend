@@ -30,7 +30,7 @@ export default function CoursesPage() {
   const { logoutSync } = useLogout()
   const { data: userData, isLoading, error } = useAuthUserQuery()
   const router = useRouter()
-  const handleCardClick = (courseId: number) => {
+  const openCourseHomePageRouter = (courseId: number) => {
     router.push(`/course/${courseId}/setup`)
   }
 
@@ -78,7 +78,7 @@ export default function CoursesPage() {
                 <Card 
                   key={membership.course.id} 
                   className="w-full cursor-pointer hover:bg-gray-100 transition" 
-                  onClick={() => handleCardClick(membership.course.id)}
+                  onClick={() => openCourseHomePageRouter(membership.course.id)}
                 >
                   <CardHeader>
                     <CardTitle className="font-semibold text-lg lg:text-2xl">
@@ -99,8 +99,8 @@ export default function CoursesPage() {
             {userData?.course_memberships && userData.course_memberships.map((membership) => (
               <Card 
                 key={membership.course.id} 
-                className="w-[350px] mr-4 mb-4 pb-14 cursor-pointer hover:bg-gray-100 transition" 
-                onClick={() => handleCardClick(membership.course.id)}
+                className="w-[350px] mb-4 cursor-pointer hover:bg-gray-100 transition" 
+                onClick={() => openCourseHomePageRouter(membership.course.id)}
               >
                 <CardHeader>
                   <CardTitle className="font-semibold text-lg lg:text-2xl">
