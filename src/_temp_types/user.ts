@@ -5,7 +5,8 @@ export interface AuthUser {
   last_name: string;
   email: string;
   is_staff: boolean;
-  course_memberships: Array<{ course: number }>;
+  // course_memberships: Array<{ course: number }>;
+  course_memberships: Array<{ course: {id: number, name: string} }>;
 }
 
 export interface AnonUser {

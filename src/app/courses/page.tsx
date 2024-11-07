@@ -18,7 +18,6 @@ import {
   NavigationMenu,
 } from "@/components/ui/navigation-menu"
 import { Text } from "@/components/ui/text"
-import { useAuthUserQuery } from "@/hooks/use-auth-user-query"
 import { useLogout } from "@/hooks/use-logout"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -28,11 +27,7 @@ import { Separator } from "@/components/ui/separator"
 export default function CoursesPage() {
   const { authUser } = useAuthUser()
   const { logoutSync } = useLogout()
-  const { data: userData, isLoading, error } = useAuthUserQuery()
   const router = useRouter()
-  const openCourseHomePageRouter = (courseId: number) => {
-    router.push(`/course/${courseId}/setup`)
-  }
 
   return (
     <>
@@ -66,22 +61,19 @@ export default function CoursesPage() {
         </div>
       </NavigationMenu>
       <Separator />
-      <div className="w-full lg:grid lg:grid-cols-2 h-screen px-6 sm:px-0">
-        <div className="hidden bg-muted lg:block bg-zinc-900" />
+      <div className="w-full h-screen px-6 sm:px-0">
         <div className="hidden md:block m-12">
-          <div className="w-auto h-auto">
+          <div className="min-h-screen pb-8">
             <h1 className="text-foreground scroll-m-20 pb-2 font-semibold tracking-tight first:mt-0 text-2xl lg:text-3xl border-0 mb-4">Your Courses</h1>
-            {isLoading && <p>Loading courses...</p>}
-            {error && <p>Failed to load courses</p>}
-            <div className="flex flex-wrap space-y-4">
-              {userData?.course_memberships && userData.course_memberships.map((membership) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
+              {authUser?.course_memberships && authUser.course_memberships.map((membership) => (
                 <Card
                   key={membership.course.id}
-                  className="w-full cursor-pointer hover:bg-gray-100 transition"
-                  onClick={() => openCourseHomePageRouter(membership.course.id)}
+                  className="w-full h-full pb-14 cursor-pointer hover:bg-gray-100 transition"
+                  onClick={() => router.push(`/course/${membership.course.id}/setup`)}
                 >
                   <CardHeader>
-                    <CardTitle className="font-semibold text-lg lg:text-2xl">
+                    <CardTitle className="font-semibold text-base lg:text-xl">
                       {membership.course.name}
                     </CardTitle>
                   </CardHeader>
@@ -93,14 +85,12 @@ export default function CoursesPage() {
 
         <div className="md:hidden mt-4">
           <h1 className="text-foreground scroll-m-20 pb-2 font-semibold tracking-tight first:mt-0 text-2xl lg:text-3xl border-0 m-4">Your Courses</h1>
-          {isLoading && <p>Loading courses...</p>}
-          {error && <p>Failed to load courses</p>}
           <div className="w-full flex flex-col items-center">
-            {userData?.course_memberships && userData.course_memberships.map((membership) => (
+            {authUser?.course_memberships && authUser.course_memberships.map((membership) => (
               <Card
                 key={membership.course.id}
-                className="w-[350px] mb-4 cursor-pointer hover:bg-gray-100 transition"
-                onClick={() => openCourseHomePageRouter(membership.course.id)}
+                className="w-[350px] m-2 pb-14"
+                onClick={() => router.push(`/course/${membership.course.id}/setup`)}
               >
                 <CardHeader>
                   <CardTitle className="font-semibold text-lg lg:text-2xl">
