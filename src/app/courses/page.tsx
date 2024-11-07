@@ -17,17 +17,26 @@ import {
 import {
   NavigationMenu,
 } from "@/components/ui/navigation-menu"
+import { Separator } from "@/components/ui/separator"
 import { Text } from "@/components/ui/text"
 import { useLogout } from "@/hooks/use-logout"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 
-import { Separator } from "@/components/ui/separator"
+import { ReloadIcon } from "@radix-ui/react-icons"
 
 export default function CoursesPage() {
   const { authUser } = useAuthUser()
   const { logoutSync } = useLogout()
   const router = useRouter()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (authUser?.course_memberships) {
+      setLoading(false)
+    }
+  }, [authUser])
 
   return (
     <>
@@ -65,41 +74,53 @@ export default function CoursesPage() {
         <div className="hidden md:block m-12">
           <div className="min-h-screen pb-8">
             <h1 className="text-foreground scroll-m-20 pb-2 font-semibold tracking-tight first:mt-0 text-2xl lg:text-3xl border-0 mb-4">Your Courses</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
-              {authUser?.course_memberships && authUser.course_memberships.map((membership) => (
+            {loading ? (
+              <div className="flex justify-center items-center h-48">
+                <ReloadIcon className="mr-2 h-10 w-10 animate-spin text-gray-500" />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
+                {authUser?.course_memberships.map((membership) => (
+                  <Card
+                    key={membership.id}
+                    className="w-full h-full pb-14 cursor-pointer hover:bg-gray-100 transition"
+                    onClick={() => router.push(`/course/${membership.id}/setup`)}
+                  >
+                    <CardHeader>
+                      <CardTitle className="font-semibold text-base lg:text-xl">
+                        {membership.name}
+                      </CardTitle>
+                    </CardHeader>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="md:hidden mt-4">
+          <h1 className="text-foreground scroll-m-20 pb-2 font-semibold tracking-tight first:mt-0 text-2xl lg:text-3xl border-0 m-4">Your Courses</h1>
+          {loading ? (
+            <div className="flex justify-center items-center h-48">
+              <ReloadIcon className="mr-2 h-10 w-10 animate-spin text-gray-500" />
+            </div>
+          ) : (
+            <div className="w-full flex flex-col items-center">
+              {authUser?.course_memberships.map((membership) => (
                 <Card
                   key={membership.id}
-                  className="w-full h-full pb-14 cursor-pointer hover:bg-gray-100 transition"
+                  className="w-[350px] m-2 pb-14"
                   onClick={() => router.push(`/course/${membership.id}/setup`)}
                 >
                   <CardHeader>
-                    <CardTitle className="font-semibold text-base lg:text-xl">
+                    <CardTitle className="font-semibold text-lg lg:text-2xl">
                       {membership.name}
                     </CardTitle>
                   </CardHeader>
                 </Card>
               ))}
             </div>
-          </div>
-        </div>
-
-        <div className="md:hidden mt-4">
-          <h1 className="text-foreground scroll-m-20 pb-2 font-semibold tracking-tight first:mt-0 text-2xl lg:text-3xl border-0 m-4">Your Courses</h1>
-          <div className="w-full flex flex-col items-center">
-            {authUser?.course_memberships && authUser.course_memberships.map((membership) => (
-              <Card
-                key={membership.id}
-                className="w-[350px] m-2 pb-14"
-                onClick={() => router.push(`/course/${membership.id}/setup`)}
-              >
-                <CardHeader>
-                  <CardTitle className="font-semibold text-lg lg:text-2xl">
-                    {membership.name}
-                  </CardTitle>
-                </CardHeader>
-              </Card>
-            ))}
-          </div>
+          )}
         </div>
       </div>
     </>
