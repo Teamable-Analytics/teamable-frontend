@@ -68,13 +68,13 @@ export default function CoursesPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
               {authUser?.course_memberships && authUser.course_memberships.map((membership) => (
                 <Card
-                  key={membership.course.id}
+                  key={membership.id}
                   className="w-full h-full pb-14 cursor-pointer hover:bg-gray-100 transition"
-                  onClick={() => router.push(`/course/${membership.course.id}/setup`)}
+                  onClick={() => router.push(`/course/${membership.id}/setup`)}
                 >
                   <CardHeader>
                     <CardTitle className="font-semibold text-base lg:text-xl">
-                      {membership.course.name}
+                      {membership.name}
                     </CardTitle>
                   </CardHeader>
                 </Card>
@@ -88,13 +88,13 @@ export default function CoursesPage() {
           <div className="w-full flex flex-col items-center">
             {authUser?.course_memberships && authUser.course_memberships.map((membership) => (
               <Card
-                key={membership.course.id}
+                key={membership.id}
                 className="w-[350px] m-2 pb-14"
-                onClick={() => router.push(`/course/${membership.course.id}/setup`)}
+                onClick={() => router.push(`/course/${membership.id}/setup`)}
               >
                 <CardHeader>
                   <CardTitle className="font-semibold text-lg lg:text-2xl">
-                    {membership.course.name}
+                    {membership.name}
                   </CardTitle>
                 </CardHeader>
               </Card>
