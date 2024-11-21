@@ -1,15 +1,15 @@
 "use client"
 
-import PageView from "@/components/views/Page"
-import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
-import { useListTeamSets } from "@/hooks/use-list-team-sets"
-import { DataTable } from "@/components/ui/data-table"
-import React, { useState } from "react"
 import { TeamSet } from "@/_temp_types/teamSet"
-import { columns } from "@/app/(app)/course/[courseId]/team-sets/columns"
-import { useRouter } from "next/navigation"
-import { useGenerateTeams } from "@/hooks/use-generate-teams"
+import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
 import { GenerateTeamsAttributeSelector } from "@/app/(app)/course/[courseId]/components/GenerateTeamsAttributeSelector"
+import { columns } from "@/app/(app)/course/[courseId]/team-sets/columns"
+import { DataTable } from "@/components/ui/data-table"
+import PageView from "@/components/views/Page"
+import { useGenerateTeams } from "@/hooks/use-generate-teams"
+import { useListTeamSets } from "@/hooks/use-list-team-sets"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export default function TeamSetListPage() {
   const { courseId } = useCourse()
@@ -29,7 +29,7 @@ export default function TeamSetListPage() {
     <PageView
       title={"Team sets"}
       breadcrumbs={[
-        { title: "Home", href: "/" },
+        { title: "Home", href: `/course/${courseId}/home` },
         { title: "Team sets", href: `/course/${courseId}/team-sets/` },
       ]}
       actions={[

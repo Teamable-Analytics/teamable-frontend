@@ -1,11 +1,11 @@
 "use client"
 
-import React from "react"
-import { StudentsProvider, useStudents } from "./(hooks)/useStudents"
+import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
 import PageView from "@/components/views/Page"
-import { StudentTable } from "./(table)/student-table"
-import { useImportStudentsFromLms } from "@/hooks/use-import-students-from-lms"
 import { useImportStudentGradebookData } from "@/hooks/use-import-student-gradebook-data"
+import { useImportStudentsFromLms } from "@/hooks/use-import-students-from-lms"
+import { StudentsProvider, useStudents } from "./(hooks)/useStudents"
+import { StudentTable } from "./(table)/student-table"
 
 export default function StudentsPage() {
   return (
@@ -16,6 +16,7 @@ export default function StudentsPage() {
 }
 
 const StudentsPageView = () => {
+  const { courseId } = useCourse()
   const { refetch } = useStudents()
   const {
     importStudentsFromLmsAsync,
@@ -31,7 +32,7 @@ const StudentsPageView = () => {
     <PageView
       title="Students"
       breadcrumbs={[
-        { title: "Home", href: "/" },
+        { title: "Home", href: `/course/${courseId}/home` },
         { title: "Students", href: "/students" },
       ]}
       actions={[

@@ -1,10 +1,9 @@
 "use client"
 
-import React from "react"
-import PageView from "@/components/views/Page"
+import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
 import { SetupStepDetailCard } from "@/app/(app)/course/[courseId]/setup/(components)/SetupStepDetailCard"
 import { useSetupSteps } from "@/app/(app)/course/[courseId]/setup/(hooks)/useSetupSteps"
-import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
+import PageView from "@/components/views/Page"
 
 const SetupPage = () => {
   const { steps, addedComponents } = useSetupSteps()
@@ -13,7 +12,7 @@ const SetupPage = () => {
     <PageView
       title={"Onboarding"}
       breadcrumbs={[
-        { title: "Home", href: "/" },
+        { title: "Home", href: `/course/${courseId}/home` },
         { title: "Onboarding", href: `course/${courseId}/setup` },
       ]}
     >
