@@ -7,7 +7,7 @@ export const CalculateOnboardingCompletion = () => {
   const completedSteps = enabledSteps.filter((step) => step.completed)
 
   const completionPercentage = Math.round((completedSteps.length / enabledSteps.length) * 100)
-  
+
   const firstIncompleteStep = enabledSteps.find((step) => !step.completed)
 
   return {
