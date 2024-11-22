@@ -3,11 +3,10 @@ import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
 import PageView from "@/components/views/Page"
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
-
+import { CalculateOnboardingCompletion } from "./(hooks)/calculateOnboardingCompletion"
 const HomePage = () => {
   const { courseId } = useCourse()
-  const onboardingPercentage = 65
-  const onboardingNextStep = "Generate Teams"
+  const { completionPercentage, nextStepTitle } = CalculateOnboardingCompletion()
 
   const attributes = [
     "Requirement #1",
@@ -22,10 +21,9 @@ const HomePage = () => {
     "Requirement #10",
   ]
 
-  const chunkSize = 4
   const groupedAttributes = []
-  for (let i = 0; i < attributes.length; i += chunkSize) {
-    groupedAttributes.push(attributes.slice(i, i + chunkSize))
+  for (let i = 0; i < attributes.length; i += 4) {
+    groupedAttributes.push(attributes.slice(i, i + 4))
   }
 
   return (
@@ -40,8 +38,8 @@ const HomePage = () => {
       <div className="flex items-center space-x-4 mb-8">
         <div className="w-12 h-12">
           <CircularProgressbar
-            value={onboardingPercentage}
-            text={`${onboardingPercentage}`}
+            value={completionPercentage}
+            text={`${completionPercentage}`}
             styles={buildStyles({
               rotation: -0.5,
               strokeLinecap: 'round',
@@ -54,7 +52,7 @@ const HomePage = () => {
         </div>
         <div className="text-sm">
           <p className="text-gray-700">
-                        You are <b>{onboardingPercentage}%</b> done with your current onboarding process.
+                        You are <b>{completionPercentage}%</b> done with your current onboarding process.
           </p>
           <p className="font-semibold">
             <span className="text-gray-800">Next step: </span>
@@ -62,7 +60,7 @@ const HomePage = () => {
               href={`/course/${courseId}/setup`}
               className="underline hover:font-bold"
             >
-              {onboardingNextStep}
+              {nextStepTitle}
             </a>
           </p>
         </div>

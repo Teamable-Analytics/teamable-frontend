@@ -5,6 +5,7 @@ import { SetupStepDetailCard } from "@/app/(app)/course/[courseId]/setup/(compon
 import { useSetupSteps } from "@/app/(app)/course/[courseId]/setup/(hooks)/useSetupSteps"
 import PageView from "@/components/views/Page"
 
+
 const SetupPage = () => {
   const { steps, addedComponents } = useSetupSteps()
   const { courseId } = useCourse()
