@@ -30,41 +30,48 @@ const HomePage = () => {
     <PageView title={"Your dashboard,"}>
       <h2 className="text-lg font-semibold mb-4">
                 Welcome back!{" "}
-        <a href={`/course/${courseId}/setup`} className="underline hover:font-bold">
-                    Wanting to start a new team formation?
-        </a>
+        {completionPercentage === 100 ? (
+          <a href={`/course/${courseId}/setup`} className="text-gray-500 hover:underline">
+                        Wanting to start a new team formation?
+          </a>
+        ) : (
+          <span className="text-gray-500">Your onboarding process is incomplete...</span>
+        )}
       </h2>
 
-      <div className="flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4 space-y-4 sm:space-y-0 mb-8">
-        <div className="w-20 h-20">
-          <CircularProgressbar
-            value={completionPercentage}
-            text={`${completionPercentage}`}
-            styles={buildStyles({
-              rotation: -0.5,
-              strokeLinecap: 'round',
-              textSize: '24px',
-              pathColor: '#000',
-              textColor: '#000',
-              trailColor: '#e6e6e6',
-            })}
-          />
+      {completionPercentage !== 100 && (
+        <div className="flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4 space-y-4 sm:space-y-0 mb-8">
+          <div className="w-20 h-20 md:w-12 md:h-12">
+            <CircularProgressbar
+              value={completionPercentage}
+              text={`${completionPercentage}`}
+              styles={buildStyles({
+                rotation: -0.5,
+                strokeLinecap: 'round',
+                textSize: '24px',
+                pathColor: '#000',
+                textColor: '#000',
+                trailColor: '#e6e6e6',
+              })}
+            />
+          </div>
+          <div className="text-sm text-center sm:text-left">
+            <p className="text-gray-700">
+                You are <b>{completionPercentage}%</b> done with your current onboarding process.
+            </p>
+            <p className="font-semibold">
+              <span className="text-gray-800">Next step: </span>
+              <a
+                href={`/course/${courseId}/setup`}
+                className="underline hover:font-bold"
+              >
+                {nextStepTitle}
+              </a>
+            </p>
+          </div>
         </div>
-        <div className="text-sm text-center sm:text-left">
-          <p className="text-gray-700">
-            You are <b>{completionPercentage}%</b> done with your current onboarding process.
-          </p>
-          <p className="font-semibold">
-            <span className="text-gray-800">Next step: </span>
-            <a
-              href={`/course/${courseId}/setup`}
-              className="underline hover:font-bold"
-            >
-              {nextStepTitle}
-            </a>
-          </p>
-        </div>
-      </div>
+      )}
+
 
       <div className="mb-8">
         <h3 className="text-lg font-semibold mb-2">Sign up Stats</h3>
