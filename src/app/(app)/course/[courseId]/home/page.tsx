@@ -70,7 +70,7 @@ const HomePage = () => {
         <h3 className="text-lg font-semibold mb-2">Sign up Stats</h3>
         <div className="border border-gray-300 p-4 rounded-md">
           <ul className="list-disc list-inside space-y-2">
-            <li>Number of Students Enrolled on Your LMS: <b>50</b></li>
+            <li>Students Enrolled on Your LMS: <b>50</b></li>
             <li>Total Team Formation Acceptions: <b>10</b></li>
           </ul>
         </div>
