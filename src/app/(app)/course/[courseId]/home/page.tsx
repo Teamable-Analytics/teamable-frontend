@@ -27,7 +27,7 @@ const HomePage = () => {
   }
 
   return (
-    <PageView title={"Course home"}>
+    <PageView title={"Your dashboard,"}>
       <h2 className="text-lg font-semibold mb-4">
                 Welcome back!{" "}
         <a href={`/course/${courseId}/setup`} className="underline hover:font-bold">
@@ -35,8 +35,8 @@ const HomePage = () => {
         </a>
       </h2>
 
-      <div className="flex items-center space-x-4 mb-8">
-        <div className="w-12 h-12">
+      <div className="flex flex-col sm:flex-row items-center sm:items-start sm:space-x-4 space-y-4 sm:space-y-0 mb-8">
+        <div className="w-20 h-20">
           <CircularProgressbar
             value={completionPercentage}
             text={`${completionPercentage}`}
@@ -50,9 +50,9 @@ const HomePage = () => {
             })}
           />
         </div>
-        <div className="text-sm">
+        <div className="text-sm text-center sm:text-left">
           <p className="text-gray-700">
-                        You are <b>{completionPercentage}%</b> done with your current onboarding process.
+            You are <b>{completionPercentage}%</b> done with your current onboarding process.
           </p>
           <p className="font-semibold">
             <span className="text-gray-800">Next step: </span>
@@ -89,7 +89,7 @@ const HomePage = () => {
       <div>
         <h3 className="text-lg font-semibold mb-2">Attributes Used</h3>
         <div className="border border-gray-300 p-4 rounded-md">
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {groupedAttributes.map((group, index) => (
               <ul key={index} className="list-disc list-inside space-y-1">
                 {group.map((attribute, idx) => (
