@@ -18,15 +18,17 @@ export default function StudentsPage() {
 const StudentsPageView = () => {
   const { courseId } = useCourse()
   const { refetch } = useStudents()
+
   const {
-    importStudentsFromLmsAsync,
+    importStudentsAsync,
     isPending: importStudentsFromLmsPending,
   } = useImportStudentsFromLms()
 
   const {
-    importStudentGradebookDataAsync,
+    importGradebookDataAsync,
     isPending: importStudentGradebookDataPending,
   } = useImportStudentGradebookData()
+
 
   return (
     <PageView
@@ -39,7 +41,7 @@ const StudentsPageView = () => {
         {
           content: "Import students",
           onClick: async () => {
-            await importStudentsFromLmsAsync(undefined)
+            await importStudentsAsync()
             await refetch()
           },
           loading: importStudentsFromLmsPending,
@@ -47,7 +49,7 @@ const StudentsPageView = () => {
         {
           content: "Import gradebook data",
           onClick: async () => {
-            await importStudentGradebookDataAsync(undefined)
+            await importGradebookDataAsync()
             await refetch()
           },
           loading: importStudentGradebookDataPending,

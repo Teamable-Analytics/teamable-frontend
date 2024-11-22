@@ -1,5 +1,17 @@
 "use client"
 
+import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
+import { useAuthUser } from "@/app/(providers)/auth-user-provider"
+import Logo from "@/components/Logo"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -8,20 +20,9 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { Text } from "@/components/ui/text"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { useAuthUser } from "@/app/(providers)/auth-user-provider"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { useLogout } from "@/hooks/use-logout"
-import { useParams } from "next/navigation"
-import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
-import Logo from "@/components/Logo"
+import { HamburgerMenuIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
-import { Badge } from "@/components/ui/badge"
 
 const Navbar = () => {
   const { authUser } = useAuthUser()
@@ -37,7 +38,43 @@ const Navbar = () => {
         <Text element="p">|</Text>
         <Badge variant="outline">{courseName}</Badge>
       </div>
-      <div className="flex gap-2">
+
+      <div className="flex md:hidden">
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <HamburgerMenuIcon className="w-6 h-6"/>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="flex flex-col">
+            <NavigationMenuLink
+              href={`/course/${courseId}/setup`}
+              className={navigationMenuTriggerStyle()}
+            >
+                  Onboarding
+            </NavigationMenuLink>
+            <NavigationMenuLink
+              href={`/course/${courseId}/students`}
+              className={navigationMenuTriggerStyle()}
+            >
+                  Students
+            </NavigationMenuLink>
+            <NavigationMenuLink
+              href={`/course/${courseId}/team-sets`}
+              className={navigationMenuTriggerStyle()}
+            >
+                  Manage Teams
+            </NavigationMenuLink>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={logoutSync}
+              className={navigationMenuTriggerStyle()}
+            >
+              Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      <div className="flex gap-2 hidden md:flex">
         <NavigationMenuList className="flex justify-between">
           <NavigationMenuItem>
             <NavigationMenuLink
