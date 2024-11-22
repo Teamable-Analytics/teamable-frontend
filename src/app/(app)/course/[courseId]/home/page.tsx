@@ -3,10 +3,14 @@ import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
 import PageView from "@/components/views/Page"
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
+import { useStudents } from "../students/(hooks)/useStudents"
 import { CalculateOnboardingCompletion } from "./(hooks)/calculateOnboardingCompletion"
 const HomePage = () => {
   const { courseId } = useCourse()
   const { completionPercentage, nextStepTitle } = CalculateOnboardingCompletion()
+  const {totalStudents} = useStudents()
+
+  console.log(totalStudents)
 
   const attributes = [
     "Requirement #1",
