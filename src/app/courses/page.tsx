@@ -84,7 +84,7 @@ export default function CoursesPage() {
                   <Card
                     key={membership.id}
                     className="w-full h-full pb-14 cursor-pointer hover:bg-gray-100 transition"
-                    onClick={() => router.push(`/course/${membership.id}/setup`)}
+                    onClick={() => router.push(`/course/${membership.id}/home`)}
                   >
                     <CardHeader>
                       <CardTitle className="font-semibold text-base lg:text-xl">
@@ -110,7 +110,7 @@ export default function CoursesPage() {
                 <Card
                   key={membership.id}
                   className="w-[350px] m-2 pb-14"
-                  onClick={() => router.push(`/course/${membership.id}/setup`)}
+                  onClick={() => router.push(`/course/${membership.id}/home`)}
                 >
                   <CardHeader>
                     <CardTitle className="font-semibold text-lg lg:text-2xl">

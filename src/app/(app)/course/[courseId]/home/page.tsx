@@ -1,16 +1,23 @@
 "use client"
 import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
 import PageView from "@/components/views/Page"
+import { useToast } from "@/hooks/use-toast"
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
-import { useStudents } from "../students/(hooks)/useStudents"
 import { CalculateOnboardingCompletion } from "./(hooks)/calculateOnboardingCompletion"
+import { useTotalStudents } from "./(hooks)/useTotalStudents"
 const HomePage = () => {
   const { courseId } = useCourse()
   const { completionPercentage, nextStepTitle } = CalculateOnboardingCompletion()
-  const {totalStudents} = useStudents()
+  const { totalStudents, error } = useTotalStudents();
+  const {toast} = useToast();
 
-  console.log(totalStudents)
+  if (error) {
+    toast({
+      title: "Error fetching students",
+      description: "There was an error fetching the number of student enrolled on your LMS.",
+    })
+  }
 
   const attributes = [
     "Requirement #1",
@@ -81,7 +88,7 @@ const HomePage = () => {
         <h3 className="text-lg font-semibold mb-2">Sign up Stats</h3>
         <div className="border border-gray-300 p-4 rounded-md">
           <ul className="list-disc list-inside space-y-2">
-            <li>Students Enrolled on Your LMS: <b>50</b></li>
+            <li>Students Enrolled on Your LMS: <b>{totalStudents}</b></li>
             <li>Total Team Formation Acceptions: <b>10</b></li>
           </ul>
         </div>
