@@ -2,40 +2,36 @@
 import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
 import PageView from "@/components/views/Page"
 import { useToast } from "@/hooks/use-toast"
+import { useEffect } from "react"
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import { CalculateOnboardingCompletion } from "./(hooks)/calculateOnboardingCompletion"
+import { usePastAttributes } from "./(hooks)/use-attributes"
 import { useTotalStudents } from "./(hooks)/useTotalStudents"
 const HomePage = () => {
   const { courseId } = useCourse()
   const { completionPercentage, nextStepTitle } = CalculateOnboardingCompletion()
-  const { totalStudents, error } = useTotalStudents();
-  const {toast} = useToast();
+  const { totalStudents, error: totalStudentsError } = useTotalStudents()
+  const { data: pastAttributes, error: pastAttributesError } = usePastAttributes()
+  const {toast} = useToast()
 
-  if (error) {
-    toast({
-      title: "Error fetching students",
-      description: "There was an error fetching the number of student enrolled on your LMS.",
-    })
-  }
+  useEffect(() => {
+    if (totalStudentsError) {
+      toast({
+        title: "Error fetching students",
+        description: "There was an error fetching the number of students enrolled on your LMS.",
+      })
+    }
+    if (pastAttributesError) {
+      toast({
+        title: "Error fetching attributes",
+        description: "There was an error fetching the attributes used in previous team formation.",
+      })
+    }
+  }, [totalStudentsError, pastAttributesError, toast])
 
-  const attributes = [
-    "Requirement #1",
-    "Requirement #2",
-    "Requirement #3",
-    "Requirement #4",
-    "Requirement #5",
-    "Requirement #6",
-    "Requirement #7",
-    "Requirement #8",
-    "Requirement #9",
-    "Requirement #10",
-  ]
 
-  const groupedAttributes = []
-  for (let i = 0; i < attributes.length; i += 4) {
-    groupedAttributes.push(attributes.slice(i, i + 4))
-  }
+  const noTeamSets = !pastAttributes || Object.keys(pastAttributes).length === 0
 
   return (
     <PageView title={"Your dashboard,"}>
@@ -88,8 +84,8 @@ const HomePage = () => {
         <h3 className="text-lg font-semibold mb-2">Sign up Stats</h3>
         <div className="border border-gray-300 p-4 rounded-md">
           <ul className="list-disc list-inside space-y-2">
-            <li>Students Enrolled on Your LMS: <b>{totalStudents}</b></li>
-            <li>Total Team Formation Acceptions: <b>10</b></li>
+            <li>Students Enrolled on Your LMS: <b>30</b></li>
+            <li>Total Team Formation Acceptions: <b>{totalStudents}</b></li>
           </ul>
         </div>
       </div>
@@ -98,26 +94,35 @@ const HomePage = () => {
         <h3 className="text-lg font-semibold mb-2">Previous Team Formation</h3>
         <div className="border border-gray-300 p-4 rounded-md">
           <ul className="list-disc list-inside space-y-2">
-            <li>Number of Adopted Attributes: <b>16</b></li>
-            <li>Team Formation Date: <b>10/09/2023</b></li>
+            <li>Number of Adopted Attributes: <b>{pastAttributes?.total_attributes_used}</b></li>
+            <li>Team Formation Date: <b>{pastAttributes?.formation_date}</b></li>
           </ul>
         </div>
       </div>
 
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Attributes Used</h3>
-        <div className="border border-gray-300 p-4 rounded-md">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {groupedAttributes.map((group, index) => (
-              <ul key={index} className="list-disc list-inside space-y-1">
-                {group.map((attribute, idx) => (
-                  <li key={idx}>{attribute}</li>
-                ))}
-              </ul>
-            ))}
+      {!noTeamSets && pastAttributes && (
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold mb-2">Attributes Used</h3>
+          <div className="border border-gray-300 p-4 rounded-md">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {pastAttributes.attributes.length > 0 ? (
+                pastAttributes.attributes.map(
+                  (attribute: { name: string }, index: number) => (
+                    <ul key={index} className="list-disc list-inside space-y-1">
+                      <li>{attribute.name}</li>
+                    </ul>
+                  )
+                )
+              ) : (
+                <ul className="list-disc list-inside space-y-1">
+                  <li>No attributes used</li>
+                </ul>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
     </PageView>
   )
 }
