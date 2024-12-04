@@ -3,6 +3,7 @@
 import { formatDate } from "@/../utils/format-date"
 import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
 import PageView from "@/components/views/Page"
+import { ReloadIcon } from "@radix-ui/react-icons"
 import "react-circular-progressbar/dist/styles.css"
 import AttributesUsed from "./(components)/AttributesUsed"
 import InfoSection from "./(components)/InfoSection"
@@ -14,11 +15,12 @@ import { useTotalStudents } from "./(hooks)/useTotalStudents"
 
 const HomePage = () => {
   const { courseId } = useCourse()
-  const { completionPercentage, nextStepTitle } = CalculateOnboardingCompletion()
-  const { totalStudents, optedInStudents, error: totalStudentsError } = useTotalStudents()
-  const { data: pastAttributes, error: pastAttributesError } = usePastAttributes()
-
+  const { completionPercentage, nextStepTitle, isLoading: isLoadingOnboarding } = CalculateOnboardingCompletion()
+  const { totalStudents, optedInStudents, isLoading: isLoadingStudents, error: totalStudentsError } = useTotalStudents()
+  const { data: pastAttributes, isLoading: isLoadingAttributes, error: pastAttributesError } = usePastAttributes()
   useHandleErrors({ totalStudentsError, pastAttributesError })
+
+  const isLoading = isLoadingOnboarding || isLoadingStudents || isLoadingAttributes
 
   const signUpStats = [
     { label: "Students Enrolled on Your LMS", value: totalStudents },
@@ -32,14 +34,22 @@ const HomePage = () => {
 
   return (
     <PageView title={"Your dashboard,"}>
-      <OnboardingProgress
-        completionPercentage={completionPercentage}
-        nextStepTitle={nextStepTitle ?? "No next step"}
-        courseId={courseId}
-      />
-      <InfoSection title="Sign up Stats" items={signUpStats} />
-      <InfoSection title="Previous Team Formation" items={previousTeamFormation} />
-      <AttributesUsed attributes={pastAttributes?.attributes ?? []} />
+      {isLoading ? (
+        <div className="flex justify-center items-center h-48">
+          <ReloadIcon className="mr-2 h-10 w-10 animate-spin text-gray-500" />
+        </div>
+      ) : (
+        <>
+          <OnboardingProgress
+            completionPercentage={completionPercentage}
+            nextStepTitle={nextStepTitle ?? "No next step"}
+            courseId={courseId}
+          />
+          <InfoSection title="Sign up Stats" items={signUpStats} />
+          <InfoSection title="Previous Team Formation" items={previousTeamFormation} />
+          <AttributesUsed attributes={pastAttributes?.attributes ?? []} />
+        </>
+      )}
     </PageView>
   )
 }

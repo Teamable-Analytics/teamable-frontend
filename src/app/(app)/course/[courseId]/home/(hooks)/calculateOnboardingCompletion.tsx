@@ -1,7 +1,7 @@
 import { useSetupSteps } from "@/app/(app)/course/[courseId]/setup/(hooks)/useSetupSteps"
 
 export const CalculateOnboardingCompletion = () => {
-  const { steps } = useSetupSteps()
+  const { steps, isLoading } = useSetupSteps()
   const enabledSteps = steps.filter((step) => step.enabled)
 
   const completedSteps = enabledSteps.filter((step) => step.completed)
@@ -13,5 +13,6 @@ export const CalculateOnboardingCompletion = () => {
   return {
     completionPercentage,
     nextStepTitle: firstIncompleteStep ? firstIncompleteStep.title : null,
+    isLoading,
   }
 }
