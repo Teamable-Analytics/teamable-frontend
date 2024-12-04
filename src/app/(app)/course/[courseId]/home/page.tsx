@@ -15,14 +15,14 @@ import { useTotalStudents } from "./(hooks)/useTotalStudents"
 const HomePage = () => {
   const { courseId } = useCourse()
   const { completionPercentage, nextStepTitle } = CalculateOnboardingCompletion()
-  const { totalStudents, error: totalStudentsError } = useTotalStudents()
+  const { totalStudents, optedInStudents, error: totalStudentsError } = useTotalStudents()
   const { data: pastAttributes, error: pastAttributesError } = usePastAttributes()
 
   useHandleErrors({ totalStudentsError, pastAttributesError })
 
   const signUpStats = [
-    { label: "Students Enrolled on Your LMS", value: 30 },
-    { label: "Total Team Formation Acceptions", value: totalStudents },
+    { label: "Students Enrolled on Your LMS", value: totalStudents },
+    { label: "Total Team Formation Acceptions", value: optedInStudents },
   ]
 
   const previousTeamFormation = [
