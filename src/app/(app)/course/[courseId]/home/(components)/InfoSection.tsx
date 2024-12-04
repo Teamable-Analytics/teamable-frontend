@@ -11,10 +11,14 @@ const InfoSection = ({
     <h3 className="text-lg font-semibold mb-2">{title}</h3>
     <div className="border border-gray-300 p-4 rounded-md">
       {items.length > 0 ? (
-        <ul className="list-disc list-inside space-y-2">
+        <ul className="space-y-2">
           {items.map((item, index) => (
-            <li key={index}>
-              {item.label}: <b>{item.value}</b>
+            <li
+              key={index}
+              className="flex justify-between items-center"
+            >
+              <span>{item.label}:</span>
+              <b>{item.value}</b>
             </li>
           ))}
         </ul>
