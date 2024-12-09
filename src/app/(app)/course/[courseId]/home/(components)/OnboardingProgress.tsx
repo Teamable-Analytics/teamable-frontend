@@ -23,7 +23,7 @@ const OnboardingProgress = ({
             Wanting to start a new team formation?
           </a>
         ) : (
-          <span className="text-gray-500">
+          <span className="text-gray">
             Your onboarding process is incomplete...
           </span>
         )}
@@ -38,7 +38,7 @@ const OnboardingProgress = ({
             />
           </div>
           <div className="text-sm text-center sm:text-left">
-            <p className="text-gray-700">
+            <p>
               You are <b>{completionPercentage}%</b> done with your current onboarding process.
             </p>
             <p className="font-semibold">
