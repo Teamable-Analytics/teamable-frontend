@@ -1,5 +1,6 @@
 "use client"
 
+import { useCourse } from "@/app/(app)/course/[courseId]/(hooks)/useCourse"
 import PageView from "@/components/views/Page"
 import { useImportStudentGradebookData } from "@/hooks/use-import-student-gradebook-data"
 import { useImportStudentsFromLms } from "@/hooks/use-import-students-from-lms"
@@ -15,6 +16,7 @@ export default function StudentsPage() {
 }
 
 const StudentsPageView = () => {
+  const { courseId } = useCourse()
   const { refetch } = useStudents()
 
   const {
@@ -32,7 +34,7 @@ const StudentsPageView = () => {
     <PageView
       title="Students"
       breadcrumbs={[
-        { title: "Home", href: "/" },
+        { title: "Home", href: `/course/${courseId}/home` },
         { title: "Students", href: "/students" },
       ]}
       actions={[
