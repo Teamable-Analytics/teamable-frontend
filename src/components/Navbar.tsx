@@ -106,7 +106,7 @@ const Navbar = () => {
             {authUser ? (
               <Avatar>
                 <AvatarFallback>
-                  {authUser.username[0].toUpperCase()}
+                  {(authUser.first_name || authUser.username)[0].toUpperCase()}
                 </AvatarFallback>
               </Avatar>
             ) : (
