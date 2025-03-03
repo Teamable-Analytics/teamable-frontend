@@ -22,7 +22,7 @@ export const useCreateOptInQuiz = () => {
         variant: "destructive",
         title: "Unable to create opt-in quiz",
         description:
-          "Something went wrong creating the opt-in quiz. Please try again later.",
+          "Please relaunch Teamable from your Canvas dashboard. If the issue persists, please contact support.",
       })
     },
   })

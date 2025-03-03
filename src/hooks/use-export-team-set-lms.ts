@@ -29,7 +29,7 @@ export const useExportTeamSetLms = () => {
         variant: "destructive",
         title: `Unable to export team set to  ${title(lmsType)}`,
         description:
-          "Something went wrong exporting your teams. Please try again later.",
+          "Please relaunch Teamable from your Canvas dashboard. If the issue persists, please contact support.",
       })
     },
   })
