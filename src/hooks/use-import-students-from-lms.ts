@@ -31,7 +31,7 @@ export const useImportStudentsFromLms = () => {
         variant: "destructive",
         title: "Unable to import students",
         description:
-          "Something went wrong importing students. Please try again later.",
+          "Please relaunch Teamable from your Canvas dashboard. If the issue persists, please contact support.",
       })
     },
   })

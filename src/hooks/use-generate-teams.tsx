@@ -18,36 +18,40 @@ export const useGenerateTeams = () => {
   const { courseId } = useCourse()
   const router = useRouter()
 
-  const mutation = useMutation<GenerateTeamsResponse, any, GenerateTeamsParams>({
-    mutationFn: async ({ attribute }) => {
-      return defaultMutationFn(
-        `courses/${courseId}/generate_teams/`,
-        { attribute },
-        { allowEmptyResponse: true },
-      )
+  const mutation = useMutation<GenerateTeamsResponse, any, GenerateTeamsParams>(
+    {
+      mutationFn: async ({ attribute }) => {
+        return defaultMutationFn(
+          `courses/${courseId}/generate_teams/`,
+          { attribute },
+          { allowEmptyResponse: true },
+        )
+      },
+      onSuccess: ({ team_set_id }) => {
+        toast({
+          title: "Teams generated successfully",
+          action: (
+            <Button
+              onClick={() =>
+                router.push(`/course/${courseId}/team-sets/${team_set_id}`)
+              }
+              size="sm"
+            >
+              View
+            </Button>
+          ),
+        })
+      },
+      onError: () => {
+        toast({
+          variant: "destructive",
+          title: "Unable to generate teams",
+          description:
+            "Please relaunch Teamable from your Canvas dashboard. If the issue persists, please contact support.",
+        })
+      },
     },
-    onSuccess: ({ team_set_id }) => {
-      toast({
-        title: "Teams generated successfully",
-        action: (
-          <Button
-            onClick={() => router.push(`/course/${courseId}/team-sets/${team_set_id}`)}
-            size="sm"
-          >
-            View
-          </Button>
-        ),
-      })
-    },
-    onError: () => {
-      toast({
-        variant: "destructive",
-        title: "Unable to generate teams",
-        description:
-          "Something went wrong while generating teams. Please try again later.",
-      })
-    },
-  })
+  )
 
   return {
     generateTeamsAsync: mutation.mutateAsync,

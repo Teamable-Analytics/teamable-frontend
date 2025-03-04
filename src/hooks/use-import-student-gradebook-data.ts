@@ -35,7 +35,7 @@ export const useImportStudentGradebookData = () => {
         variant: "destructive",
         title: "Unable to import student gradebook data",
         description:
-          "Something went wrong importing student gradebook data. Please try again later.",
+          "Please relaunch Teamable from your Canvas dashboard. If the issue persists, please contact support.",
       })
     },
   })
