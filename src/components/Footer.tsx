@@ -1,5 +1,6 @@
 import React from "react"
 import { Text } from "@/components/ui/text"
+import Link from "next/link"
 
 const Footer = () => {
   return (
@@ -7,9 +8,16 @@ const Footer = () => {
       <Text element="p" as="smallText" className="p-0">
         Teamable, 2025.
       </Text>
-      <Text element="p" as="smallText" className="p-0 mt-0">
-        ✨
-      </Text>
+      <div className="flex gap-4 items-center">
+        <Link href="/privacy" className="p-0 mt-0">
+          <Text element="p" as="mutedText" className="p-0 mt-0">
+            Privacy policy
+          </Text>
+        </Link>
+        <Text element="p" as="smallText" className="p-0 mt-0">
+          ✨
+        </Text>
+      </div>
     </footer>
   )
 }
