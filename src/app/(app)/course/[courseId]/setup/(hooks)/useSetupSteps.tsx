@@ -137,7 +137,9 @@ const ORDERED_STEPS: StepKey[] = [
 type StepKey = (typeof STEP)[keyof typeof STEP];
 
 const ImportStudentsComponent = () => {
-  const { isLoading } = useOnboardingProgress()
+  const { data, isLoading } = useOnboardingProgress()
+  // Once students exist, a new quiz can't filter them, so only link to an existing one
+  const showOptInQuiz = data?.has_created_opt_in_quiz || !data?.has_students
   return (
     <div className="flex flex-col gap-4 max-w-[55ch]">
       <p className="leading-relaxed">
@@ -148,7 +150,7 @@ const ImportStudentsComponent = () => {
         can do so by creating a quiz in Canvas here. Only students who respond
         affirmatively to this will be imported.
       </p>
-      {!isLoading && <GenerateOptInQuiz />}
+      {!isLoading && showOptInQuiz && <GenerateOptInQuiz />}
     </div>
   )
 }
